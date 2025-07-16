@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 // SVG Icons Component
 const SVGIcon = ({ type, className = "w-6 h-6" }) => {
@@ -57,6 +58,26 @@ const SVGIcon = ({ type, className = "w-6 h-6" }) => {
       <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0H8m8 0v2a2 2 0 01-2 2H10a2 2 0 01-2-2V6" />
       </svg>
+    ),
+    monitor: (
+      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+      </svg>
+    ),
+    ai: (
+      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+      </svg>
+    ),
+    quantum: (
+      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a8.973 8.973 0 008.354-5.646z" />
+      </svg>
+    ),
+    chevronDown: (
+      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+      </svg>
     )
   };
 
@@ -79,138 +100,161 @@ const ProgressBar = () => {
     return () => window.removeEventListener('scroll', updateProgress);
   }, []);
 
-  return <div className="progress-bar" style={{ width: `${progress}%` }}></div>;
-};
-
-// Sophisticated Typewriter Component
-const TypewriterEffect = ({ words, className = "" }) => {
-  const [currentWordIndex, setCurrentWordIndex] = useState(0);
-  const [currentText, setCurrentText] = useState("");
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [speed, setSpeed] = useState(150);
-
-  useEffect(() => {
-    const handleTyping = () => {
-      const currentWord = words[currentWordIndex];
-      
-      if (isDeleting) {
-        setCurrentText(currentWord.substring(0, currentText.length - 1));
-        setSpeed(50);
-      } else {
-        setCurrentText(currentWord.substring(0, currentText.length + 1));
-        setSpeed(150);
-      }
-
-      if (!isDeleting && currentText === currentWord) {
-        setTimeout(() => setIsDeleting(true), 2000);
-      } else if (isDeleting && currentText === "") {
-        setIsDeleting(false);
-        setCurrentWordIndex((prev) => (prev + 1) % words.length);
-      }
-    };
-
-    const timer = setTimeout(handleTyping, speed);
-    return () => clearTimeout(timer);
-  }, [currentText, isDeleting, currentWordIndex, words, speed]);
-
   return (
-    <span className={`${className} inline-block min-w-max`}>
-      {currentText}
-      <span className="animate-pulse text-cyan-400">|</span>
-    </span>
+    <motion.div 
+      className="fixed top-0 left-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-cyan-500 z-50"
+      style={{ width: `${progress}%` }}
+      initial={{ scaleX: 0 }}
+      animate={{ scaleX: 1 }}
+      transition={{ duration: 0.3 }}
+    />
   );
 };
 
-// Particle System Component
-const ParticleSystem = () => {
-  const canvasRef = useRef(null);
-  const particlesRef = useRef([]);
-  const animationRef = useRef(null);
+// Smooth Typing Animation Component
+const SmoothTypingAnimation = ({ text, className = "", highlight = [] }) => {
+  const [displayText, setDisplayText] = useState("");
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+    if (currentIndex < text.length) {
+      const timer = setTimeout(() => {
+        setDisplayText(text.slice(0, currentIndex + 1));
+        setCurrentIndex(currentIndex + 1);
+      }, 50);
+      return () => clearTimeout(timer);
+    }
+  }, [currentIndex, text]);
 
-    const ctx = canvas.getContext('2d');
-    const resizeCanvas = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
-
-    // Initialize particles
-    const initParticles = () => {
-      particlesRef.current = [];
-      for (let i = 0; i < 50; i++) {
-        particlesRef.current.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          vx: (Math.random() - 0.5) * 0.5,
-          vy: (Math.random() - 0.5) * 0.5,
-          size: Math.random() * 2 + 1,
-          opacity: Math.random() * 0.5 + 0.1
-        });
-      }
-    };
-
-    initParticles();
-
-    const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      particlesRef.current.forEach((particle, index) => {
-        // Update position
-        particle.x += particle.vx;
-        particle.y += particle.vy;
-
-        // Bounce off edges
-        if (particle.x < 0 || particle.x > canvas.width) particle.vx *= -1;
-        if (particle.y < 0 || particle.y > canvas.height) particle.vy *= -1;
-
-        // Draw particle
-        ctx.beginPath();
-        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(0, 221, 235, ${particle.opacity})`;
-        ctx.fill();
-
-        // Connect nearby particles
-        for (let j = index + 1; j < particlesRef.current.length; j++) {
-          const dx = particle.x - particlesRef.current[j].x;
-          const dy = particle.y - particlesRef.current[j].y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-
-          if (distance < 100) {
-            ctx.beginPath();
-            ctx.moveTo(particle.x, particle.y);
-            ctx.lineTo(particlesRef.current[j].x, particlesRef.current[j].y);
-            ctx.strokeStyle = `rgba(0, 221, 235, ${0.2 * (1 - distance / 100)})`;
-            ctx.lineWidth = 1;
-            ctx.stroke();
-          }
-        }
-      });
-
-      animationRef.current = requestAnimationFrame(animate);
-    };
-
-    animate();
-
-    return () => {
-      window.removeEventListener('resize', resizeCanvas);
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-      }
-    };
-  }, []);
+  const renderText = () => {
+    let result = displayText;
+    highlight.forEach(word => {
+      result = result.replace(
+        new RegExp(`\\b${word}\\b`, 'g'),
+        `<span class="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">${word}</span>`
+      );
+    });
+    return result;
+  };
 
   return (
-    <canvas
-      ref={canvasRef}
-      className="absolute inset-0 pointer-events-none"
-      style={{ zIndex: 1 }}
+    <span 
+      className={className}
+      dangerouslySetInnerHTML={{ __html: renderText() }}
     />
+  );
+};
+
+// Animated Background Component
+const AnimatedBackground = () => {
+  return (
+    <div className="absolute inset-0 overflow-hidden">
+      {/* Subtle animated gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900/20 to-purple-900/20 animate-pulse-slow" />
+      
+      {/* Floating abstract shapes */}
+      <motion.div
+        className="absolute top-20 left-20 w-32 h-32 bg-blue-500/10 rounded-full blur-xl"
+        animate={{
+          y: [0, -20, 0],
+          scale: [1, 1.1, 1],
+          opacity: [0.1, 0.2, 0.1]
+        }}
+        transition={{
+          duration: 6,
+          repeat: Infinity,
+          repeatType: "reverse"
+        }}
+      />
+      
+      <motion.div
+        className="absolute top-40 right-40 w-48 h-48 bg-purple-500/10 rounded-full blur-xl"
+        animate={{
+          y: [0, 20, 0],
+          scale: [1, 0.9, 1],
+          opacity: [0.1, 0.3, 0.1]
+        }}
+        transition={{
+          duration: 8,
+          repeat: Infinity,
+          repeatType: "reverse",
+          delay: 2
+        }}
+      />
+      
+      <motion.div
+        className="absolute bottom-20 left-1/3 w-40 h-40 bg-cyan-500/10 rounded-full blur-xl"
+        animate={{
+          y: [0, -30, 0],
+          scale: [1, 1.2, 1],
+          opacity: [0.1, 0.25, 0.1]
+        }}
+        transition={{
+          duration: 7,
+          repeat: Infinity,
+          repeatType: "reverse",
+          delay: 4
+        }}
+      />
+      
+      {/* Subtle matrix-style animation with very low opacity */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="matrix-bg"></div>
+      </div>
+    </div>
+  );
+};
+
+// Feature Indicator Component
+const FeatureIndicator = ({ icon, text, delay = 0 }) => {
+  return (
+    <motion.div
+      className="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors group cursor-pointer"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, delay }}
+      whileHover={{ scale: 1.05 }}
+    >
+      <motion.div
+        className="w-2 h-2 bg-gradient-to-r from-green-400 to-blue-500 rounded-full"
+        animate={{ 
+          scale: [1, 1.2, 1],
+          opacity: [0.8, 1, 0.8]
+        }}
+        transition={{ 
+          duration: 2,
+          repeat: Infinity,
+          delay: delay * 0.5
+        }}
+      />
+      <span className="text-sm font-medium">{text}</span>
+    </motion.div>
+  );
+};
+
+// Scroll Indicator Component
+const ScrollIndicator = () => {
+  return (
+    <motion.div
+      className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center space-y-4"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, delay: 2 }}
+    >
+      <motion.div
+        className="text-gray-400 text-sm font-medium"
+        animate={{ opacity: [0.5, 1, 0.5] }}
+        transition={{ duration: 2, repeat: Infinity }}
+      >
+        Scroll to explore
+      </motion.div>
+      <motion.div
+        animate={{ y: [0, 10, 0] }}
+        transition={{ duration: 1.5, repeat: Infinity }}
+      >
+        <SVGIcon type="chevronDown" className="w-6 h-6 text-gray-400" />
+      </motion.div>
+    </motion.div>
   );
 };
 
