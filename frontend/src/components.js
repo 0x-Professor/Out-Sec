@@ -47,6 +47,16 @@ const SVGIcon = ({ type, className = "w-6 h-6" }) => {
       <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
       </svg>
+    ),
+    play: (
+      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+    ),
+    work: (
+      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0H8m8 0v2a2 2 0 01-2 2H10a2 2 0 01-2-2V6" />
+      </svg>
     )
   };
 
@@ -72,224 +82,135 @@ const ProgressBar = () => {
   return <div className="progress-bar" style={{ width: `${progress}%` }}></div>;
 };
 
-// 3D Cyber Orb Component
-const CyberOrb = () => {
-  const canvasRef = useRef(null);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+// Sophisticated Typewriter Component
+const TypewriterEffect = ({ words, className = "" }) => {
+  const [currentWordIndex, setCurrentWordIndex] = useState(0);
+  const [currentText, setCurrentText] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [speed, setSpeed] = useState(150);
 
   useEffect(() => {
-    const handleMouseMove = (e) => {
-      const rect = canvasRef.current?.getBoundingClientRect();
-      if (rect) {
-        setMousePos({
-          x: ((e.clientX - rect.left) / rect.width) * 2 - 1,
-          y: ((e.clientY - rect.top) / rect.height) * 2 - 1
-        });
+    const handleTyping = () => {
+      const currentWord = words[currentWordIndex];
+      
+      if (isDeleting) {
+        setCurrentText(currentWord.substring(0, currentText.length - 1));
+        setSpeed(50);
+      } else {
+        setCurrentText(currentWord.substring(0, currentText.length + 1));
+        setSpeed(150);
+      }
+
+      if (!isDeleting && currentText === currentWord) {
+        setTimeout(() => setIsDeleting(true), 2000);
+      } else if (isDeleting && currentText === "") {
+        setIsDeleting(false);
+        setCurrentWordIndex((prev) => (prev + 1) % words.length);
       }
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
+    const timer = setTimeout(handleTyping, speed);
+    return () => clearTimeout(timer);
+  }, [currentText, isDeleting, currentWordIndex, words, speed]);
+
+  return (
+    <span className={`${className} inline-block min-w-max`}>
+      {currentText}
+      <span className="animate-pulse text-cyan-400">|</span>
+    </span>
+  );
+};
+
+// Particle System Component
+const ParticleSystem = () => {
+  const canvasRef = useRef(null);
+  const particlesRef = useRef([]);
+  const animationRef = useRef(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
     const ctx = canvas.getContext('2d');
-    canvas.width = 400;
-    canvas.height = 400;
-
-    let animationId;
-    let rotation = 0;
-
-    const drawOrb = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
-      const centerX = canvas.width / 2;
-      const centerY = canvas.height / 2;
-      const radius = 80;
-      
-      // Apply mouse-based rotation
-      const rotX = mousePos.y * 0.5;
-      const rotY = mousePos.x * 0.5;
-      
-      // Create cyber orb effect
-      ctx.save();
-      ctx.translate(centerX, centerY);
-      ctx.rotate(rotation + rotY);
-      
-      // Outer glow
-      const gradient = ctx.createRadialGradient(0, 0, 0, 0, 0, radius * 2);
-      gradient.addColorStop(0, 'rgba(0, 221, 235, 0.3)');
-      gradient.addColorStop(0.5, 'rgba(30, 58, 138, 0.2)');
-      gradient.addColorStop(1, 'rgba(147, 51, 234, 0.1)');
-      
-      ctx.fillStyle = gradient;
-      ctx.fillRect(-radius * 2, -radius * 2, radius * 4, radius * 4);
-      
-      // Main orb
-      const orbGradient = ctx.createRadialGradient(0, 0, 0, 0, 0, radius);
-      orbGradient.addColorStop(0, 'rgba(0, 221, 235, 0.8)');
-      orbGradient.addColorStop(0.7, 'rgba(30, 58, 138, 0.6)');
-      orbGradient.addColorStop(1, 'rgba(147, 51, 234, 0.4)');
-      
-      ctx.fillStyle = orbGradient;
-      ctx.beginPath();
-      ctx.arc(0, 0, radius, 0, Math.PI * 2);
-      ctx.fill();
-      
-      // Grid lines
-      ctx.strokeStyle = 'rgba(0, 221, 235, 0.6)';
-      ctx.lineWidth = 2;
-      for (let i = -radius; i <= radius; i += 20) {
-        ctx.beginPath();
-        ctx.moveTo(-radius, i);
-        ctx.lineTo(radius, i);
-        ctx.stroke();
-        
-        ctx.beginPath();
-        ctx.moveTo(i, -radius);
-        ctx.lineTo(i, radius);
-        ctx.stroke();
-      }
-      
-      ctx.restore();
-      
-      rotation += 0.01;
-      animationId = requestAnimationFrame(drawOrb);
+    const resizeCanvas = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
     };
 
-    drawOrb();
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    // Initialize particles
+    const initParticles = () => {
+      particlesRef.current = [];
+      for (let i = 0; i < 50; i++) {
+        particlesRef.current.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          vx: (Math.random() - 0.5) * 0.5,
+          vy: (Math.random() - 0.5) * 0.5,
+          size: Math.random() * 2 + 1,
+          opacity: Math.random() * 0.5 + 0.1
+        });
+      }
+    };
+
+    initParticles();
+
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      particlesRef.current.forEach((particle, index) => {
+        // Update position
+        particle.x += particle.vx;
+        particle.y += particle.vy;
+
+        // Bounce off edges
+        if (particle.x < 0 || particle.x > canvas.width) particle.vx *= -1;
+        if (particle.y < 0 || particle.y > canvas.height) particle.vy *= -1;
+
+        // Draw particle
+        ctx.beginPath();
+        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(0, 221, 235, ${particle.opacity})`;
+        ctx.fill();
+
+        // Connect nearby particles
+        for (let j = index + 1; j < particlesRef.current.length; j++) {
+          const dx = particle.x - particlesRef.current[j].x;
+          const dy = particle.y - particlesRef.current[j].y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+
+          if (distance < 100) {
+            ctx.beginPath();
+            ctx.moveTo(particle.x, particle.y);
+            ctx.lineTo(particlesRef.current[j].x, particlesRef.current[j].y);
+            ctx.strokeStyle = `rgba(0, 221, 235, ${0.2 * (1 - distance / 100)})`;
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          }
+        }
+      });
+
+      animationRef.current = requestAnimationFrame(animate);
+    };
+
+    animate();
 
     return () => {
-      if (animationId) cancelAnimationFrame(animationId);
+      window.removeEventListener('resize', resizeCanvas);
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
     };
-  }, [mousePos]);
+  }, []);
 
   return (
     <canvas
       ref={canvasRef}
-      className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none opacity-30"
-      style={{ filter: 'blur(1px)' }}
+      className="absolute inset-0 pointer-events-none"
+      style={{ zIndex: 1 }}
     />
-  );
-};
-
-// Threat Map Component
-const ThreatMap = () => {
-  const canvasRef = useRef(null);
-  const [threats, setThreats] = useState([]);
-
-  useEffect(() => {
-    // Generate random threat locations
-    const generateThreats = () => {
-      const newThreats = [];
-      for (let i = 0; i < 20; i++) {
-        newThreats.push({
-          x: Math.random() * 800,
-          y: Math.random() * 400,
-          intensity: Math.random(),
-          type: ['malware', 'ddos', 'phishing', 'ransomware'][Math.floor(Math.random() * 4)],
-          pulse: Math.random() * Math.PI * 2
-        });
-      }
-      setThreats(newThreats);
-    };
-
-    generateThreats();
-    const interval = setInterval(generateThreats, 5000);
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext('2d');
-    canvas.width = 800;
-    canvas.height = 400;
-
-    let animationId;
-    let time = 0;
-
-    const drawThreatMap = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
-      // Draw world map outline (simplified)
-      ctx.strokeStyle = 'rgba(0, 221, 235, 0.3)';
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.rect(50, 50, 700, 300);
-      ctx.stroke();
-      
-      // Draw grid
-      for (let i = 0; i < 8; i++) {
-        ctx.beginPath();
-        ctx.moveTo(50 + i * 87.5, 50);
-        ctx.lineTo(50 + i * 87.5, 350);
-        ctx.stroke();
-      }
-      
-      for (let i = 0; i < 5; i++) {
-        ctx.beginPath();
-        ctx.moveTo(50, 50 + i * 75);
-        ctx.lineTo(750, 50 + i * 75);
-        ctx.stroke();
-      }
-      
-      // Draw threats
-      threats.forEach((threat, index) => {
-        const pulse = Math.sin(time + threat.pulse) * 0.5 + 0.5;
-        const radius = 3 + pulse * 5;
-        
-        ctx.save();
-        ctx.translate(threat.x, threat.y);
-        
-        // Threat glow
-        const gradient = ctx.createRadialGradient(0, 0, 0, 0, 0, radius * 2);
-        gradient.addColorStop(0, `rgba(255, 0, 0, ${threat.intensity * pulse})`);
-        gradient.addColorStop(1, 'rgba(255, 0, 0, 0)');
-        
-        ctx.fillStyle = gradient;
-        ctx.beginPath();
-        ctx.arc(0, 0, radius * 2, 0, Math.PI * 2);
-        ctx.fill();
-        
-        // Threat dot
-        ctx.fillStyle = `rgba(255, 0, 0, ${threat.intensity})`;
-        ctx.beginPath();
-        ctx.arc(0, 0, radius, 0, Math.PI * 2);
-        ctx.fill();
-        
-        ctx.restore();
-      });
-      
-      time += 0.05;
-      animationId = requestAnimationFrame(drawThreatMap);
-    };
-
-    drawThreatMap();
-
-    return () => {
-      if (animationId) cancelAnimationFrame(animationId);
-    };
-  }, [threats]);
-
-  return (
-    <div className="glass-card p-6 card-interactive">
-      <h3 className="text-xl font-bold text-white mb-4">Real-time Threat Map</h3>
-      <canvas
-        ref={canvasRef}
-        className="w-full h-auto rounded-lg"
-        style={{ background: 'rgba(0, 0, 0, 0.2)' }}
-      />
-      <div className="mt-4 flex justify-between text-sm text-gray-400">
-        <span>🔴 Active Threats: {threats.length}</span>
-        <span>🛡️ Blocked: 1,247</span>
-        <span>⚠️ Monitoring: 24/7</span>
-      </div>
-    </div>
   );
 };
 
