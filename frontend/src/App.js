@@ -10,7 +10,8 @@ import {
   Projects, 
   Blog, 
   Contact, 
-  Footer 
+  Footer,
+  LiveChatWidget
 } from "./components";
 
 function App() {
@@ -56,6 +57,7 @@ function App() {
                 <Contact />
               </main>
               <Footer />
+              <LiveChatWidget />
             </>
           } />
         </Routes>
