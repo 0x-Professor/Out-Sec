@@ -46,7 +46,7 @@ function App() {
           <Route path="/" element={
             <>
               <Header activeSection={activeSection} />
-              <main>
+              <main role="main">
                 <Hero />
                 <About />
                 <Services />
