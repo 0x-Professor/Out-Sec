@@ -1001,6 +1001,135 @@ export const Team = () => {
   );
 };
 
+// Enhanced Projects Component
+export const Projects = () => {
+  const [ref, isVisible] = useScrollReveal();
+  const [selectedCategory, setSelectedCategory] = useState('all');
+
+  const projects = [
+    {
+      title: "Enterprise Security Audit",
+      description: "Comprehensive security assessment for a Fortune 500 company",
+      category: "Security Audit",
+      technologies: ["Penetration Testing", "Vulnerability Assessment", "Security Analysis"],
+      image: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njl8MHwxfHNlYXJjaHwxfHxjeWJlcnNlY3VyaXR5fGVufDB8fHxibHVlfDE3NTI2NDk2MjB8MA&ixlib=rb-4.1.0&q=85",
+      status: "Completed"
+    },
+    {
+      title: "Blockchain Security Platform",
+      description: "Custom blockchain security solution for DeFi applications",
+      category: "Blockchain",
+      technologies: ["Solidity", "Smart Contracts", "Web3"],
+      image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njl8MHwxfHNlYXJjaHwzfHxibG9ja2NoYWlufGVufDB8fHxibHVlfDE3NTI2NDk2MjB8MA&ixlib=rb-4.1.0&q=85",
+      status: "In Progress"
+    },
+    {
+      title: "IoT Device Security",
+      description: "Securing connected devices in smart home ecosystems",
+      category: "IoT Security",
+      technologies: ["Hardware Security", "Firmware Analysis", "Network Security"],
+      image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njl8MHwxfHNlYXJjaHwxfHxpb3R8ZW58MHx8fGJsdWV8MTc1MjY0OTYyMHww&ixlib=rb-4.1.0&q=85",
+      status: "Completed"
+    }
+  ];
+
+  const categories = ['all', 'Security Audit', 'Blockchain', 'IoT Security'];
+
+  const filteredProjects = projects.filter(project => 
+    selectedCategory === 'all' || project.category === selectedCategory
+  );
+
+  return (
+    <section id="projects" className="py-24 bg-black relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/5 to-blue-900/5"></div>
+      
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="text-center mb-20" ref={ref}>
+          <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+            <span className="inline-block bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-full text-sm font-medium mb-4">
+              <SVGIcon type="security" className="w-4 h-4 inline mr-2" />
+              OUR PROJECTS
+            </span>
+            <h2 className="text-5xl md:text-6xl font-black text-white mb-6">
+              Latest <span className="gradient-text">Security</span> Projects
+            </h2>
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+              Showcase of our recent cybersecurity implementations and solutions
+            </p>
+          </div>
+        </div>
+
+        {/* Category Filter */}
+        <div className="flex flex-wrap gap-2 justify-center mb-16">
+          {categories.map((category) => (
+            <button
+              key={category}
+              onClick={() => setSelectedCategory(category)}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 hover-scale ${
+                selectedCategory === category
+                  ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white'
+                  : 'glass-card text-gray-300 hover:text-white'
+              }`}
+            >
+              {category === 'all' ? 'All Projects' : category}
+            </button>
+          ))}
+        </div>
+        
+        <div className="grid-12 gap-8">
+          {filteredProjects.map((project, index) => (
+            <div 
+              key={index} 
+              className={`col-12 md:col-6 lg:col-4 glass-card p-6 card-interactive transition-all duration-500 ${
+                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+              }`}
+              style={{ transitionDelay: `${index * 100}ms` }}
+            >
+              <div className="relative overflow-hidden rounded-2xl mb-6 group">
+                <img 
+                  src={project.image} 
+                  alt={project.title}
+                  className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-700"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                <div className="absolute top-4 right-4">
+                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                    project.status === 'Completed' ? 'bg-green-500 text-white' : 'bg-yellow-500 text-black'
+                  }`}>
+                    {project.status}
+                  </span>
+                </div>
+              </div>
+              
+              <div className="mb-4">
+                <span className="bg-blue-500/20 text-blue-300 px-3 py-1 rounded-full text-sm">
+                  {project.category}
+                </span>
+              </div>
+              
+              <h3 className="text-xl font-bold text-white mb-3">{project.title}</h3>
+              <p className="text-gray-300 mb-4 leading-relaxed">{project.description}</p>
+              
+              <div className="flex flex-wrap gap-2 mb-4">
+                {project.technologies.map((tech, techIndex) => (
+                  <span key={techIndex} className="bg-purple-600/20 text-purple-300 px-2 py-1 rounded text-xs">
+                    {tech}
+                  </span>
+                ))}
+              </div>
+              
+              <button className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 rounded-xl font-semibold hover:from-blue-600 hover:to-purple-700 transition-all duration-300 hover-scale">
+                View Project
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
 // Enhanced Blog Component
 export const Blog = () => {
   const [ref, isVisible] = useScrollReveal();
