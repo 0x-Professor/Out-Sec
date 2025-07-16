@@ -926,7 +926,8 @@ export const Team = () => {
       specialization: "Network Security / Malware Analysis / SOC",
       image: "https://images.unsplash.com/photo-1649180556628-9ba704115795?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njl8MHwxfHNlYXJjaHwzfHxkaWdpdGFsJTIwc2VjdXJpdHl8ZW58MHx8fGJsdWV8MTc1MjY0OTU5OHww&ixlib=rb-4.1.0&q=85",
       expertise: ["Network Security", "Malware Analysis", "SOC Operations"],
-      experience: "10+ years"
+      experience: "10+ years",
+      bio: "Visionary leader with over a decade of experience in cybersecurity. Specializes in advanced threat detection and security operations center management."
     },
     {
       name: "Ali Ejaz",
@@ -934,7 +935,8 @@ export const Team = () => {
       specialization: "Malware Developer / Analyst, Blockchain Expert / SEO Expert",
       image: "https://images.unsplash.com/photo-1589935447067-5531094415d1?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzB8MHwxfHNlYXJjaHwzfHxzZWN1cml0eXxlbnwwfHx8Ymx1ZXwxNzUyNjQ5NjIwfDA&ixlib=rb-4.1.0&q=85",
       expertise: ["Malware Development", "Blockchain", "SEO"],
-      experience: "8+ years"
+      experience: "8+ years",
+      bio: "Expert in malware analysis and blockchain security with strong technical leadership skills and digital marketing expertise."
     },
     {
       name: "Khizar Ali Shah",
@@ -942,7 +944,8 @@ export const Team = () => {
       specialization: "Hardware & IoT Security Expert / Blockchain Expert / Reverse Engineer",
       image: "https://images.pexels.com/photos/5475750/pexels-photo-5475750.jpeg",
       expertise: ["Hardware Security", "IoT Security", "Reverse Engineering"],
-      experience: "9+ years"
+      experience: "9+ years",
+      bio: "Pioneering expert in hardware security and IoT protection with deep knowledge of reverse engineering and secure system design."
     },
     {
       name: "Mazhar Saeed",
@@ -950,7 +953,8 @@ export const Team = () => {
       specialization: "Web Application Security Expert / Blockchain Developer",
       image: "https://images.unsplash.com/photo-1660644808226-a5b2e691fc51?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwzfHxjeWJlcnNlY3VyaXR5fGVufDB8fHxibHVlfDE3NTI2NDk1ODJ8MA&ixlib=rb-4.1.0&q=85",
       expertise: ["Web Security", "Blockchain Development", "System Architecture"],
-      experience: "7+ years"
+      experience: "7+ years",
+      bio: "Technical architect specializing in web application security and blockchain technology with extensive development experience."
     },
     {
       name: "Wahab Khan",
@@ -958,7 +962,8 @@ export const Team = () => {
       specialization: "Hardware Security Expert / Binary Exploitation Expert / Network Security Expert",
       image: "https://images.unsplash.com/photo-1660732106134-f3009a1e90ea?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njl8MHwxfHNlYXJjaHwxfHxkaWdpdGFsJTIwc2VjdXJpdHl8ZW58MHx8fGJsdWV8MTc1MjY0OTU5OHww&ixlib=rb-4.1.0&q=85",
       expertise: ["Hardware Security", "Binary Exploitation", "Network Security"],
-      experience: "8+ years"
+      experience: "8+ years",
+      bio: "Advanced security engineer with expertise in low-level system security, binary exploitation, and network defense strategies."
     },
     {
       name: "Talha Bilal",
@@ -966,7 +971,8 @@ export const Team = () => {
       specialization: "Hardware Security Expert / Firmware Analyst / Reverse Engineer",
       image: "https://images.unsplash.com/photo-1593407089396-93f0c7a575f0?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njl8MHwxfHNlYXJjaHwyfHxkaWdpdGFsJTIwc2VjdXJpdHl8ZW58MHx8fGJsdWV8MTc1MjY0OTU5OHww&ixlib=rb-4.1.0&q=85",
       expertise: ["Hardware Security", "Firmware Analysis", "Reverse Engineering"],
-      experience: "6+ years"
+      experience: "6+ years",
+      bio: "Financial operations expert with deep technical background in hardware security and firmware analysis."
     }
   ];
 
@@ -978,7 +984,8 @@ export const Team = () => {
         <div className="text-center mb-20" ref={ref}>
           <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             <span className="inline-block bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-full text-sm font-medium mb-4">
-              👥 OUR TEAM
+              <SVGIcon type="security" className="w-4 h-4 inline mr-2" />
+              OUR TEAM
             </span>
             <h2 className="text-5xl md:text-6xl font-black text-white mb-6">
               Meet Our <span className="gradient-text">Expert Team</span>
@@ -989,11 +996,11 @@ export const Team = () => {
           </div>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid-12 gap-8">
           {teamMembers.map((member, index) => (
             <div 
               key={index} 
-              className={`glass-card p-6 card-hover cursor-pointer transition-all duration-500 ${
+              className={`col-12 md:col-6 lg:col-4 glass-card p-6 card-interactive cursor-pointer transition-all duration-500 ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}
               style={{ transitionDelay: `${index * 100}ms` }}
@@ -1004,6 +1011,7 @@ export const Team = () => {
                   src={member.image} 
                   alt={member.name}
                   className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-700"
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
                 <div className="absolute bottom-4 left-4 right-4">
@@ -1042,6 +1050,7 @@ export const Team = () => {
               <button 
                 onClick={() => setSelectedMember(null)}
                 className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors"
+                aria-label="Close modal"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -1057,7 +1066,7 @@ export const Team = () => {
                 <div className="flex-1 text-center md:text-left">
                   <h3 className="text-2xl font-bold text-white mb-2">{selectedMember.name}</h3>
                   <p className="text-blue-400 font-medium mb-4">{selectedMember.role}</p>
-                  <p className="text-gray-300 mb-6">{selectedMember.specialization}</p>
+                  <p className="text-gray-300 mb-6">{selectedMember.bio}</p>
                   
                   <div className="flex flex-wrap gap-2 justify-center md:justify-start">
                     {selectedMember.expertise.map((skill, index) => (
@@ -1080,6 +1089,7 @@ export const Team = () => {
 export const Projects = () => {
   const [ref, isVisible] = useScrollReveal();
   const [activeCategory, setActiveCategory] = useState('all');
+  const [searchTerm, setSearchTerm] = useState('');
 
   const projects = [
     {
@@ -1088,7 +1098,8 @@ export const Projects = () => {
       tech: ["Python", "Machine Learning", "React", "Node.js", "TensorFlow"],
       category: "ai",
       github: "https://github.com/out-sec/threat-detection",
-      image: "https://images.unsplash.com/photo-1660644808219-1f103401bc85?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwxfHxjeWJlcnNlY3VyaXR5fGVufDB8fHxibHVlfDE3NTI2NDk1ODJ8MA&ixlib=rb-4.1.0&q=85"
+      image: "https://images.unsplash.com/photo-1660644808219-1f103401bc85?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwxfHxjeWJlcnNlY3VyaXR5fGVufDB8fHxibHVlfDE3NTI2NDk1ODJ8MA&ixlib=rb-4.1.0&q=85",
+      status: "Active"
     },
     {
       title: "Blockchain Security Framework",
@@ -1096,7 +1107,8 @@ export const Projects = () => {
       tech: ["Solidity", "Web3", "JavaScript", "Security Tools", "Hardhat"],
       category: "blockchain",
       github: "https://github.com/out-sec/blockchain-security",
-      image: "https://images.unsplash.com/photo-1593407089396-93f0c7a575f0?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njl8MHwxfHNlYXJjaHwyfHxkaWdpdGFsJTIwc2VjdXJpdHl8ZW58MHx8fGJsdWV8MTc1MjY0OTU5OHww&ixlib=rb-4.1.0&q=85"
+      image: "https://images.unsplash.com/photo-1593407089396-93f0c7a575f0?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njl8MHwxfHNlYXJjaHwyfHxkaWdpdGFsJTIwc2VjdXJpdHl8ZW58MHx8fGJsdWV8MTc1MjY0OTU5OHww&ixlib=rb-4.1.0&q=85",
+      status: "Active"
     },
     {
       title: "IoT Security Suite",
@@ -1104,7 +1116,8 @@ export const Projects = () => {
       tech: ["C++", "Python", "IoT Protocols", "Encryption", "MQTT"],
       category: "iot",
       github: "https://github.com/out-sec/iot-security",
-      image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1NzZ8MHwxfHNlYXJjaHwyfHxuZXR3b3JrJTIwc2VjdXJpdHl8ZW58MHx8fGJsdWV8MTc1MjY0OTU4OXww&ixlib=rb-4.1.0&q=85"
+      image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1NzZ8MHwxfHNlYXJjaHwyfHxuZXR3b3JrJTIwc2VjdXJpdHl8ZW58MHx8fGJsdWV8MTc1MjY0OTU4OXww&ixlib=rb-4.1.0&q=85",
+      status: "Active"
     },
     {
       title: "Penetration Testing Toolkit",
@@ -1112,23 +1125,17 @@ export const Projects = () => {
       tech: ["Python", "Bash", "Security Tools", "Automation", "Nmap"],
       category: "security",
       github: "https://github.com/out-sec/pentest-toolkit",
-      image: "https://images.unsplash.com/photo-1567619363836-e5fd63f69b20?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1NzZ8MHwxfHNlYXJjaHwyfHxoYWNraW5nfGVufDB8fHxibHVlfDE3NTI1NjA1NTN8MA&ixlib=rb-4.1.0&q=85"
+      image: "https://images.unsplash.com/photo-1567619363836-e5fd63f69b20?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1NzZ8MHwxfHNlYXJjaHwyfHxoYWNraW5nfGVufDB8fHxibHVlfDE3NTI1NjA1NTN8MA&ixlib=rb-4.1.0&q=85",
+      status: "Active"
     },
     {
-      title: "Malware Analysis Platform",
-      description: "Advanced malware analysis and reverse engineering platform with dynamic analysis and sandboxing capabilities",
-      tech: ["Python", "Assembly", "Reverse Engineering", "Virtualization", "YARA"],
-      category: "security",
-      github: "https://github.com/out-sec/malware-analysis",
-      image: "https://images.unsplash.com/photo-1590494165264-1ebe3602eb80?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwyfHxjeWJlcnNlY3VyaXR5fGVufDB8fHxibHVlfDE3NTI2NDk1ODJ8MA&ixlib=rb-4.1.0&q=85"
-    },
-    {
-      title: "Cryptography Library",
-      description: "High-performance cryptography library with modern encryption algorithms and quantum-resistant protocols",
-      tech: ["C++", "Python", "Cryptography", "Performance", "OpenSSL"],
-      category: "crypto",
-      github: "https://github.com/out-sec/crypto-lib",
-      image: "https://images.unsplash.com/photo-1660732106134-f3009a1e90ea?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njl8MHwxfHNlYXJjaHwxfHxkaWdpdGFsJTIwc2VjdXJpdHl8ZW58MHx8fGJsdWV8MTc1MjY0OTU5OHww&ixlib=rb-4.1.0&q=85"
+      title: "Cloud Security Platform",
+      description: "Multi-cloud security monitoring and compliance platform with automated threat response",
+      tech: ["Python", "AWS", "Azure", "Docker", "Kubernetes"],
+      category: "cloud",
+      github: "https://github.com/out-sec/cloud-security",
+      image: "https://images.unsplash.com/photo-1597733336794-12d05021d510?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1NzZ8MHwxfHNlYXJjaHwxfHxuZXR3b3JrJTIwc2VjdXJpdHl8ZW58MHx8fGJsdWV8MTc1MjY0OTU4OXww&ixlib=rb-4.1.0&q=85",
+      status: "Active"
     }
   ];
 
@@ -1138,22 +1145,29 @@ export const Projects = () => {
     { id: 'blockchain', label: 'Blockchain', count: projects.filter(p => p.category === 'blockchain').length },
     { id: 'iot', label: 'IoT Security', count: projects.filter(p => p.category === 'iot').length },
     { id: 'security', label: 'Security Tools', count: projects.filter(p => p.category === 'security').length },
-    { id: 'crypto', label: 'Cryptography', count: projects.filter(p => p.category === 'crypto').length }
+    { id: 'cloud', label: 'Cloud Security', count: projects.filter(p => p.category === 'cloud').length }
   ];
 
-  const filteredProjects = activeCategory === 'all' 
-    ? projects 
-    : projects.filter(project => project.category === activeCategory);
+  const filteredProjects = projects.filter(project => {
+    const matchesCategory = activeCategory === 'all' || project.category === activeCategory;
+    const matchesSearch = searchTerm === '' || 
+      project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      project.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      project.tech.some(tech => tech.toLowerCase().includes(searchTerm.toLowerCase()));
+    
+    return matchesCategory && matchesSearch;
+  });
 
   return (
-    <section id="projects" className="py-24 gradient-bg-1 relative overflow-hidden">
+    <section id="projects" className="py-24 gradient-bg-animated relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-blue-900/10 to-purple-900/10"></div>
       
       <div className="container mx-auto px-6 relative z-10">
         <div className="text-center mb-16" ref={ref}>
           <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             <span className="inline-block bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-full text-sm font-medium mb-4">
-              🚀 OUR PROJECTS
+              <SVGIcon type="security" className="w-4 h-4 inline mr-2" />
+              OUR PROJECTS
             </span>
             <h2 className="text-5xl md:text-6xl font-black text-white mb-6">
               Innovation in <span className="gradient-text">Cybersecurity</span>
@@ -1163,29 +1177,42 @@ export const Projects = () => {
             </p>
           </div>
         </div>
-        
-        {/* Category Filter */}
-        <div className="flex flex-wrap justify-center gap-4 mb-16">
-          {categories.map((category) => (
-            <button
-              key={category.id}
-              onClick={() => setActiveCategory(category.id)}
-              className={`px-6 py-3 rounded-full font-medium transition-all duration-300 hover-lift ${
-                activeCategory === category.id
-                  ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white'
-                  : 'glass-card text-gray-300 hover:text-white'
-              }`}
-            >
-              {category.label} ({category.count})
-            </button>
-          ))}
+
+        {/* Search and Filter */}
+        <div className="flex flex-col md:flex-row gap-4 items-center justify-center mb-16">
+          <div className="relative max-w-md">
+            <input
+              type="text"
+              placeholder="Search projects..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 pl-12 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:bg-white/20 transition-all duration-300"
+            />
+            <SVGIcon type="penetration" className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+          </div>
+          
+          <div className="flex flex-wrap gap-2">
+            {categories.map((category) => (
+              <button
+                key={category.id}
+                onClick={() => setActiveCategory(category.id)}
+                className={`px-4 py-2 rounded-full font-medium transition-all duration-300 hover-scale ${
+                  activeCategory === category.id
+                    ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white'
+                    : 'glass-card text-gray-300 hover:text-white'
+                }`}
+              >
+                {category.label} ({category.count})
+              </button>
+            ))}
+          </div>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid-12 gap-8">
           {filteredProjects.map((project, index) => (
             <div 
               key={index} 
-              className={`glass-card p-6 card-hover transition-all duration-500 ${
+              className={`col-12 md:col-6 lg:col-4 glass-card p-6 card-interactive transition-all duration-500 ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}
               style={{ transitionDelay: `${index * 100}ms` }}
@@ -1195,9 +1222,15 @@ export const Projects = () => {
                   src={project.image} 
                   alt={project.title}
                   className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-700"
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
                 <div className="absolute top-4 right-4">
+                  <span className="bg-green-500 text-white px-3 py-1 rounded-full text-xs font-medium">
+                    {project.status}
+                  </span>
+                </div>
+                <div className="absolute top-4 left-4">
                   <span className="bg-white/10 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-medium">
                     {categories.find(cat => cat.id === project.category)?.label || 'General'}
                   </span>
@@ -1225,11 +1258,11 @@ export const Projects = () => {
                   href={project.github} 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 px-4 rounded-xl font-semibold text-center hover:from-blue-600 hover:to-purple-700 transition-all duration-300 hover-lift"
+                  className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 px-4 rounded-xl font-semibold text-center hover:from-blue-600 hover:to-purple-700 transition-all duration-300 hover-scale"
                 >
                   View Code
                 </a>
-                <button className="bg-white/10 hover:bg-white/20 text-white px-4 py-3 rounded-xl transition-all duration-300 hover-lift">
+                <button className="bg-white/10 hover:bg-white/20 text-white px-4 py-3 rounded-xl transition-all duration-300 hover-scale">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
                   </svg>
@@ -1238,6 +1271,14 @@ export const Projects = () => {
             </div>
           ))}
         </div>
+
+        {filteredProjects.length === 0 && (
+          <div className="text-center py-12">
+            <div className="text-6xl mb-4">🔍</div>
+            <h3 className="text-2xl font-bold text-white mb-2">No projects found</h3>
+            <p className="text-gray-400">Try adjusting your search or filter criteria</p>
+          </div>
+        )}
       </div>
     </section>
   );
