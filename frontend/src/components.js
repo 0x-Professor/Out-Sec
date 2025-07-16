@@ -596,10 +596,19 @@ export const Hero = () => {
   );
 };
 
-// Enhanced About Component
+// Enhanced About Component with Timeline
 export const About = () => {
   const [ref, isVisible] = useScrollReveal();
-  const [stats, setStats] = useState({ audits: 0, monitoring: 0, clients: 0 });
+  const [stats, setStats] = useState({ audits: 0, monitoring: 0, clients: 0, threats: 0 });
+  const [activeTimelineItem, setActiveTimelineItem] = useState(0);
+
+  const timeline = [
+    { year: '2020', title: 'Foundation', description: 'Out-Sec was founded with a vision to revolutionize cybersecurity' },
+    { year: '2021', title: 'First Major Client', description: 'Secured first enterprise client, protecting 10,000+ devices' },
+    { year: '2022', title: 'Team Expansion', description: 'Grew team to 13 cybersecurity experts across various domains' },
+    { year: '2023', title: 'AI Integration', description: 'Launched AI-powered threat detection and response systems' },
+    { year: '2024', title: 'Global Reach', description: 'Expanded operations globally, serving 150+ clients worldwide' }
+  ];
 
   useEffect(() => {
     if (isVisible) {
@@ -607,7 +616,7 @@ export const About = () => {
       const steps = 60;
       const increment = duration / steps;
       
-      const targets = { audits: 500, monitoring: 24, clients: 150 };
+      const targets = { audits: 500, monitoring: 24, clients: 150, threats: 1247 };
       
       let step = 0;
       const timer = setInterval(() => {
@@ -617,7 +626,8 @@ export const About = () => {
         setStats({
           audits: Math.floor(targets.audits * progress),
           monitoring: Math.floor(targets.monitoring * progress),
-          clients: Math.floor(targets.clients * progress)
+          clients: Math.floor(targets.clients * progress),
+          threats: Math.floor(targets.threats * progress)
         });
         
         if (step >= steps) clearInterval(timer);
@@ -627,16 +637,26 @@ export const About = () => {
     }
   }, [isVisible]);
 
+  useEffect(() => {
+    if (isVisible) {
+      const interval = setInterval(() => {
+        setActiveTimelineItem((prev) => (prev + 1) % timeline.length);
+      }, 3000);
+      return () => clearInterval(interval);
+    }
+  }, [isVisible, timeline.length]);
+
   return (
     <section id="about" className="py-24 bg-black relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-blue-900/5 to-purple-900/5"></div>
       
       <div className="container mx-auto px-6 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}`} ref={ref}>
+        <div className="grid-12 gap-16 items-center">
+          <div className={`col-12 lg:col-6 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}`} ref={ref}>
             <div className="mb-8">
               <span className="inline-block bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-full text-sm font-medium mb-4">
-                🏢 ABOUT OUT-SEC
+                <SVGIcon type="security" className="w-4 h-4 inline mr-2" />
+                ABOUT OUT-SEC
               </span>
               <h2 className="text-5xl md:text-6xl font-black text-white mb-6 leading-tight">
                 Securing Systems with<br />
@@ -657,51 +677,52 @@ export const About = () => {
               </p>
             </div>
             
-            <div className="grid grid-cols-3 gap-6 mt-12">
-              <div className="glass-card p-6 text-center hover-lift">
+            <div className="grid-12 gap-4 mt-12">
+              <div className="col-3 glass-card p-6 text-center card-interactive">
                 <h3 className="text-3xl font-bold gradient-text mb-2">{stats.audits}+</h3>
                 <p className="text-gray-400 text-sm">Security Audits</p>
               </div>
-              <div className="glass-card p-6 text-center hover-lift">
+              <div className="col-3 glass-card p-6 text-center card-interactive">
                 <h3 className="text-3xl font-bold gradient-text mb-2">{stats.monitoring}/7</h3>
                 <p className="text-gray-400 text-sm">Threat Monitoring</p>
               </div>
-              <div className="glass-card p-6 text-center hover-lift">
+              <div className="col-3 glass-card p-6 text-center card-interactive">
                 <h3 className="text-3xl font-bold gradient-text mb-2">{stats.clients}+</h3>
                 <p className="text-gray-400 text-sm">Clients Protected</p>
+              </div>
+              <div className="col-3 glass-card p-6 text-center card-interactive">
+                <h3 className="text-3xl font-bold gradient-text mb-2">{stats.threats}</h3>
+                <p className="text-gray-400 text-sm">Threats Blocked</p>
               </div>
             </div>
           </div>
           
-          <div className={`transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'}`}>
-            <div className="relative">
-              <div className="glass-card p-8 hover-lift">
-                <h3 className="text-2xl font-bold text-white mb-8">
-                  Strengthening Security with<br />
-                  <span className="gradient-text">Sophisticated Strategies</span>
-                </h3>
-                
-                <div className="relative overflow-hidden rounded-2xl mb-8">
-                  <img 
-                    src="https://images.unsplash.com/photo-1597733336794-12d05021d510?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1NzZ8MHwxfHNlYXJjaHwxfHxuZXR3b3JrJTIwc2VjdXJpdHl8ZW58MHx8fGJsdWV8MTc1MjY0OTU4OXww&ixlib=rb-4.1.0&q=85" 
-                    alt="Cybersecurity Network" 
-                    className="w-full h-64 object-cover hover:scale-105 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                </div>
-                
-                <div className="flex flex-wrap gap-3">
-                  {['Network Security', 'Malware Analysis', 'Penetration Testing', 'Hardware Security', 'Cryptography', 'Threat Hunting'].map((skill, index) => (
-                    <span key={index} className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-full text-sm font-medium hover-lift">
-                      {skill}
-                    </span>
+          <div className={`col-12 lg:col-6 transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'}`}>
+            <div className="space-y-8">
+              <ThreatMap />
+              
+              {/* Timeline */}
+              <div className="glass-card p-6 card-interactive">
+                <h3 className="text-2xl font-bold text-white mb-6">Our Journey</h3>
+                <div className="space-y-4">
+                  {timeline.map((item, index) => (
+                    <div 
+                      key={index}
+                      className={`flex items-start space-x-4 p-4 rounded-lg transition-all duration-300 ${
+                        activeTimelineItem === index ? 'bg-blue-600/20 border-l-4 border-blue-500' : 'bg-transparent'
+                      }`}
+                    >
+                      <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                        <span className="text-white font-bold text-sm">{item.year}</span>
+                      </div>
+                      <div>
+                        <h4 className="text-white font-semibold mb-1">{item.title}</h4>
+                        <p className="text-gray-400 text-sm">{item.description}</p>
+                      </div>
+                    </div>
                   ))}
                 </div>
               </div>
-              
-              {/* Floating decorative elements */}
-              <div className="absolute -top-4 -right-4 w-24 h-24 bg-blue-500/10 rounded-full blur-xl floating"></div>
-              <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-purple-500/10 rounded-full blur-xl floating-delayed"></div>
             </div>
           </div>
         </div>
@@ -710,65 +731,95 @@ export const About = () => {
   );
 };
 
-// Enhanced Services Component
+// Enhanced Services Component with 8 Services
 export const Services = () => {
   const [ref, isVisible] = useScrollReveal();
   const [activeService, setActiveService] = useState(0);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const services = [
     {
       title: "Cryptography Integration",
       description: "Advanced encryption solutions for IoT, websites, systems, and networks with quantum-resistant algorithms",
-      icon: "🔐",
-      features: ["AES-256 Encryption", "RSA Key Management", "Quantum-Safe Protocols"],
+      icon: "crypto",
+      features: ["AES-256 Encryption", "RSA Key Management", "Quantum-Safe Protocols", "Hash Functions"],
+      technologies: ["OpenSSL", "Libsodium", "Post-Quantum Crypto"],
       image: "https://images.unsplash.com/photo-1660732106134-f3009a1e90ea?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njl8MHwxfHNlYXJjaHwxfHxkaWdpdGFsJTIwc2VjdXJpdHl8ZW58MHx8fGJsdWV8MTc1MjY0OTU5OHww&ixlib=rb-4.1.0&q=85"
     },
     {
       title: "Malware Analysis & Development",
       description: "Expert analysis and development of security-focused malware solutions with AI-powered detection",
-      icon: "🛡️",
-      features: ["Dynamic Analysis", "Behavioral Detection", "Signature Generation"],
+      icon: "malware",
+      features: ["Dynamic Analysis", "Behavioral Detection", "Signature Generation", "Sandbox Testing"],
+      technologies: ["YARA", "Volatility", "Cuckoo Sandbox"],
       image: "https://images.unsplash.com/photo-1590494165264-1ebe3602eb80?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwyfHxjeWJlcnNlY3VyaXR5fGVufDB8fHxibHVlfDE3NTI2NDk1ODJ8MA&ixlib=rb-4.1.0&q=85"
     },
     {
       title: "Blockchain Development",
       description: "Secure blockchain solutions and smart contract development with DeFi integration",
-      icon: "⛓️",
-      features: ["Smart Contracts", "DeFi Solutions", "NFT Platforms"],
+      icon: "blockchain",
+      features: ["Smart Contracts", "DeFi Solutions", "NFT Platforms", "Consensus Mechanisms"],
+      technologies: ["Solidity", "Web3.js", "Ethereum", "Hyperledger"],
       image: "https://images.unsplash.com/photo-1593407089396-93f0c7a575f0?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njl8MHwxfHNlYXJjaHwyfHxkaWdpdGFsJTIwc2VjdXJpdHl8ZW58MHx8fGJsdWV8MTc1MjY0OTU5OHww&ixlib=rb-4.1.0&q=85"
     },
     {
       title: "Penetration Testing",
       description: "Comprehensive security testing for networks, systems, and applications with automated tools",
-      icon: "🔍",
-      features: ["Network Scanning", "Web App Testing", "Social Engineering"],
+      icon: "penetration",
+      features: ["Network Scanning", "Web App Testing", "Social Engineering", "Vulnerability Assessment"],
+      technologies: ["Metasploit", "Burp Suite", "Nmap", "Wireshark"],
       image: "https://images.unsplash.com/photo-1567619363836-e5fd63f69b20?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1NzZ8MHwxfHNlYXJjaHwyfHxoYWNraW5nfGVufDB8fHxibHVlfDE3NTI1NjA1NTN8MA&ixlib=rb-4.1.0&q=85"
     },
     {
       title: "IoT Security",
       description: "Specialized security solutions for Internet of Things devices and edge computing networks",
-      icon: "📡",
-      features: ["Device Authentication", "Edge Security", "Protocol Analysis"],
+      icon: "iot",
+      features: ["Device Authentication", "Edge Security", "Protocol Analysis", "Firmware Security"],
+      technologies: ["MQTT", "CoAP", "LoRaWAN", "Zigbee"],
       image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1NzZ8MHwxfHNlYXJjaHwyfHxuZXR3b3JrJTIwc2VjdXJpdHl8ZW58MHx8fGJsdWV8MTc1MjY0OTU4OXww&ixlib=rb-4.1.0&q=85"
     },
     {
       title: "Security Operations Center",
       description: "24/7 monitoring and incident response for comprehensive security coverage with AI analytics",
-      icon: "🏢",
-      features: ["24/7 Monitoring", "Incident Response", "Threat Intelligence"],
+      icon: "soc",
+      features: ["24/7 Monitoring", "Incident Response", "Threat Intelligence", "SIEM Integration"],
+      technologies: ["Splunk", "ELK Stack", "SOAR", "MITRE ATT&CK"],
       image: "https://images.unsplash.com/photo-1528312635006-8ea0bc49ec63?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzB8MHwxfHNlYXJjaHwxfHxzZWN1cml0eXxlbnwwfHx8Ymx1ZXwxNzUyNjQ5NjIwfDA&ixlib=rb-4.1.0&q=85"
+    },
+    {
+      title: "Cloud Security",
+      description: "Comprehensive cloud security solutions for AWS, Azure, and Google Cloud platforms",
+      icon: "cloud",
+      features: ["Cloud Assessment", "Identity Management", "Data Protection", "Compliance Audit"],
+      technologies: ["AWS Security", "Azure Security", "GCP Security", "Kubernetes"],
+      image: "https://images.unsplash.com/photo-1597733336794-12d05021d510?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1NzZ8MHwxfHNlYXJjaHwxfHxuZXR3b3JrJTIwc2VjdXJpdHl8ZW58MHx8fGJsdWV8MTc1MjY0OTU4OXww&ixlib=rb-4.1.0&q=85"
+    },
+    {
+      title: "Network Security",
+      description: "Advanced network security solutions including firewalls, intrusion detection, and monitoring",
+      icon: "network",
+      features: ["Firewall Management", "IDS/IPS", "VPN Solutions", "Network Monitoring"],
+      technologies: ["pfSense", "Suricata", "Wireshark", "Nagios"],
+      image: "https://images.unsplash.com/photo-1649180556628-9ba704115795?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njl8MHwxfHNlYXJjaHwzfHxkaWdpdGFsJTIwc2VjdXJpdHl8ZW58MHx8fGJsdWV8MTc1MjY0OTU5OHww&ixlib=rb-4.1.0&q=85"
     }
   ];
 
+  const filteredServices = services.filter(service =>
+    service.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    service.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    service.features.some(feature => feature.toLowerCase().includes(searchTerm.toLowerCase()))
+  );
+
   return (
-    <section id="services" className="py-24 gradient-bg-1 relative overflow-hidden">
+    <section id="services" className="py-24 gradient-bg-animated relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-blue-900/10 to-purple-900/10"></div>
       
       <div className="container mx-auto px-6 relative z-10">
         <div className="text-center mb-20" ref={ref}>
           <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             <span className="inline-block bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-full text-sm font-medium mb-4">
-              🚀 OUR SERVICES
+              <SVGIcon type="security" className="w-4 h-4 inline mr-2" />
+              OUR SERVICES
             </span>
             <h2 className="text-5xl md:text-6xl font-black text-white mb-6">
               Comprehensive <span className="gradient-text">Cybersecurity</span> Solutions
@@ -778,47 +829,86 @@ export const Services = () => {
             </p>
           </div>
         </div>
+
+        {/* Search Bar */}
+        <div className="max-w-md mx-auto mb-16">
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="Search services..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 pl-12 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:bg-white/20 transition-all duration-300"
+            />
+            <SVGIcon type="penetration" className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+          </div>
+        </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {services.map((service, index) => (
+        <div className="grid-12 gap-8">
+          {filteredServices.map((service, index) => (
             <div 
               key={index} 
-              className={`glass-card p-8 card-hover transition-all duration-500 ${
+              className={`col-12 md:col-6 lg:col-4 glass-card p-8 card-interactive transition-all duration-500 ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}
               style={{ transitionDelay: `${index * 100}ms` }}
               onMouseEnter={() => setActiveService(index)}
             >
-              <div className="relative overflow-hidden rounded-2xl mb-6">
+              <div className="relative overflow-hidden rounded-2xl mb-6 group">
                 <img 
                   src={service.image} 
                   alt={service.title}
-                  className="w-full h-48 object-cover hover:scale-110 transition-transform duration-700"
+                  className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-700"
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
                 <div className="absolute bottom-4 left-4">
-                  <span className="text-5xl">{service.icon}</span>
+                  <SVGIcon type={service.icon} className="w-8 h-8 text-white" />
                 </div>
               </div>
               
               <h3 className="text-2xl font-bold text-white mb-4">{service.title}</h3>
               <p className="text-gray-300 mb-6 leading-relaxed">{service.description}</p>
               
-              <div className="space-y-2 mb-6">
-                {service.features.map((feature, featureIndex) => (
-                  <div key={featureIndex} className="flex items-center text-sm">
-                    <div className="w-2 h-2 bg-blue-500 rounded-full mr-3"></div>
-                    <span className="text-gray-300">{feature}</span>
+              <div className="space-y-4 mb-6">
+                <div>
+                  <h4 className="text-sm font-semibold text-blue-400 mb-2">Key Features:</h4>
+                  <div className="space-y-2">
+                    {service.features.map((feature, featureIndex) => (
+                      <div key={featureIndex} className="flex items-center text-sm">
+                        <div className="w-2 h-2 bg-blue-500 rounded-full mr-3"></div>
+                        <span className="text-gray-300">{feature}</span>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                </div>
+                
+                <div>
+                  <h4 className="text-sm font-semibold text-purple-400 mb-2">Technologies:</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {service.technologies.map((tech, techIndex) => (
+                      <span key={techIndex} className="bg-purple-600/20 text-purple-300 px-2 py-1 rounded text-xs">
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </div>
               </div>
               
-              <button className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 rounded-xl font-semibold hover:from-blue-600 hover:to-purple-700 transition-all duration-300 hover-lift">
+              <button className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 rounded-xl font-semibold hover:from-blue-600 hover:to-purple-700 transition-all duration-300 hover-scale">
                 Learn More
               </button>
             </div>
           ))}
         </div>
+
+        {filteredServices.length === 0 && (
+          <div className="text-center py-12">
+            <div className="text-6xl mb-4">🔍</div>
+            <h3 className="text-2xl font-bold text-white mb-2">No services found</h3>
+            <p className="text-gray-400">Try adjusting your search terms</p>
+          </div>
+        )}
       </div>
     </section>
   );
