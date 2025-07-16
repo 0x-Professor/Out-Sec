@@ -363,69 +363,120 @@ export const Header = ({ activeSection }) => {
 // Enhanced Hero Component
 export const Hero = () => {
   const [ref, isVisible] = useScrollReveal();
-  const [currentKeyword, setCurrentKeyword] = useState(0);
-  const keywords = ["Secure", "Protect", "Defend", "Fortify"];
+  const typewriterWords = ["Secure", "Protect", "Defend", "Fortify", "Shield"];
 
-  useEffect(() => {
-    if (isVisible) {
-      const interval = setInterval(() => {
-        setCurrentKeyword((prev) => (prev + 1) % keywords.length);
-      }, 2000);
-      return () => clearInterval(interval);
+  const handleExploreWork = () => {
+    const element = document.getElementById('projects');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [isVisible, keywords.length]);
+  };
+
+  const handleWatchDemo = () => {
+    // Create a modal or video player for demo
+    const modal = document.createElement('div');
+    modal.className = 'fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50';
+    modal.innerHTML = `
+      <div class="glass-card max-w-4xl w-full mx-4 p-8 relative">
+        <button onclick="this.parentElement.parentElement.remove()" class="absolute top-4 right-4 text-white hover:text-red-400 transition-colors">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+        <h3 class="text-2xl font-bold text-white mb-4">🎬 Out-Sec Demo</h3>
+        <div class="bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl p-8 text-center">
+          <div class="text-6xl mb-4">🚀</div>
+          <p class="text-white text-lg mb-4">Interactive demo coming soon!</p>
+          <p class="text-gray-300">Experience our cutting-edge cybersecurity solutions in action.</p>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+  };
 
   return (
-    <section id="home" className="min-h-screen relative overflow-hidden gradient-bg-animated" role="main">
-      <CyberOrb />
+    <section id="home" className="min-h-screen relative overflow-hidden" style={{
+      background: 'linear-gradient(135deg, #000000 0%, #1a1a2e 25%, #16213e 50%, #1E3A8A 75%, #9333EA 100%)',
+      backgroundSize: '400% 400%',
+      animation: 'gradient-shift 15s ease infinite'
+    }} role="main">
+      <ParticleSystem />
       
-      {/* Floating Elements */}
+      {/* Modern Geometric Shapes */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-10 w-20 h-20 bg-blue-500/10 rounded-full blur-xl floating"></div>
-        <div className="absolute top-40 right-20 w-32 h-32 bg-purple-500/10 rounded-full blur-xl floating-delayed"></div>
-        <div className="absolute bottom-20 left-1/4 w-24 h-24 bg-cyan-500/10 rounded-full blur-xl floating"></div>
-        <div className="absolute bottom-40 right-1/3 w-28 h-28 bg-emerald-500/10 rounded-full blur-xl floating-slow"></div>
+        <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-br from-blue-500/20 to-purple-600/20 rounded-full blur-xl animate-pulse"></div>
+        <div className="absolute top-40 right-20 w-48 h-48 bg-gradient-to-br from-purple-500/20 to-cyan-400/20 rounded-full blur-xl animate-pulse animation-delay-2000"></div>
+        <div className="absolute bottom-20 left-1/4 w-40 h-40 bg-gradient-to-br from-cyan-400/20 to-blue-500/20 rounded-full blur-xl animate-pulse animation-delay-4000"></div>
+        <div className="absolute bottom-40 right-1/3 w-36 h-36 bg-gradient-to-br from-emerald-500/20 to-purple-600/20 rounded-full blur-xl animate-pulse animation-delay-6000"></div>
       </div>
       
       <div className="relative z-10 flex items-center justify-center min-h-screen">
         <div className="container mx-auto px-6 text-center">
-          <div className="max-w-5xl mx-auto" ref={ref}>
-            <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-              <div className="mb-6">
-                <span className="inline-block bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-full text-sm font-medium mb-4 hover-scale">
-                  🛡️ BITWISE SECURITY
+          <div className="max-w-6xl mx-auto" ref={ref}>
+            <div className={`transition-all duration-1000 transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+              <div className="mb-8">
+                <span className="inline-block bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-full text-sm font-medium mb-6 hover:scale-105 transition-transform duration-300 shadow-lg">
+                  🛡️ OUT-SEC • ADVANCED CYBERSECURITY
                 </span>
               </div>
               
-              <h1 className="text-6xl md:text-8xl font-black text-white mb-8 leading-tight">
-                <span className="block">Securing the Future with</span>
+              <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white mb-8 leading-tight">
+                <span className="block mb-4">Securing the Future with</span>
                 <span className="block gradient-text">
-                  Next-Gen <span className="typewriter">{keywords[currentKeyword]}</span> Cybersecurity
+                  Next-Gen <TypewriterEffect words={typewriterWords} className="text-cyan-400" /> Solutions
                 </span>
               </h1>
               
-              <div className={`transition-all duration-1000 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-                <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed">
+              <div className={`transition-all duration-1000 delay-500 transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+                <p className="text-xl md:text-2xl lg:text-3xl text-gray-300 mb-12 max-w-5xl mx-auto leading-relaxed">
                   Out-Sec defends the digital world with cutting-edge strategies in cybersecurity, 
                   blockchain, and IoT. From deep analysis to secure development, we turn threats into 
                   fortified systems — <span className="gradient-text font-semibold">built by experts, driven by innovation.</span>
                 </p>
               </div>
               
-              <div className={`transition-all duration-1000 delay-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                  <button className="btn-primary text-lg px-8 py-4 hover-scale group">
-                    <span className="flex items-center">
+              <div className={`transition-all duration-1000 delay-1000 transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+                <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+                  <button 
+                    onClick={handleExploreWork}
+                    className="group relative bg-gradient-to-r from-blue-500 to-purple-600 text-white text-lg px-8 py-4 rounded-xl font-semibold hover:from-blue-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl overflow-hidden"
+                  >
+                    <span className="relative z-10 flex items-center">
+                      <SVGIcon type="work" className="w-5 h-5 mr-2" />
                       Explore Our Work
-                      <svg className="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-5 h-5 ml-2 transform group-hover:translate-x-2 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
                       </svg>
                     </span>
+                    <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                   </button>
                   
-                  <button className="btn-secondary text-lg px-8 py-4 hover-scale">
-                    Watch Demo
+                  <button 
+                    onClick={handleWatchDemo}
+                    className="group relative bg-transparent border-2 border-cyan-400 text-cyan-400 text-lg px-8 py-4 rounded-xl font-semibold hover:bg-cyan-400 hover:text-black transition-all duration-300 transform hover:scale-105 hover:shadow-2xl overflow-hidden"
+                  >
+                    <span className="relative z-10 flex items-center">
+                      <SVGIcon type="play" className="w-5 h-5 mr-2" />
+                      Watch Demo
+                      <div className="w-2 h-2 bg-red-500 rounded-full ml-2 animate-pulse"></div>
+                    </span>
+                    <div className="absolute inset-0 bg-cyan-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
                   </button>
+                </div>
+                
+                <div className="mt-8 flex justify-center space-x-8 text-gray-400">
+                  <div className="flex items-center space-x-2">
+                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                    <span className="text-sm">24/7 Monitoring</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
+                    <span className="text-sm">AI-Powered</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>
+                    <span className="text-sm">Quantum-Safe</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -435,9 +486,12 @@ export const Hero = () => {
       
       {/* Scroll Indicator */}
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white/60 animate-bounce">
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-        </svg>
+        <div className="flex flex-col items-center space-y-2">
+          <span className="text-sm">Scroll to explore</span>
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+          </svg>
+        </div>
       </div>
     </section>
   );
