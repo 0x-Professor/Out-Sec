@@ -522,150 +522,327 @@ export const Services = () => {
   );
 };
 
-// Team Component
+// Enhanced Team Component
 export const Team = () => {
+  const [ref, isVisible] = useScrollReveal();
+  const [selectedMember, setSelectedMember] = useState(null);
+
   const teamMembers = [
     {
       name: "Mohsin Mukhtiar Lashari",
-      role: "Founder",
+      role: "Founder & CEO",
       specialization: "Network Security / Malware Analysis / SOC",
-      image: "https://images.unsplash.com/photo-1649180556628-9ba704115795?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njl8MHwxfHNlYXJjaHwzfHxkaWdpdGFsJTIwc2VjdXJpdHl8ZW58MHx8fGJsdWV8MTc1MjY0OTU5OHww&ixlib=rb-4.1.0&q=85"
+      image: "https://images.unsplash.com/photo-1649180556628-9ba704115795?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njl8MHwxfHNlYXJjaHwzfHxkaWdpdGFsJTIwc2VjdXJpdHl8ZW58MHx8fGJsdWV8MTc1MjY0OTU5OHww&ixlib=rb-4.1.0&q=85",
+      expertise: ["Network Security", "Malware Analysis", "SOC Operations"],
+      experience: "10+ years"
     },
     {
       name: "Ali Ejaz",
       role: "CEO",
       specialization: "Malware Developer / Analyst, Blockchain Expert / SEO Expert",
-      image: "https://images.unsplash.com/photo-1589935447067-5531094415d1?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzB8MHwxfHNlYXJjaHwzfHxzZWN1cml0eXxlbnwwfHx8Ymx1ZXwxNzUyNjQ5NjIwfDA&ixlib=rb-4.1.0&q=85"
+      image: "https://images.unsplash.com/photo-1589935447067-5531094415d1?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzB8MHwxfHNlYXJjaHwzfHxzZWN1cml0eXxlbnwwfHx8Ymx1ZXwxNzUyNjQ5NjIwfDA&ixlib=rb-4.1.0&q=85",
+      expertise: ["Malware Development", "Blockchain", "SEO"],
+      experience: "8+ years"
     },
     {
       name: "Khizar Ali Shah",
       role: "Co-founder / COO",
       specialization: "Hardware & IoT Security Expert / Blockchain Expert / Reverse Engineer",
-      image: "https://images.pexels.com/photos/5475750/pexels-photo-5475750.jpeg"
+      image: "https://images.pexels.com/photos/5475750/pexels-photo-5475750.jpeg",
+      expertise: ["Hardware Security", "IoT Security", "Reverse Engineering"],
+      experience: "9+ years"
     },
     {
       name: "Mazhar Saeed",
       role: "Co-founder / CTO",
       specialization: "Web Application Security Expert / Blockchain Developer",
-      image: "https://images.unsplash.com/photo-1660644808226-a5b2e691fc51?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwzfHxjeWJlcnNlY3VyaXR5fGVufDB8fHxibHVlfDE3NTI2NDk1ODJ8MA&ixlib=rb-4.1.0&q=85"
+      image: "https://images.unsplash.com/photo-1660644808226-a5b2e691fc51?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwzfHxjeWJlcnNlY3VyaXR5fGVufDB8fHxibHVlfDE3NTI2NDk1ODJ8MA&ixlib=rb-4.1.0&q=85",
+      expertise: ["Web Security", "Blockchain Development", "System Architecture"],
+      experience: "7+ years"
     },
     {
       name: "Wahab Khan",
       role: "Co-founder / Lead Security Engineer",
       specialization: "Hardware Security Expert / Binary Exploitation Expert / Network Security Expert",
-      image: "https://images.unsplash.com/photo-1660732106134-f3009a1e90ea?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njl8MHwxfHNlYXJjaHwxfHxkaWdpdGFsJTIwc2VjdXJpdHl8ZW58MHx8fGJsdWV8MTc1MjY0OTU5OHww&ixlib=rb-4.1.0&q=85"
+      image: "https://images.unsplash.com/photo-1660732106134-f3009a1e90ea?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njl8MHwxfHNlYXJjaHwxfHxkaWdpdGFsJTIwc2VjdXJpdHl8ZW58MHx8fGJsdWV8MTc1MjY0OTU5OHww&ixlib=rb-4.1.0&q=85",
+      expertise: ["Hardware Security", "Binary Exploitation", "Network Security"],
+      experience: "8+ years"
     },
     {
       name: "Talha Bilal",
       role: "CFO",
       specialization: "Hardware Security Expert / Firmware Analyst / Reverse Engineer",
-      image: "https://images.unsplash.com/photo-1593407089396-93f0c7a575f0?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njl8MHwxfHNlYXJjaHwyfHxkaWdpdGFsJTIwc2VjdXJpdHl8ZW58MHx8fGJsdWV8MTc1MjY0OTU5OHww&ixlib=rb-4.1.0&q=85"
+      image: "https://images.unsplash.com/photo-1593407089396-93f0c7a575f0?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njl8MHwxfHNlYXJjaHwyfHxkaWdpdGFsJTIwc2VjdXJpdHl8ZW58MHx8fGJsdWV8MTc1MjY0OTU5OHww&ixlib=rb-4.1.0&q=85",
+      expertise: ["Hardware Security", "Firmware Analysis", "Reverse Engineering"],
+      experience: "6+ years"
     }
   ];
 
   return (
-    <section id="team" className="py-20 bg-gray-900">
-      <div className="container mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-white mb-4">Our Expert Team</h2>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-            Meet the cybersecurity experts driving innovation and securing the digital future
-          </p>
+    <section id="team" className="py-24 bg-black relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/5 to-blue-900/5"></div>
+      
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="text-center mb-20" ref={ref}>
+          <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+            <span className="inline-block bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-full text-sm font-medium mb-4">
+              👥 OUR TEAM
+            </span>
+            <h2 className="text-5xl md:text-6xl font-black text-white mb-6">
+              Meet Our <span className="gradient-text">Expert Team</span>
+            </h2>
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+              Cybersecurity professionals driving innovation and securing the digital future
+            </p>
+          </div>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {teamMembers.map((member, index) => (
-            <div key={index} className="bg-gray-800 rounded-xl p-6 hover:bg-gray-700 transition-all duration-300 transform hover:scale-105 shadow-lg">
-              <div 
-                className="w-full h-48 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg mb-6"
-                style={{
-                  backgroundImage: `url('${member.image}')`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center'
-                }}
-              ></div>
-              <h3 className="text-xl font-bold text-white mb-2">{member.name}</h3>
-              <p className="text-blue-400 font-medium mb-3">{member.role}</p>
-              <p className="text-gray-400 text-sm">{member.specialization}</p>
+            <div 
+              key={index} 
+              className={`glass-card p-6 card-hover cursor-pointer transition-all duration-500 ${
+                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+              }`}
+              style={{ transitionDelay: `${index * 100}ms` }}
+              onClick={() => setSelectedMember(member)}
+            >
+              <div className="relative overflow-hidden rounded-2xl mb-6 group">
+                <img 
+                  src={member.image} 
+                  alt={member.name}
+                  className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+                <div className="absolute bottom-4 left-4 right-4">
+                  <div className="bg-white/10 backdrop-blur-sm rounded-lg p-2">
+                    <p className="text-white font-medium text-sm">{member.experience}</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="text-center">
+                <h3 className="text-xl font-bold text-white mb-2">{member.name}</h3>
+                <p className="text-blue-400 font-medium mb-3">{member.role}</p>
+                <p className="text-gray-400 text-sm mb-4 line-clamp-2">{member.specialization}</p>
+                
+                <div className="flex flex-wrap gap-2 justify-center">
+                  {member.expertise.slice(0, 2).map((skill, skillIndex) => (
+                    <span key={skillIndex} className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-3 py-1 rounded-full text-xs">
+                      {skill}
+                    </span>
+                  ))}
+                  {member.expertise.length > 2 && (
+                    <span className="bg-gray-700 text-gray-300 px-3 py-1 rounded-full text-xs">
+                      +{member.expertise.length - 2} more
+                    </span>
+                  )}
+                </div>
+              </div>
             </div>
           ))}
         </div>
+        
+        {/* Team Member Modal */}
+        {selectedMember && (
+          <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+            <div className="glass-card max-w-2xl w-full p-8 relative">
+              <button 
+                onClick={() => setSelectedMember(null)}
+                className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+              </button>
+              
+              <div className="flex flex-col md:flex-row gap-6">
+                <img 
+                  src={selectedMember.image} 
+                  alt={selectedMember.name}
+                  className="w-32 h-32 rounded-2xl object-cover mx-auto md:mx-0"
+                />
+                <div className="flex-1 text-center md:text-left">
+                  <h3 className="text-2xl font-bold text-white mb-2">{selectedMember.name}</h3>
+                  <p className="text-blue-400 font-medium mb-4">{selectedMember.role}</p>
+                  <p className="text-gray-300 mb-6">{selectedMember.specialization}</p>
+                  
+                  <div className="flex flex-wrap gap-2 justify-center md:justify-start">
+                    {selectedMember.expertise.map((skill, index) => (
+                      <span key={index} className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-3 py-1 rounded-full text-sm">
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );
 };
 
-// Projects Component
+// Enhanced Projects Component
 export const Projects = () => {
+  const [ref, isVisible] = useScrollReveal();
+  const [activeCategory, setActiveCategory] = useState('all');
+
   const projects = [
     {
       title: "Advanced Threat Detection System",
-      description: "AI-powered threat detection and response system with real-time monitoring capabilities",
-      tech: ["Python", "Machine Learning", "React", "Node.js"],
-      github: "https://github.com/out-sec/threat-detection"
+      description: "AI-powered threat detection and response system with real-time monitoring capabilities and machine learning algorithms",
+      tech: ["Python", "Machine Learning", "React", "Node.js", "TensorFlow"],
+      category: "ai",
+      github: "https://github.com/out-sec/threat-detection",
+      image: "https://images.unsplash.com/photo-1660644808219-1f103401bc85?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwxfHxjeWJlcnNlY3VyaXR5fGVufDB8fHxibHVlfDE3NTI2NDk1ODJ8MA&ixlib=rb-4.1.0&q=85"
     },
     {
       title: "Blockchain Security Framework",
-      description: "Comprehensive security framework for blockchain applications and smart contracts",
-      tech: ["Solidity", "Web3", "JavaScript", "Security Tools"],
-      github: "https://github.com/out-sec/blockchain-security"
+      description: "Comprehensive security framework for blockchain applications and smart contracts with automated vulnerability detection",
+      tech: ["Solidity", "Web3", "JavaScript", "Security Tools", "Hardhat"],
+      category: "blockchain",
+      github: "https://github.com/out-sec/blockchain-security",
+      image: "https://images.unsplash.com/photo-1593407089396-93f0c7a575f0?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njl8MHwxfHNlYXJjaHwyfHxkaWdpdGFsJTIwc2VjdXJpdHl8ZW58MHx8fGJsdWV8MTc1MjY0OTU5OHww&ixlib=rb-4.1.0&q=85"
     },
     {
       title: "IoT Security Suite",
-      description: "Complete security solution for IoT devices and networks with encryption and monitoring",
-      tech: ["C++", "Python", "IoT Protocols", "Encryption"],
-      github: "https://github.com/out-sec/iot-security"
+      description: "Complete security solution for IoT devices and networks with encryption, device authentication, and monitoring",
+      tech: ["C++", "Python", "IoT Protocols", "Encryption", "MQTT"],
+      category: "iot",
+      github: "https://github.com/out-sec/iot-security",
+      image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1NzZ8MHwxfHNlYXJjaHwyfHxuZXR3b3JrJTIwc2VjdXJpdHl8ZW58MHx8fGJsdWV8MTc1MjY0OTU4OXww&ixlib=rb-4.1.0&q=85"
     },
     {
       title: "Penetration Testing Toolkit",
-      description: "Professional penetration testing tools and automated security assessment framework",
-      tech: ["Python", "Bash", "Security Tools", "Automation"],
-      github: "https://github.com/out-sec/pentest-toolkit"
+      description: "Professional penetration testing tools and automated security assessment framework with reporting capabilities",
+      tech: ["Python", "Bash", "Security Tools", "Automation", "Nmap"],
+      category: "security",
+      github: "https://github.com/out-sec/pentest-toolkit",
+      image: "https://images.unsplash.com/photo-1567619363836-e5fd63f69b20?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1NzZ8MHwxfHNlYXJjaHwyfHxoYWNraW5nfGVufDB8fHxibHVlfDE3NTI1NjA1NTN8MA&ixlib=rb-4.1.0&q=85"
     },
     {
       title: "Malware Analysis Platform",
-      description: "Advanced malware analysis and reverse engineering platform with dynamic analysis",
-      tech: ["Python", "Assembly", "Reverse Engineering", "Virtualization"],
-      github: "https://github.com/out-sec/malware-analysis"
+      description: "Advanced malware analysis and reverse engineering platform with dynamic analysis and sandboxing capabilities",
+      tech: ["Python", "Assembly", "Reverse Engineering", "Virtualization", "YARA"],
+      category: "security",
+      github: "https://github.com/out-sec/malware-analysis",
+      image: "https://images.unsplash.com/photo-1590494165264-1ebe3602eb80?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwyfHxjeWJlcnNlY3VyaXR5fGVufDB8fHxibHVlfDE3NTI2NDk1ODJ8MA&ixlib=rb-4.1.0&q=85"
     },
     {
       title: "Cryptography Library",
-      description: "High-performance cryptography library with modern encryption algorithms",
-      tech: ["C++", "Python", "Cryptography", "Performance"],
-      github: "https://github.com/out-sec/crypto-lib"
+      description: "High-performance cryptography library with modern encryption algorithms and quantum-resistant protocols",
+      tech: ["C++", "Python", "Cryptography", "Performance", "OpenSSL"],
+      category: "crypto",
+      github: "https://github.com/out-sec/crypto-lib",
+      image: "https://images.unsplash.com/photo-1660732106134-f3009a1e90ea?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njl8MHwxfHNlYXJjaHwxfHxkaWdpdGFsJTIwc2VjdXJpdHl8ZW58MHx8fGJsdWV8MTc1MjY0OTU5OHww&ixlib=rb-4.1.0&q=85"
     }
   ];
 
+  const categories = [
+    { id: 'all', label: 'All Projects', count: projects.length },
+    { id: 'ai', label: 'AI & ML', count: projects.filter(p => p.category === 'ai').length },
+    { id: 'blockchain', label: 'Blockchain', count: projects.filter(p => p.category === 'blockchain').length },
+    { id: 'iot', label: 'IoT Security', count: projects.filter(p => p.category === 'iot').length },
+    { id: 'security', label: 'Security Tools', count: projects.filter(p => p.category === 'security').length },
+    { id: 'crypto', label: 'Cryptography', count: projects.filter(p => p.category === 'crypto').length }
+  ];
+
+  const filteredProjects = activeCategory === 'all' 
+    ? projects 
+    : projects.filter(project => project.category === activeCategory);
+
   return (
-    <section id="projects" className="py-20 bg-black">
-      <div className="container mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-white mb-4">Our Projects</h2>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-            Innovative cybersecurity solutions and tools developed by our expert team
-          </p>
+    <section id="projects" className="py-24 gradient-bg-1 relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-900/10 to-purple-900/10"></div>
+      
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="text-center mb-16" ref={ref}>
+          <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+            <span className="inline-block bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-full text-sm font-medium mb-4">
+              🚀 OUR PROJECTS
+            </span>
+            <h2 className="text-5xl md:text-6xl font-black text-white mb-6">
+              Innovation in <span className="gradient-text">Cybersecurity</span>
+            </h2>
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+              Cutting-edge solutions and tools developed by our expert team
+            </p>
+          </div>
+        </div>
+        
+        {/* Category Filter */}
+        <div className="flex flex-wrap justify-center gap-4 mb-16">
+          {categories.map((category) => (
+            <button
+              key={category.id}
+              onClick={() => setActiveCategory(category.id)}
+              className={`px-6 py-3 rounded-full font-medium transition-all duration-300 hover-lift ${
+                activeCategory === category.id
+                  ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white'
+                  : 'glass-card text-gray-300 hover:text-white'
+              }`}
+            >
+              {category.label} ({category.count})
+            </button>
+          ))}
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((project, index) => (
-            <div key={index} className="bg-gray-900 rounded-xl p-6 hover:bg-gray-800 transition-all duration-300 transform hover:scale-105 shadow-lg">
-              <h3 className="text-xl font-bold text-white mb-3">{project.title}</h3>
-              <p className="text-gray-400 mb-4">{project.description}</p>
-              <div className="flex flex-wrap gap-2 mb-4">
-                {project.tech.map((tech, techIndex) => (
-                  <span key={techIndex} className="bg-blue-600 text-white px-2 py-1 rounded text-xs">
+          {filteredProjects.map((project, index) => (
+            <div 
+              key={index} 
+              className={`glass-card p-6 card-hover transition-all duration-500 ${
+                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+              }`}
+              style={{ transitionDelay: `${index * 100}ms` }}
+            >
+              <div className="relative overflow-hidden rounded-2xl mb-6 group">
+                <img 
+                  src={project.image} 
+                  alt={project.title}
+                  className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                <div className="absolute top-4 right-4">
+                  <span className="bg-white/10 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-medium">
+                    {categories.find(cat => cat.id === project.category)?.label || 'General'}
+                  </span>
+                </div>
+              </div>
+              
+              <h3 className="text-xl font-bold text-white mb-3 line-clamp-2">{project.title}</h3>
+              <p className="text-gray-300 mb-4 line-clamp-3">{project.description}</p>
+              
+              <div className="flex flex-wrap gap-2 mb-6">
+                {project.tech.slice(0, 3).map((tech, techIndex) => (
+                  <span key={techIndex} className="bg-blue-500/20 text-blue-300 px-2 py-1 rounded text-xs">
                     {tech}
                   </span>
                 ))}
+                {project.tech.length > 3 && (
+                  <span className="bg-gray-700/50 text-gray-300 px-2 py-1 rounded text-xs">
+                    +{project.tech.length - 3} more
+                  </span>
+                )}
               </div>
-              <a 
-                href={project.github} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="inline-flex items-center text-blue-400 hover:text-blue-300 font-medium text-sm"
-              >
-                View on GitHub →
-              </a>
+              
+              <div className="flex gap-3">
+                <a 
+                  href={project.github} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 px-4 rounded-xl font-semibold text-center hover:from-blue-600 hover:to-purple-700 transition-all duration-300 hover-lift"
+                >
+                  View Code
+                </a>
+                <button className="bg-white/10 hover:bg-white/20 text-white px-4 py-3 rounded-xl transition-all duration-300 hover-lift">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                  </svg>
+                </button>
+              </div>
             </div>
           ))}
         </div>
