@@ -402,7 +402,7 @@ const ThreatMap = () => {
 
 
 
-// Enhanced Header Component
+// Clean Header Component
 export const Header = ({ activeSection }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -436,87 +436,146 @@ export const Header = ({ activeSection }) => {
   return (
     <>
       <ProgressBar />
-      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${
-        isScrolled ? 'glass-nav shadow-2xl backdrop-blur-xl' : 'bg-transparent'
-      }`} role="banner">
-        <nav className="container mx-auto px-6 py-4" role="navigation" aria-label="Main navigation">
+      <motion.header 
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+          isScrolled 
+            ? 'bg-black/80 backdrop-blur-xl border-b border-white/10' 
+            : 'bg-transparent'
+        }`}
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        <nav className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3 group cursor-pointer" onClick={() => scrollToSection('home')}>
+            <motion.div 
+              className="flex items-center space-x-3 group cursor-pointer" 
+              onClick={() => scrollToSection('home')}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
               <div className="relative">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg transition-all duration-300 group-hover:scale-110 group-hover:rotate-12">
+                <motion.div 
+                  className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg"
+                  whileHover={{ rotate: 5 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
                   <span className="text-white font-bold text-lg">OS</span>
-                </div>
-                <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-black animate-pulse"></div>
+                </motion.div>
+                <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full animate-pulse"></div>
               </div>
-              <div className="transition-all duration-300 group-hover:translate-x-2">
-                <span className="text-white font-bold text-2xl gradient-text">Out-Sec</span>
-                <p className="text-xs text-gray-400 group-hover:text-gray-300 transition-colors duration-300">Next-Gen Security</p>
+              <div>
+                <h1 className="text-white font-bold text-2xl bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent">
+                  Out-Sec
+                </h1>
+                <p className="text-xs text-gray-400 group-hover:text-gray-300 transition-colors">
+                  Next-Gen Security
+                </p>
               </div>
-            </div>
+            </motion.div>
             
             <div className="hidden md:flex items-center space-x-8">
               {navItems.map((item, index) => (
-                <button
+                <motion.button
                   key={item.id}
                   onClick={() => scrollToSection(item.id)}
-                  className={`group relative text-sm font-medium transition-all duration-500 transform hover:scale-105 ${
+                  className={`relative text-sm font-medium transition-all duration-300 px-4 py-2 rounded-lg group ${
                     activeSection === item.id
-                      ? 'text-blue-400'
-                      : 'text-gray-300 hover:text-blue-400'
+                      ? 'text-white bg-white/10'
+                      : 'text-gray-300 hover:text-white hover:bg-white/5'
                   }`}
-                  style={{ transitionDelay: `${index * 100}ms` }}
-                  aria-label={`Navigate to ${item.label}`}
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                 >
                   <div className="flex items-center space-x-2">
                     <SVGIcon 
                       type={item.icon} 
-                      className={`w-4 h-4 transition-all duration-300 ${
-                        activeSection === item.id ? 'text-blue-400' : 'text-gray-400 group-hover:text-blue-400'
-                      }`} 
+                      className="w-4 h-4 transition-colors" 
                     />
-                    <span className="transition-all duration-300 group-hover:translate-x-1">{item.label}</span>
+                    <span>{item.label}</span>
                   </div>
                   {activeSection === item.id && (
-                    <div className="absolute -bottom-3 left-0 w-full h-0.5 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full transform scale-x-100 transition-transform duration-300"></div>
+                    <motion.div
+                      className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-blue-400 to-purple-600 rounded-full"
+                      layoutId="activeTab"
+                      initial={{ scaleX: 0 }}
+                      animate={{ scaleX: 1 }}
+                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                    />
                   )}
-                  <div className="absolute -bottom-3 left-0 w-full h-0.5 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
-                </button>
+                </motion.button>
               ))}
             </div>
             
-            <div className="flex items-center space-x-4">
-              <button 
-                className="md:hidden text-white hover-scale p-2 rounded-lg hover:bg-white/10 transition-all duration-300"
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                aria-label="Toggle mobile menu"
+            <motion.button 
+              className="md:hidden text-white p-2 rounded-lg hover:bg-white/10 transition-colors"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <motion.div 
+                className="space-y-1"
+                animate={isMobileMenuOpen ? "open" : "closed"}
               >
-                <div className="space-y-1">
-                  <div className={`w-6 h-0.5 bg-white transition-all duration-300 ${isMobileMenuOpen ? 'rotate-45 translate-y-1.5' : ''}`}></div>
-                  <div className={`w-6 h-0.5 bg-white transition-all duration-300 ${isMobileMenuOpen ? 'opacity-0' : ''}`}></div>
-                  <div className={`w-6 h-0.5 bg-white transition-all duration-300 ${isMobileMenuOpen ? '-rotate-45 -translate-y-1.5' : ''}`}></div>
-                </div>
-              </button>
-            </div>
+                <motion.div 
+                  className="w-6 h-0.5 bg-white"
+                  variants={{
+                    closed: { rotate: 0, y: 0 },
+                    open: { rotate: 45, y: 6 }
+                  }}
+                  transition={{ duration: 0.3 }}
+                />
+                <motion.div 
+                  className="w-6 h-0.5 bg-white"
+                  variants={{
+                    closed: { opacity: 1 },
+                    open: { opacity: 0 }
+                  }}
+                  transition={{ duration: 0.3 }}
+                />
+                <motion.div 
+                  className="w-6 h-0.5 bg-white"
+                  variants={{
+                    closed: { rotate: 0, y: 0 },
+                    open: { rotate: -45, y: -6 }
+                  }}
+                  transition={{ duration: 0.3 }}
+                />
+              </motion.div>
+            </motion.button>
           </div>
           
-          {isMobileMenuOpen && (
-            <div className="md:hidden mt-4 glass-card rounded-2xl p-4 animate-slideDown" role="menu">
-              {navItems.map((item, index) => (
-                <button
-                  key={item.id}
-                  onClick={() => scrollToSection(item.id)}
-                  className="flex items-center space-x-3 w-full text-left py-3 text-gray-300 hover:text-blue-400 transition-all duration-300 hover:translate-x-2"
-                  style={{ transitionDelay: `${index * 50}ms` }}
-                  role="menuitem"
-                >
-                  <SVGIcon type={item.icon} className="w-4 h-4" />
-                  <span>{item.label}</span>
-                </button>
-              ))}
-            </div>
-          )}
+          <AnimatePresence>
+            {isMobileMenuOpen && (
+              <motion.div
+                className="md:hidden mt-4 bg-black/80 backdrop-blur-xl rounded-2xl p-4 border border-white/10"
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                {navItems.map((item, index) => (
+                  <motion.button
+                    key={item.id}
+                    onClick={() => scrollToSection(item.id)}
+                    className="flex items-center space-x-3 w-full text-left py-3 text-gray-300 hover:text-white transition-colors rounded-lg px-3 hover:bg-white/5"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.3, delay: index * 0.1 }}
+                    whileHover={{ x: 5 }}
+                  >
+                    <SVGIcon type={item.icon} className="w-4 h-4" />
+                    <span>{item.label}</span>
+                  </motion.button>
+                ))}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </nav>
-      </header>
+      </motion.header>
     </>
   );
 };
