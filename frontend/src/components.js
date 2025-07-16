@@ -263,83 +263,93 @@ export const Header = ({ activeSection }) => {
   };
 
   const navItems = [
-    { id: 'home', label: 'Home' },
-    { id: 'about', label: 'About' },
-    { id: 'services', label: 'Services' },
-    { id: 'team', label: 'Team' },
-    { id: 'projects', label: 'Projects' },
-    { id: 'blog', label: 'Blog' },
-    { id: 'contact', label: 'Contact' }
+    { id: 'home', label: 'Home', icon: 'security' },
+    { id: 'about', label: 'About', icon: 'network' },
+    { id: 'services', label: 'Services', icon: 'crypto' },
+    { id: 'team', label: 'Team', icon: 'soc' },
+    { id: 'projects', label: 'Projects', icon: 'work' },
+    { id: 'blog', label: 'Blog', icon: 'penetration' },
+    { id: 'contact', label: 'Contact', icon: 'iot' }
   ];
 
   return (
     <>
       <ProgressBar />
-      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        isScrolled ? 'glass-nav shadow-2xl' : 'bg-transparent'
+      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${
+        isScrolled ? 'glass-nav shadow-2xl backdrop-blur-xl' : 'bg-transparent'
       }`} role="banner">
         <nav className="container mx-auto px-6 py-4" role="navigation" aria-label="Main navigation">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3 hover-scale cursor-pointer">
+            <div className="flex items-center space-x-3 group cursor-pointer" onClick={() => scrollToSection('home')}>
               <div className="relative">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg transition-all duration-300 group-hover:scale-110 group-hover:rotate-12">
                   <span className="text-white font-bold text-lg">OS</span>
                 </div>
                 <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-black animate-pulse"></div>
               </div>
-              <div>
+              <div className="transition-all duration-300 group-hover:translate-x-2">
                 <span className="text-white font-bold text-2xl gradient-text">Out-Sec</span>
-                <p className="text-xs text-gray-400">Cybersecurity Excellence</p>
+                <p className="text-xs text-gray-400 group-hover:text-gray-300 transition-colors duration-300">Next-Gen Security</p>
               </div>
             </div>
             
             <div className="hidden md:flex items-center space-x-8">
-              {navItems.map((item) => (
+              {navItems.map((item, index) => (
                 <button
                   key={item.id}
                   onClick={() => scrollToSection(item.id)}
-                  className={`relative text-sm font-medium transition-all duration-300 hover-scale ${
+                  className={`group relative text-sm font-medium transition-all duration-500 transform hover:scale-105 ${
                     activeSection === item.id
                       ? 'text-blue-400'
                       : 'text-gray-300 hover:text-blue-400'
                   }`}
+                  style={{ transitionDelay: `${index * 100}ms` }}
                   aria-label={`Navigate to ${item.label}`}
                 >
-                  {item.label}
+                  <div className="flex items-center space-x-2">
+                    <SVGIcon 
+                      type={item.icon} 
+                      className={`w-4 h-4 transition-all duration-300 ${
+                        activeSection === item.id ? 'text-blue-400' : 'text-gray-400 group-hover:text-blue-400'
+                      }`} 
+                    />
+                    <span className="transition-all duration-300 group-hover:translate-x-1">{item.label}</span>
+                  </div>
                   {activeSection === item.id && (
-                    <div className="absolute -bottom-2 left-0 w-full h-0.5 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full"></div>
+                    <div className="absolute -bottom-3 left-0 w-full h-0.5 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full transform scale-x-100 transition-transform duration-300"></div>
                   )}
+                  <div className="absolute -bottom-3 left-0 w-full h-0.5 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
                 </button>
               ))}
             </div>
             
             <div className="flex items-center space-x-4">
-              <button className="btn-primary hover-scale" aria-label="Get started with Out-Sec">
-                Get Started
-              </button>
-              
               <button 
-                className="md:hidden text-white hover-scale"
+                className="md:hidden text-white hover-scale p-2 rounded-lg hover:bg-white/10 transition-all duration-300"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 aria-label="Toggle mobile menu"
               >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                </svg>
+                <div className="space-y-1">
+                  <div className={`w-6 h-0.5 bg-white transition-all duration-300 ${isMobileMenuOpen ? 'rotate-45 translate-y-1.5' : ''}`}></div>
+                  <div className={`w-6 h-0.5 bg-white transition-all duration-300 ${isMobileMenuOpen ? 'opacity-0' : ''}`}></div>
+                  <div className={`w-6 h-0.5 bg-white transition-all duration-300 ${isMobileMenuOpen ? '-rotate-45 -translate-y-1.5' : ''}`}></div>
+                </div>
               </button>
             </div>
           </div>
           
           {isMobileMenuOpen && (
-            <div className="md:hidden mt-4 glass-card rounded-2xl p-4" role="menu">
-              {navItems.map((item) => (
+            <div className="md:hidden mt-4 glass-card rounded-2xl p-4 animate-slideDown" role="menu">
+              {navItems.map((item, index) => (
                 <button
                   key={item.id}
                   onClick={() => scrollToSection(item.id)}
-                  className="block w-full text-left py-3 text-gray-300 hover:text-blue-400 transition-colors"
+                  className="flex items-center space-x-3 w-full text-left py-3 text-gray-300 hover:text-blue-400 transition-all duration-300 hover:translate-x-2"
+                  style={{ transitionDelay: `${index * 50}ms` }}
                   role="menuitem"
                 >
-                  {item.label}
+                  <SVGIcon type={item.icon} className="w-4 h-4" />
+                  <span>{item.label}</span>
                 </button>
               ))}
             </div>
