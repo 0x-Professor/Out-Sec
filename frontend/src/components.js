@@ -239,6 +239,123 @@ const useScrollReveal = () => {
   return [ref, isVisible];
 };
 
+// Threat Map Component
+const ThreatMap = () => {
+  const canvasRef = useRef(null);
+  const [threats, setThreats] = useState([]);
+
+  useEffect(() => {
+    // Generate random threat locations
+    const generateThreats = () => {
+      const newThreats = [];
+      for (let i = 0; i < 20; i++) {
+        newThreats.push({
+          x: Math.random() * 800,
+          y: Math.random() * 400,
+          intensity: Math.random(),
+          type: ['malware', 'ddos', 'phishing', 'ransomware'][Math.floor(Math.random() * 4)],
+          pulse: Math.random() * Math.PI * 2
+        });
+      }
+      setThreats(newThreats);
+    };
+
+    generateThreats();
+    const interval = setInterval(generateThreats, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    canvas.width = 800;
+    canvas.height = 400;
+
+    let animationId;
+    let time = 0;
+
+    const drawThreatMap = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      // Draw world map outline (simplified)
+      ctx.strokeStyle = 'rgba(0, 221, 235, 0.3)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.rect(50, 50, 700, 300);
+      ctx.stroke();
+      
+      // Draw grid
+      for (let i = 0; i < 8; i++) {
+        ctx.beginPath();
+        ctx.moveTo(50 + i * 87.5, 50);
+        ctx.lineTo(50 + i * 87.5, 350);
+        ctx.stroke();
+      }
+      
+      for (let i = 0; i < 5; i++) {
+        ctx.beginPath();
+        ctx.moveTo(50, 50 + i * 75);
+        ctx.lineTo(750, 50 + i * 75);
+        ctx.stroke();
+      }
+      
+      // Draw threats
+      threats.forEach((threat, index) => {
+        const pulse = Math.sin(time + threat.pulse) * 0.5 + 0.5;
+        const radius = 3 + pulse * 5;
+        
+        ctx.save();
+        ctx.translate(threat.x, threat.y);
+        
+        // Threat glow
+        const gradient = ctx.createRadialGradient(0, 0, 0, 0, 0, radius * 2);
+        gradient.addColorStop(0, `rgba(255, 0, 0, ${threat.intensity * pulse})`);
+        gradient.addColorStop(1, 'rgba(255, 0, 0, 0)');
+        
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(0, 0, radius * 2, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Threat dot
+        ctx.fillStyle = `rgba(255, 0, 0, ${threat.intensity})`;
+        ctx.beginPath();
+        ctx.arc(0, 0, radius, 0, Math.PI * 2);
+        ctx.fill();
+        
+        ctx.restore();
+      });
+      
+      time += 0.05;
+      animationId = requestAnimationFrame(drawThreatMap);
+    };
+
+    drawThreatMap();
+
+    return () => {
+      if (animationId) cancelAnimationFrame(animationId);
+    };
+  }, [threats]);
+
+  return (
+    <div className="glass-card p-6 card-interactive">
+      <h3 className="text-xl font-bold text-white mb-4">Real-time Threat Map</h3>
+      <canvas
+        ref={canvasRef}
+        className="w-full h-auto rounded-lg"
+        style={{ background: 'rgba(0, 0, 0, 0.2)' }}
+      />
+      <div className="mt-4 flex justify-between text-sm text-gray-400">
+        <span>🔴 Active Threats: {threats.length}</span>
+        <span>🛡️ Blocked: 1,247</span>
+        <span>⚠️ Monitoring: 24/7</span>
+      </div>
+    </div>
+  );
+};
+
 
 
 // Enhanced Header Component
