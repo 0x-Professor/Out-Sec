@@ -1,5 +1,58 @@
 import React, { useState, useEffect, useRef } from "react";
 
+// SVG Icons Component
+const SVGIcon = ({ type, className = "w-6 h-6" }) => {
+  const icons = {
+    security: (
+      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+      </svg>
+    ),
+    malware: (
+      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+      </svg>
+    ),
+    blockchain: (
+      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+      </svg>
+    ),
+    network: (
+      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+      </svg>
+    ),
+    iot: (
+      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0" />
+      </svg>
+    ),
+    crypto: (
+      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+      </svg>
+    ),
+    penetration: (
+      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+      </svg>
+    ),
+    soc: (
+      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+      </svg>
+    ),
+    cloud: (
+      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+      </svg>
+    )
+  };
+
+  return icons[type] || icons.security;
+};
+
 // Progress Bar Component
 const ProgressBar = () => {
   const [progress, setProgress] = useState(0);
@@ -19,57 +72,224 @@ const ProgressBar = () => {
   return <div className="progress-bar" style={{ width: `${progress}%` }}></div>;
 };
 
-// Matrix Rain Effect Component
-const MatrixRain = () => {
+// 3D Cyber Orb Component
+const CyberOrb = () => {
   const canvasRef = useRef(null);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      const rect = canvasRef.current?.getBoundingClientRect();
+      if (rect) {
+        setMousePos({
+          x: ((e.clientX - rect.left) / rect.width) * 2 - 1,
+          y: ((e.clientY - rect.top) / rect.height) * 2 - 1
+        });
+      }
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
+    if (!canvas) return;
+
     const ctx = canvas.getContext('2d');
-    
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    
-    const matrix = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789@#$%^&*()";
-    const matrixArray = matrix.split("");
-    
-    const fontSize = 10;
-    const columns = canvas.width / fontSize;
-    const drops = [];
-    
-    for (let x = 0; x < columns; x++) {
-      drops[x] = 1;
-    }
-    
-    const draw = () => {
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.04)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    canvas.width = 400;
+    canvas.height = 400;
+
+    let animationId;
+    let rotation = 0;
+
+    const drawOrb = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
       
-      ctx.fillStyle = '#0ea5e9';
-      ctx.font = fontSize + 'px monospace';
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+      const radius = 80;
       
-      for (let i = 0; i < drops.length; i++) {
-        const text = matrixArray[Math.floor(Math.random() * matrixArray.length)];
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+      // Apply mouse-based rotation
+      const rotX = mousePos.y * 0.5;
+      const rotY = mousePos.x * 0.5;
+      
+      // Create cyber orb effect
+      ctx.save();
+      ctx.translate(centerX, centerY);
+      ctx.rotate(rotation + rotY);
+      
+      // Outer glow
+      const gradient = ctx.createRadialGradient(0, 0, 0, 0, 0, radius * 2);
+      gradient.addColorStop(0, 'rgba(0, 221, 235, 0.3)');
+      gradient.addColorStop(0.5, 'rgba(30, 58, 138, 0.2)');
+      gradient.addColorStop(1, 'rgba(147, 51, 234, 0.1)');
+      
+      ctx.fillStyle = gradient;
+      ctx.fillRect(-radius * 2, -radius * 2, radius * 4, radius * 4);
+      
+      // Main orb
+      const orbGradient = ctx.createRadialGradient(0, 0, 0, 0, 0, radius);
+      orbGradient.addColorStop(0, 'rgba(0, 221, 235, 0.8)');
+      orbGradient.addColorStop(0.7, 'rgba(30, 58, 138, 0.6)');
+      orbGradient.addColorStop(1, 'rgba(147, 51, 234, 0.4)');
+      
+      ctx.fillStyle = orbGradient;
+      ctx.beginPath();
+      ctx.arc(0, 0, radius, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Grid lines
+      ctx.strokeStyle = 'rgba(0, 221, 235, 0.6)';
+      ctx.lineWidth = 2;
+      for (let i = -radius; i <= radius; i += 20) {
+        ctx.beginPath();
+        ctx.moveTo(-radius, i);
+        ctx.lineTo(radius, i);
+        ctx.stroke();
         
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-          drops[i] = 0;
-        }
-        drops[i]++;
+        ctx.beginPath();
+        ctx.moveTo(i, -radius);
+        ctx.lineTo(i, radius);
+        ctx.stroke();
       }
+      
+      ctx.restore();
+      
+      rotation += 0.01;
+      animationId = requestAnimationFrame(drawOrb);
     };
-    
-    const interval = setInterval(draw, 35);
-    
-    return () => clearInterval(interval);
-  }, []);
+
+    drawOrb();
+
+    return () => {
+      if (animationId) cancelAnimationFrame(animationId);
+    };
+  }, [mousePos]);
 
   return (
     <canvas
       ref={canvasRef}
-      className="fixed top-0 left-0 w-full h-full pointer-events-none z-0 opacity-20"
-      style={{ zIndex: -1 }}
+      className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none opacity-30"
+      style={{ filter: 'blur(1px)' }}
     />
+  );
+};
+
+// Threat Map Component
+const ThreatMap = () => {
+  const canvasRef = useRef(null);
+  const [threats, setThreats] = useState([]);
+
+  useEffect(() => {
+    // Generate random threat locations
+    const generateThreats = () => {
+      const newThreats = [];
+      for (let i = 0; i < 20; i++) {
+        newThreats.push({
+          x: Math.random() * 800,
+          y: Math.random() * 400,
+          intensity: Math.random(),
+          type: ['malware', 'ddos', 'phishing', 'ransomware'][Math.floor(Math.random() * 4)],
+          pulse: Math.random() * Math.PI * 2
+        });
+      }
+      setThreats(newThreats);
+    };
+
+    generateThreats();
+    const interval = setInterval(generateThreats, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    canvas.width = 800;
+    canvas.height = 400;
+
+    let animationId;
+    let time = 0;
+
+    const drawThreatMap = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      // Draw world map outline (simplified)
+      ctx.strokeStyle = 'rgba(0, 221, 235, 0.3)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.rect(50, 50, 700, 300);
+      ctx.stroke();
+      
+      // Draw grid
+      for (let i = 0; i < 8; i++) {
+        ctx.beginPath();
+        ctx.moveTo(50 + i * 87.5, 50);
+        ctx.lineTo(50 + i * 87.5, 350);
+        ctx.stroke();
+      }
+      
+      for (let i = 0; i < 5; i++) {
+        ctx.beginPath();
+        ctx.moveTo(50, 50 + i * 75);
+        ctx.lineTo(750, 50 + i * 75);
+        ctx.stroke();
+      }
+      
+      // Draw threats
+      threats.forEach((threat, index) => {
+        const pulse = Math.sin(time + threat.pulse) * 0.5 + 0.5;
+        const radius = 3 + pulse * 5;
+        
+        ctx.save();
+        ctx.translate(threat.x, threat.y);
+        
+        // Threat glow
+        const gradient = ctx.createRadialGradient(0, 0, 0, 0, 0, radius * 2);
+        gradient.addColorStop(0, `rgba(255, 0, 0, ${threat.intensity * pulse})`);
+        gradient.addColorStop(1, 'rgba(255, 0, 0, 0)');
+        
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(0, 0, radius * 2, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Threat dot
+        ctx.fillStyle = `rgba(255, 0, 0, ${threat.intensity})`;
+        ctx.beginPath();
+        ctx.arc(0, 0, radius, 0, Math.PI * 2);
+        ctx.fill();
+        
+        ctx.restore();
+      });
+      
+      time += 0.05;
+      animationId = requestAnimationFrame(drawThreatMap);
+    };
+
+    drawThreatMap();
+
+    return () => {
+      if (animationId) cancelAnimationFrame(animationId);
+    };
+  }, [threats]);
+
+  return (
+    <div className="glass-card p-6 card-interactive">
+      <h3 className="text-xl font-bold text-white mb-4">Real-time Threat Map</h3>
+      <canvas
+        ref={canvasRef}
+        className="w-full h-auto rounded-lg"
+        style={{ background: 'rgba(0, 0, 0, 0.2)' }}
+      />
+      <div className="mt-4 flex justify-between text-sm text-gray-400">
+        <span>🔴 Active Threats: {threats.length}</span>
+        <span>🛡️ Blocked: 1,247</span>
+        <span>⚠️ Monitoring: 24/7</span>
+      </div>
+    </div>
   );
 };
 
@@ -96,6 +316,92 @@ const useScrollReveal = () => {
   }, []);
 
   return [ref, isVisible];
+};
+
+// Live Chat Widget
+const LiveChatWidget = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [messages, setMessages] = useState([
+    { id: 1, text: "Hello! How can I help you with your cybersecurity needs?", sender: "bot", timestamp: new Date() }
+  ]);
+  const [inputMessage, setInputMessage] = useState("");
+
+  const handleSendMessage = () => {
+    if (inputMessage.trim()) {
+      const newMessage = {
+        id: messages.length + 1,
+        text: inputMessage,
+        sender: "user",
+        timestamp: new Date()
+      };
+      setMessages([...messages, newMessage]);
+      setInputMessage("");
+      
+      // Simulate bot response
+      setTimeout(() => {
+        const botResponse = {
+          id: messages.length + 2,
+          text: "Thanks for your message! Our cybersecurity experts will respond shortly. In the meantime, you can explore our services or contact us directly.",
+          sender: "bot",
+          timestamp: new Date()
+        };
+        setMessages(prev => [...prev, botResponse]);
+      }, 1000);
+    }
+  };
+
+  return (
+    <div className="fixed bottom-6 right-6 z-50">
+      {isOpen && (
+        <div className="glass-card w-80 h-96 mb-4 flex flex-col">
+          <div className="p-4 border-b border-white/20">
+            <h3 className="text-white font-semibold">Out-Sec Support</h3>
+            <p className="text-sm text-gray-300">We're here to help!</p>
+          </div>
+          
+          <div className="flex-1 overflow-y-auto p-4 space-y-3">
+            {messages.map((message) => (
+              <div key={message.id} className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
+                <div className={`max-w-xs px-3 py-2 rounded-lg text-sm ${
+                  message.sender === 'user' 
+                    ? 'bg-blue-600 text-white' 
+                    : 'bg-gray-700 text-gray-200'
+                }`}>
+                  {message.text}
+                </div>
+              </div>
+            ))}
+          </div>
+          
+          <div className="p-4 border-t border-white/20">
+            <div className="flex space-x-2">
+              <input
+                type="text"
+                value={inputMessage}
+                onChange={(e) => setInputMessage(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                placeholder="Type your message..."
+                className="flex-1 bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500"
+              />
+              <button
+                onClick={handleSendMessage}
+                className="btn-primary px-4 py-2 text-sm"
+              >
+                Send
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-14 h-14 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+      >
+        {isOpen ? '×' : '💬'}
+      </button>
+    </div>
+  );
 };
 
 // Enhanced Header Component
@@ -133,13 +439,13 @@ export const Header = ({ activeSection }) => {
     <>
       <ProgressBar />
       <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        isScrolled ? 'glass-card shadow-2xl' : 'bg-transparent'
-      }`}>
-        <nav className="container mx-auto px-6 py-4">
+        isScrolled ? 'glass-nav shadow-2xl' : 'bg-transparent'
+      }`} role="banner">
+        <nav className="container mx-auto px-6 py-4" role="navigation" aria-label="Main navigation">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3 hover-lift">
+            <div className="flex items-center space-x-3 hover-scale cursor-pointer">
               <div className="relative">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
                   <span className="text-white font-bold text-lg">OS</span>
                 </div>
                 <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-black animate-pulse"></div>
@@ -155,11 +461,12 @@ export const Header = ({ activeSection }) => {
                 <button
                   key={item.id}
                   onClick={() => scrollToSection(item.id)}
-                  className={`relative text-sm font-medium transition-all duration-300 hover-lift ${
+                  className={`relative text-sm font-medium transition-all duration-300 hover-scale ${
                     activeSection === item.id
                       ? 'text-blue-400'
                       : 'text-gray-300 hover:text-blue-400'
                   }`}
+                  aria-label={`Navigate to ${item.label}`}
                 >
                   {item.label}
                   {activeSection === item.id && (
@@ -170,13 +477,14 @@ export const Header = ({ activeSection }) => {
             </div>
             
             <div className="flex items-center space-x-4">
-              <button className="btn-primary hover-lift">
+              <button className="btn-primary hover-scale" aria-label="Get started with Out-Sec">
                 Get Started
               </button>
               
               <button 
-                className="md:hidden text-white"
+                className="md:hidden text-white hover-scale"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                aria-label="Toggle mobile menu"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
@@ -186,12 +494,13 @@ export const Header = ({ activeSection }) => {
           </div>
           
           {isMobileMenuOpen && (
-            <div className="md:hidden mt-4 glass-card rounded-2xl p-4">
+            <div className="md:hidden mt-4 glass-card rounded-2xl p-4" role="menu">
               {navItems.map((item) => (
                 <button
                   key={item.id}
                   onClick={() => scrollToSection(item.id)}
                   className="block w-full text-left py-3 text-gray-300 hover:text-blue-400 transition-colors"
+                  role="menuitem"
                 >
                   {item.label}
                 </button>
@@ -207,34 +516,28 @@ export const Header = ({ activeSection }) => {
 // Enhanced Hero Component
 export const Hero = () => {
   const [ref, isVisible] = useScrollReveal();
-  const [typedText, setTypedText] = useState('');
-  const fullText = "Securing Information with Sophisticated Strategies";
+  const [currentKeyword, setCurrentKeyword] = useState(0);
+  const keywords = ["Secure", "Protect", "Defend", "Fortify"];
 
   useEffect(() => {
     if (isVisible) {
-      let index = 0;
-      const timer = setInterval(() => {
-        if (index < fullText.length) {
-          setTypedText(fullText.substring(0, index + 1));
-          index++;
-        } else {
-          clearInterval(timer);
-        }
-      }, 50);
-      return () => clearInterval(timer);
+      const interval = setInterval(() => {
+        setCurrentKeyword((prev) => (prev + 1) % keywords.length);
+      }, 2000);
+      return () => clearInterval(interval);
     }
-  }, [isVisible, fullText]);
+  }, [isVisible, keywords.length]);
 
   return (
-    <section id="home" className="min-h-screen relative overflow-hidden gradient-bg-1">
-      <MatrixRain />
+    <section id="home" className="min-h-screen relative overflow-hidden gradient-bg-animated" role="main">
+      <CyberOrb />
       
       {/* Floating Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-10 w-20 h-20 bg-blue-500/10 rounded-full blur-xl floating"></div>
         <div className="absolute top-40 right-20 w-32 h-32 bg-purple-500/10 rounded-full blur-xl floating-delayed"></div>
         <div className="absolute bottom-20 left-1/4 w-24 h-24 bg-cyan-500/10 rounded-full blur-xl floating"></div>
-        <div className="absolute bottom-40 right-1/3 w-28 h-28 bg-emerald-500/10 rounded-full blur-xl floating-delayed"></div>
+        <div className="absolute bottom-40 right-1/3 w-28 h-28 bg-emerald-500/10 rounded-full blur-xl floating-slow"></div>
       </div>
       
       <div className="relative z-10 flex items-center justify-center min-h-screen">
@@ -242,16 +545,15 @@ export const Hero = () => {
           <div className="max-w-5xl mx-auto" ref={ref}>
             <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
               <div className="mb-6">
-                <span className="inline-block bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-full text-sm font-medium mb-4 hover-lift">
+                <span className="inline-block bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-full text-sm font-medium mb-4 hover-scale">
                   🛡️ BITWISE SECURITY
                 </span>
               </div>
               
               <h1 className="text-6xl md:text-8xl font-black text-white mb-8 leading-tight">
-                <span className="block">Securing Information with</span>
-                <span className="block gradient-text typewriter">
-                  {typedText}
-                  <span className="animate-pulse">|</span>
+                <span className="block">Securing the Future with</span>
+                <span className="block gradient-text">
+                  Next-Gen <span className="typewriter">{keywords[currentKeyword]}</span> Cybersecurity
                 </span>
               </h1>
               
@@ -265,7 +567,7 @@ export const Hero = () => {
               
               <div className={`transition-all duration-1000 delay-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                  <button className="btn-primary text-lg px-8 py-4 hover-lift">
+                  <button className="btn-primary text-lg px-8 py-4 hover-scale group">
                     <span className="flex items-center">
                       Explore Our Work
                       <svg className="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -274,7 +576,7 @@ export const Hero = () => {
                     </span>
                   </button>
                   
-                  <button className="bg-transparent border-2 border-white/20 text-white px-8 py-4 rounded-xl font-semibold hover:bg-white/10 transition-all duration-300 hover-lift">
+                  <button className="btn-secondary text-lg px-8 py-4 hover-scale">
                     Watch Demo
                   </button>
                 </div>
