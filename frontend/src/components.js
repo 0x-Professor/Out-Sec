@@ -851,87 +851,185 @@ export const Projects = () => {
   );
 };
 
-// Blog Component
+// Enhanced Blog Component
 export const Blog = () => {
+  const [ref, isVisible] = useScrollReveal();
+  const [selectedCategory, setSelectedCategory] = useState('all');
+
   const blogPosts = [
     {
       title: "Secure communication of IoT Devices using blockchain",
       author: "Mohsin Mukhtiar",
-      category: "Blockchain, Network Security, IoT Security",
-      date: "12/4/2024",
+      category: "Blockchain",
+      categories: ["Blockchain", "Network Security", "IoT Security"],
+      date: "December 4, 2024",
       readTime: "4 mins",
-      excerpt: "Exploring how blockchain technology can enhance IoT device security and communication protocols..."
+      excerpt: "Exploring how blockchain technology can enhance IoT device security and communication protocols through decentralized authentication and encrypted data transmission...",
+      image: "https://images.unsplash.com/photo-1660732106134-f3009a1e90ea?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njl8MHwxfHNlYXJjaHwxfHxkaWdpdGFsJTIwc2VjdXJpdHl8ZW58MHx8fGJsdWV8MTc1MjY0OTU5OHww&ixlib=rb-4.1.0&q=85",
+      featured: true
     },
     {
       title: "Advanced Malware Analysis Techniques",
       author: "Ali Ejaz",
-      category: "Malware Analysis, Security Research",
-      date: "11/28/2024",
+      category: "Malware Analysis",
+      categories: ["Malware Analysis", "Security Research"],
+      date: "November 28, 2024",
       readTime: "6 mins",
-      excerpt: "Deep dive into modern malware analysis methodologies and reverse engineering techniques..."
+      excerpt: "Deep dive into modern malware analysis methodologies and reverse engineering techniques using dynamic analysis, behavioral detection, and AI-powered classification...",
+      image: "https://images.unsplash.com/photo-1590494165264-1ebe3602eb80?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwyfHxjeWJlcnNlY3VyaXR5fGVufDB8fHxibHVlfDE3NTI2NDk1ODJ8MA&ixlib=rb-4.1.0&q=85",
+      featured: false
     },
     {
       title: "Hardware Security in Modern Systems",
       author: "Khizar Ali Shah",
-      category: "Hardware Security, IoT Security",
-      date: "11/22/2024",
+      category: "Hardware Security",
+      categories: ["Hardware Security", "IoT Security"],
+      date: "November 22, 2024",
       readTime: "5 mins",
-      excerpt: "Understanding hardware-level security threats and mitigation strategies for modern systems..."
+      excerpt: "Understanding hardware-level security threats and mitigation strategies for modern systems including secure boot, hardware attestation, and side-channel attacks...",
+      image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1NzZ8MHwxfHNlYXJjaHwyfHxuZXR3b3JrJTIwc2VjdXJpdHl8ZW58MHx8fGJsdWV8MTc1MjY0OTU4OXww&ixlib=rb-4.1.0&q=85",
+      featured: false
     },
     {
       title: "Web Application Security Best Practices",
       author: "Mazhar Saeed",
-      category: "Web Security, Application Security",
-      date: "11/15/2024",
+      category: "Web Security",
+      categories: ["Web Security", "Application Security"],
+      date: "November 15, 2024",
       readTime: "7 mins",
-      excerpt: "Comprehensive guide to securing web applications against modern attack vectors..."
+      excerpt: "Comprehensive guide to securing web applications against modern attack vectors including OWASP Top 10, secure coding practices, and security testing methodologies...",
+      image: "https://images.unsplash.com/photo-1567619363836-e5fd63f69b20?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1NzZ8MHwxfHNlYXJjaHwyfHxoYWNraW5nfGVufDB8fHxibHVlfDE3NTI1NjA1NTN8MA&ixlib=rb-4.1.0&q=85",
+      featured: false
     },
     {
       title: "Cryptography in Cybersecurity",
       author: "Muhammad Fazeel",
-      category: "Cryptography, Security",
-      date: "11/8/2024",
+      category: "Cryptography",
+      categories: ["Cryptography", "Security"],
+      date: "November 8, 2024",
       readTime: "5 mins",
-      excerpt: "Exploring the role of cryptography in modern cybersecurity implementations..."
+      excerpt: "Exploring the role of cryptography in modern cybersecurity implementations including quantum-resistant algorithms, post-quantum cryptography, and secure key management...",
+      image: "https://images.unsplash.com/photo-1593407089396-93f0c7a575f0?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njl8MHwxfHNlYXJjaHwyfHxkaWdpdGFsJTIwc2VjdXJpdHl8ZW58MHx8fGJsdWV8MTc1MjY0OTU5OHww&ixlib=rb-4.1.0&q=85",
+      featured: false
     },
     {
       title: "Network Penetration Testing Methodologies",
       author: "Wahab Khan",
-      category: "Penetration Testing, Network Security",
-      date: "11/1/2024",
+      category: "Penetration Testing",
+      categories: ["Penetration Testing", "Network Security"],
+      date: "November 1, 2024",
       readTime: "8 mins",
-      excerpt: "Advanced techniques and methodologies for effective network penetration testing..."
+      excerpt: "Advanced techniques and methodologies for effective network penetration testing including reconnaissance, vulnerability assessment, and exploit development...",
+      image: "https://images.unsplash.com/photo-1597733336794-12d05021d510?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1NzZ8MHwxfHNlYXJjaHwxfHxuZXR3b3JrJTIwc2VjdXJpdHl8ZW58MHx8fGJsdWV8MTc1MjY0OTU4OXww&ixlib=rb-4.1.0&q=85",
+      featured: false
     }
   ];
 
+  const categories = ['all', 'Blockchain', 'Malware Analysis', 'Hardware Security', 'Web Security', 'Cryptography', 'Penetration Testing'];
+
+  const filteredPosts = selectedCategory === 'all' 
+    ? blogPosts 
+    : blogPosts.filter(post => post.category === selectedCategory);
+
   return (
-    <section id="blog" className="py-20 bg-gray-900">
-      <div className="container mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-white mb-4">Latest Blog Posts</h2>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-            Stay updated with the latest insights and research in cybersecurity
-          </p>
+    <section id="blog" className="py-24 bg-black relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-900/5 to-purple-900/5"></div>
+      
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="text-center mb-16" ref={ref}>
+          <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+            <span className="inline-block bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-full text-sm font-medium mb-4">
+              📚 BLOG & INSIGHTS
+            </span>
+            <h2 className="text-5xl md:text-6xl font-black text-white mb-6">
+              Latest <span className="gradient-text">Cybersecurity</span> Insights
+            </h2>
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+              Stay updated with the latest research, techniques, and insights in cybersecurity
+            </p>
+          </div>
+        </div>
+        
+        {/* Category Filter */}
+        <div className="flex flex-wrap justify-center gap-3 mb-16">
+          {categories.map((category) => (
+            <button
+              key={category}
+              onClick={() => setSelectedCategory(category)}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 hover-lift ${
+                selectedCategory === category
+                  ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white'
+                  : 'glass-card text-gray-300 hover:text-white'
+              }`}
+            >
+              {category === 'all' ? 'All Posts' : category}
+            </button>
+          ))}
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {blogPosts.map((post, index) => (
-            <article key={index} className="bg-gray-800 rounded-xl p-6 hover:bg-gray-700 transition-all duration-300 transform hover:scale-105 shadow-lg">
-              <div className="mb-4">
-                <span className="text-blue-400 text-sm font-medium">{post.category}</span>
-                <div className="flex items-center text-gray-400 text-xs mt-1">
-                  <span>{post.author}</span>
+          {filteredPosts.map((post, index) => (
+            <article 
+              key={index} 
+              className={`glass-card card-hover transition-all duration-500 ${
+                post.featured ? 'md:col-span-2 lg:col-span-2' : ''
+              } ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+              style={{ transitionDelay: `${index * 100}ms` }}
+            >
+              <div className="relative overflow-hidden rounded-2xl mb-6 group">
+                <img 
+                  src={post.image} 
+                  alt={post.title}
+                  className={`w-full object-cover group-hover:scale-110 transition-transform duration-700 ${
+                    post.featured ? 'h-64' : 'h-48'
+                  }`}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                <div className="absolute top-4 left-4">
+                  <span className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-3 py-1 rounded-full text-xs font-medium">
+                    {post.category}
+                  </span>
+                </div>
+                {post.featured && (
+                  <div className="absolute top-4 right-4">
+                    <span className="bg-yellow-500 text-black px-3 py-1 rounded-full text-xs font-bold">
+                      FEATURED
+                    </span>
+                  </div>
+                )}
+              </div>
+              
+              <div className="p-6">
+                <div className="flex items-center text-gray-400 text-sm mb-4">
+                  <span className="text-blue-400">{post.author}</span>
                   <span className="mx-2">•</span>
                   <span>{post.date}</span>
                   <span className="mx-2">•</span>
                   <span>{post.readTime}</span>
                 </div>
+                
+                <h3 className={`font-bold text-white mb-4 line-clamp-2 ${
+                  post.featured ? 'text-2xl' : 'text-xl'
+                }`}>
+                  {post.title}
+                </h3>
+                
+                <p className="text-gray-300 mb-6 line-clamp-3 leading-relaxed">
+                  {post.excerpt}
+                </p>
+                
+                <div className="flex flex-wrap gap-2 mb-6">
+                  {post.categories.map((cat, catIndex) => (
+                    <span key={catIndex} className="bg-blue-500/20 text-blue-300 px-3 py-1 rounded-full text-xs">
+                      {cat}
+                    </span>
+                  ))}
+                </div>
+                
+                <button className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 rounded-xl font-semibold hover:from-blue-600 hover:to-purple-700 transition-all duration-300 hover-lift">
+                  Read Article
+                </button>
               </div>
-              <h3 className="text-xl font-bold text-white mb-3 line-clamp-2">{post.title}</h3>
-              <p className="text-gray-400 mb-4 line-clamp-3">{post.excerpt}</p>
-              <button className="text-blue-400 hover:text-blue-300 font-medium text-sm">
-                Read More →
-              </button>
             </article>
           ))}
         </div>
@@ -940,14 +1038,17 @@ export const Blog = () => {
   );
 };
 
-// Contact Component
+// Enhanced Contact Component
 export const Contact = () => {
+  const [ref, isVisible] = useScrollReveal();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    company: '',
     service: '',
     message: ''
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleInputChange = (e) => {
     setFormData({
@@ -956,152 +1057,222 @@ export const Contact = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission
-    console.log('Form submitted:', formData);
-    alert('Thank you for your message! We will get back to you soon.');
-    setFormData({ name: '', email: '', service: '', message: '' });
+    setIsSubmitting(true);
+    
+    // Simulate form submission
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    alert('Thank you for your message! We will get back to you within 24 hours.');
+    setFormData({ name: '', email: '', company: '', service: '', message: '' });
+    setIsSubmitting(false);
   };
 
+  const contactInfo = [
+    {
+      icon: "📧",
+      label: "Email",
+      value: "contact@out-sec.org",
+      subvalue: "info@out-sec.org"
+    },
+    {
+      icon: "📱",
+      label: "Phone",
+      value: "+1 (555) 123-4567",
+      subvalue: "24/7 Emergency Line"
+    },
+    {
+      icon: "🌐",
+      label: "Website",
+      value: "www.out-sec.org",
+      subvalue: "Visit our main site"
+    },
+    {
+      icon: "📍",
+      label: "Office",
+      value: "Cybersecurity Hub",
+      subvalue: "Remote & Global"
+    }
+  ];
+
+  const socialLinks = [
+    { name: 'LinkedIn', icon: 'L', url: '#' },
+    { name: 'GitHub', icon: 'G', url: 'https://github.com/out-sec' },
+    { name: 'Twitter', icon: 'T', url: '#' },
+    { name: 'Discord', icon: 'D', url: '#' }
+  ];
+
   return (
-    <section id="contact" className="py-20 bg-black">
-      <div className="container mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-white mb-4">Get In Touch</h2>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-            Ready to secure your digital assets? Contact our cybersecurity experts today
-          </p>
+    <section id="contact" className="py-24 gradient-bg-1 relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-900/10 to-purple-900/10"></div>
+      
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="text-center mb-16" ref={ref}>
+          <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+            <span className="inline-block bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-full text-sm font-medium mb-4">
+              📞 GET IN TOUCH
+            </span>
+            <h2 className="text-5xl md:text-6xl font-black text-white mb-6">
+              Ready to <span className="gradient-text">Secure</span> Your Future?
+            </h2>
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+              Contact our cybersecurity experts today and let's build a safer digital world together
+            </p>
+          </div>
         </div>
         
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          <div>
-            <h3 className="text-2xl font-bold text-white mb-6">Contact Information</h3>
-            <div className="space-y-6">
-              <div className="flex items-center">
-                <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center mr-4">
-                  <span className="text-white text-xl">📧</span>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+          {/* Contact Information */}
+          <div className={`transition-all duration-1000 delay-200 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}`}>
+            <h3 className="text-3xl font-bold text-white mb-8">Let's Connect</h3>
+            
+            <div className="space-y-6 mb-12">
+              {contactInfo.map((info, index) => (
+                <div key={index} className="flex items-start space-x-4 glass-card p-4 hover-lift">
+                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center text-xl">
+                    {info.icon}
+                  </div>
+                  <div>
+                    <p className="text-gray-400 text-sm mb-1">{info.label}</p>
+                    <p className="text-white font-semibold">{info.value}</p>
+                    <p className="text-gray-400 text-sm">{info.subvalue}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-gray-400 text-sm">Email</p>
-                  <p className="text-white font-medium">contact@out-sec.org</p>
-                </div>
-              </div>
-              
-              <div className="flex items-center">
-                <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center mr-4">
-                  <span className="text-white text-xl">📱</span>
-                </div>
-                <div>
-                  <p className="text-gray-400 text-sm">Phone</p>
-                  <p className="text-white font-medium">+1 (555) 123-4567</p>
-                </div>
-              </div>
-              
-              <div className="flex items-center">
-                <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center mr-4">
-                  <span className="text-white text-xl">🌐</span>
-                </div>
-                <div>
-                  <p className="text-gray-400 text-sm">Website</p>
-                  <p className="text-white font-medium">www.out-sec.org</p>
-                </div>
-              </div>
+              ))}
             </div>
             
-            <div className="mt-8">
-              <h4 className="text-xl font-bold text-white mb-4">Follow Us</h4>
+            <div>
+              <h4 className="text-xl font-bold text-white mb-6">Follow Us</h4>
               <div className="flex space-x-4">
-                {['LinkedIn', 'GitHub', 'Twitter', 'Discord'].map((platform) => (
+                {socialLinks.map((platform) => (
                   <a 
-                    key={platform}
-                    href="#" 
-                    className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center text-gray-400 hover:bg-blue-600 hover:text-white transition-colors duration-200"
+                    key={platform.name}
+                    href={platform.url} 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center text-white font-bold hover:from-blue-600 hover:to-purple-700 transition-all duration-300 hover-lift"
                   >
-                    {platform.charAt(0)}
+                    {platform.icon}
                   </a>
                 ))}
               </div>
             </div>
           </div>
           
-          <div className="bg-gray-900 rounded-xl p-8">
-            <h3 className="text-2xl font-bold text-white mb-6">Send Us a Message</h3>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label htmlFor="name" className="block text-gray-400 text-sm font-medium mb-2">
-                  Full Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-blue-500"
-                  required
-                />
-              </div>
+          {/* Contact Form */}
+          <div className={`transition-all duration-1000 delay-400 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'}`}>
+            <div className="glass-card p-8">
+              <h3 className="text-2xl font-bold text-white mb-8">Send Us a Message</h3>
               
-              <div>
-                <label htmlFor="email" className="block text-gray-400 text-sm font-medium mb-2">
-                  Email Address
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-blue-500"
-                  required
-                />
-              </div>
-              
-              <div>
-                <label htmlFor="service" className="block text-gray-400 text-sm font-medium mb-2">
-                  Service Needed
-                </label>
-                <select
-                  id="service"
-                  name="service"
-                  value={formData.service}
-                  onChange={handleInputChange}
-                  className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-blue-500"
-                  required
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label htmlFor="name" className="block text-gray-400 text-sm font-medium mb-2">
+                      Full Name *
+                    </label>
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:bg-white/10 transition-all duration-300"
+                      placeholder="Enter your name"
+                      required
+                    />
+                  </div>
+                  
+                  <div>
+                    <label htmlFor="email" className="block text-gray-400 text-sm font-medium mb-2">
+                      Email Address *
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:bg-white/10 transition-all duration-300"
+                      placeholder="Enter your email"
+                      required
+                    />
+                  </div>
+                </div>
+                
+                <div>
+                  <label htmlFor="company" className="block text-gray-400 text-sm font-medium mb-2">
+                    Company/Organization
+                  </label>
+                  <input
+                    type="text"
+                    id="company"
+                    name="company"
+                    value={formData.company}
+                    onChange={handleInputChange}
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:bg-white/10 transition-all duration-300"
+                    placeholder="Enter your company name"
+                  />
+                </div>
+                
+                <div>
+                  <label htmlFor="service" className="block text-gray-400 text-sm font-medium mb-2">
+                    Service Needed *
+                  </label>
+                  <select
+                    id="service"
+                    name="service"
+                    value={formData.service}
+                    onChange={handleInputChange}
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500 focus:bg-white/10 transition-all duration-300"
+                    required
+                  >
+                    <option value="">Select a service</option>
+                    <option value="penetration-testing">Penetration Testing</option>
+                    <option value="malware-analysis">Malware Analysis</option>
+                    <option value="blockchain-security">Blockchain Security</option>
+                    <option value="iot-security">IoT Security</option>
+                    <option value="cryptography">Cryptography Integration</option>
+                    <option value="soc">Security Operations Center</option>
+                    <option value="consultation">Security Consultation</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+                
+                <div>
+                  <label htmlFor="message" className="block text-gray-400 text-sm font-medium mb-2">
+                    Message *
+                  </label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    value={formData.message}
+                    onChange={handleInputChange}
+                    rows="5"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:bg-white/10 transition-all duration-300 resize-none"
+                    placeholder="Tell us about your cybersecurity needs..."
+                    required
+                  ></textarea>
+                </div>
+                
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className={`w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white font-bold py-4 rounded-xl transition-all duration-300 hover-lift ${
+                    isSubmitting ? 'opacity-50 cursor-not-allowed' : 'hover:from-blue-600 hover:to-purple-700'
+                  }`}
                 >
-                  <option value="">Select a service</option>
-                  <option value="penetration-testing">Penetration Testing</option>
-                  <option value="malware-analysis">Malware Analysis</option>
-                  <option value="blockchain-security">Blockchain Security</option>
-                  <option value="iot-security">IoT Security</option>
-                  <option value="security-consultation">Security Consultation</option>
-                  <option value="other">Other</option>
-                </select>
-              </div>
-              
-              <div>
-                <label htmlFor="message" className="block text-gray-400 text-sm font-medium mb-2">
-                  Message
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  value={formData.message}
-                  onChange={handleInputChange}
-                  rows="5"
-                  className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-blue-500"
-                  required
-                ></textarea>
-              </div>
-              
-              <button
-                type="submit"
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200"
-              >
-                Send Message
-              </button>
-            </form>
+                  {isSubmitting ? (
+                    <div className="flex items-center justify-center">
+                      <div className="loading-spinner w-5 h-5 mr-2"></div>
+                      Sending Message...
+                    </div>
+                  ) : (
+                    'Send Message'
+                  )}
+                </button>
+              </form>
+            </div>
           </div>
         </div>
       </div>
@@ -1109,61 +1280,119 @@ export const Contact = () => {
   );
 };
 
-// Footer Component
+// Enhanced Footer Component
 export const Footer = () => {
+  const currentYear = new Date().getFullYear();
+  
+  const footerLinks = {
+    Services: [
+      'Penetration Testing',
+      'Malware Analysis',
+      'Blockchain Security',
+      'IoT Security',
+      'Cryptography',
+      'Security Consultation'
+    ],
+    Company: [
+      'About Us',
+      'Our Team',
+      'Projects',
+      'Blog',
+      'Contact',
+      'Careers'
+    ],
+    Resources: [
+      'Documentation',
+      'Case Studies',
+      'Security Tools',
+      'Research Papers',
+      'Whitepapers',
+      'API Reference'
+    ]
+  };
+
+  const socialLinks = [
+    { name: 'LinkedIn', icon: 'L', url: '#' },
+    { name: 'GitHub', icon: 'G', url: 'https://github.com/out-sec' },
+    { name: 'Twitter', icon: 'T', url: '#' },
+    { name: 'Discord', icon: 'D', url: '#' },
+    { name: 'Instagram', icon: 'I', url: '#' }
+  ];
+
   return (
-    <footer className="bg-gray-900 border-t border-gray-800 py-12">
-      <div className="container mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div className="col-span-1 md:col-span-2">
-            <div className="flex items-center space-x-2 mb-4">
-              <div className="w-8 h-8 bg-blue-600 rounded-md flex items-center justify-center">
-                <span className="text-white font-bold text-sm">OS</span>
+    <footer className="bg-black border-t border-white/10 relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-900/5 to-purple-900/5"></div>
+      
+      <div className="container mx-auto px-6 py-16 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
+          {/* Company Info */}
+          <div className="lg:col-span-2">
+            <div className="flex items-center space-x-3 mb-6">
+              <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+                <span className="text-white font-bold text-lg">OS</span>
               </div>
-              <span className="text-white font-bold text-xl">Out-Sec</span>
+              <div>
+                <span className="text-white font-bold text-2xl gradient-text">Out-Sec</span>
+                <p className="text-xs text-gray-400">Cybersecurity Excellence</p>
+              </div>
             </div>
-            <p className="text-gray-400 mb-4 max-w-md">
+            
+            <p className="text-gray-400 mb-6 max-w-md leading-relaxed">
               Defending the digital world with cutting-edge strategies in cybersecurity, 
-              blockchain, and IoT security solutions.
+              blockchain, and IoT security solutions. Built by experts, driven by innovation.
             </p>
+            
             <div className="flex space-x-4">
-              {['LinkedIn', 'GitHub', 'Twitter', 'Discord', 'Instagram'].map((platform) => (
+              {socialLinks.map((platform) => (
                 <a 
-                  key={platform}
-                  href="#" 
-                  className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center text-gray-400 hover:bg-blue-600 hover:text-white transition-colors duration-200"
+                  key={platform.name}
+                  href={platform.url} 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold hover:from-blue-600 hover:to-purple-700 transition-all duration-300 hover-lift"
+                  title={platform.name}
                 >
-                  {platform.charAt(0)}
+                  {platform.icon}
                 </a>
               ))}
             </div>
           </div>
           
-          <div>
-            <h4 className="text-white font-bold mb-4">Services</h4>
-            <ul className="space-y-2 text-gray-400">
-              <li><a href="#" className="hover:text-blue-400">Penetration Testing</a></li>
-              <li><a href="#" className="hover:text-blue-400">Malware Analysis</a></li>
-              <li><a href="#" className="hover:text-blue-400">Blockchain Security</a></li>
-              <li><a href="#" className="hover:text-blue-400">IoT Security</a></li>
-              <li><a href="#" className="hover:text-blue-400">Security Consultation</a></li>
-            </ul>
-          </div>
-          
-          <div>
-            <h4 className="text-white font-bold mb-4">Company</h4>
-            <ul className="space-y-2 text-gray-400">
-              <li><a href="#" className="hover:text-blue-400">About Us</a></li>
-              <li><a href="#" className="hover:text-blue-400">Our Team</a></li>
-              <li><a href="#" className="hover:text-blue-400">Projects</a></li>
-              <li><a href="#" className="hover:text-blue-400">Blog</a></li>
-              <li><a href="#" className="hover:text-blue-400">Contact</a></li>
-            </ul>
-          </div>
+          {/* Footer Links */}
+          {Object.entries(footerLinks).map(([category, links]) => (
+            <div key={category}>
+              <h4 className="text-white font-bold mb-4">{category}</h4>
+              <ul className="space-y-2">
+                {links.map((link) => (
+                  <li key={link}>
+                    <a 
+                      href="#" 
+                      className="text-gray-400 hover:text-blue-400 transition-colors duration-200 text-sm"
+                    >
+                      {link}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
         
-        <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-          <p>&copy; 2024 Out-Sec. All rights reserved. Built with expertise, driven by innovation.</p>
+        {/* Bottom Bar */}
+        <div className="border-t border-white/10 mt-12 pt-8">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <div className="text-center md:text-left mb-4 md:mb-0">
+              <p className="text-gray-400 text-sm">
+                © {currentYear} Out-Sec. All rights reserved. Built with expertise, driven by innovation.
+              </p>
+            </div>
+            
+            <div className="flex flex-wrap justify-center md:justify-end gap-6 text-sm">
+              <a href="#" className="text-gray-400 hover:text-blue-400 transition-colors">Privacy Policy</a>
+              <a href="#" className="text-gray-400 hover:text-blue-400 transition-colors">Terms of Service</a>
+              <a href="#" className="text-gray-400 hover:text-blue-400 transition-colors">Security</a>
+            </div>
+          </div>
         </div>
       </div>
     </footer>
