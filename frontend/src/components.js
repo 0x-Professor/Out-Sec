@@ -461,15 +461,16 @@ export const Header = ({ activeSection }) => {
                   transition={{ type: "spring", stiffness: 300 }}
                 >
                   <span className="text-white font-bold text-lg">OS</span>
+                  <img src = "C:\Users\PROFESSOR\AppData\Local\Microsoft\Windows\INetCache\IE\AG5X2U2L\Secureout-removebg-preview_(1)[1].png" alt = "OutSecure Logo" className="absolute inset-0 w-full h-full object-cover rounded-xl"/>
                 </motion.div>
                 <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full animate-pulse"></div>
               </div>
               <div>
                 <h1 className="text-white font-bold text-2xl bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent">
-                  Out-Sec
+                  OutSecure
                 </h1>
                 <p className="text-xs text-gray-400 group-hover:text-gray-300 transition-colors">
-                  Next-Gen Security
+                  Bitwise Security
                 </p>
               </div>
             </motion.div>
@@ -637,7 +638,7 @@ export const Hero = () => {
           >
             <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-600/20 border border-blue-500/30 backdrop-blur-sm">
               <span className="text-sm font-medium text-blue-300">
-                🛡️ OUT-SEC • ADVANCED CYBERSECURITY
+                🛡️ OUTSECURE • ADVANCED CYBERSECURITY
               </span>
             </div>
           </motion.div>
@@ -667,7 +668,7 @@ export const Hero = () => {
             className="max-w-3xl mx-auto"
           >
             <p className="text-xl md:text-2xl text-gray-300 leading-relaxed">
-              Out-Sec defends the digital world with cutting-edge strategies in cybersecurity, blockchain, and IoT.
+              OutSecure defends the digital world with cutting-edge strategies in cybersecurity, blockchain, and IoT.
             </p>
           </motion.div>
 
@@ -752,7 +753,7 @@ export const About = () => {
   const [activeTimelineItem, setActiveTimelineItem] = useState(0);
 
   const timeline = [
-    { year: '2020', title: 'Foundation', description: 'Out-Sec was founded with a vision to revolutionize cybersecurity' },
+    { year: '2020', title: 'Foundation', description: 'OutSecure was founded with a vision to revolutionize cybersecurity' },
     { year: '2021', title: 'First Major Client', description: 'Secured first enterprise client, protecting 10,000+ devices' },
     { year: '2022', title: 'Team Expansion', description: 'Grew team to 13 cybersecurity experts across various domains' },
     { year: '2023', title: 'AI Integration', description: 'Launched AI-powered threat detection and response systems' },
@@ -805,7 +806,7 @@ export const About = () => {
             <div className="mb-8">
               <span className="inline-block bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-full text-sm font-medium mb-4">
                 <SVGIcon type="security" className="w-4 h-4 inline mr-2" />
-                ABOUT OUT-SEC
+                ABOUT OutSecure
               </span>
               <h2 className="text-5xl md:text-6xl font-black text-white mb-6 leading-tight">
                 Securing Systems with<br />
@@ -1619,12 +1620,12 @@ export const Contact = () => {
       icon: "crypto",
       label: "Email",
       value: "contact@out-sec.org",
-      subvalue: "info@out-sec.org"
+      subvalue: "Contact Email"
     },
     {
       icon: "network",
       label: "Phone",
-      value: "+1 (555) 123-4567",
+      value: "+92 (340) 1900907",
       subvalue: "24/7 Emergency Line"
     },
     {
@@ -1993,7 +1994,7 @@ export const LiveChatWidget = () => {
       {isOpen && (
         <div className="glass-card w-80 h-96 mb-4 flex flex-col">
           <div className="p-4 border-b border-white/20">
-            <h3 className="text-white font-semibold">Out-Sec Support</h3>
+            <h3 className="text-white font-semibold">OutSecure Support</h3>
             <p className="text-sm text-gray-300">We're here to help!</p>
           </div>
           
