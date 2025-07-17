@@ -1,7 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Canvas, useFrame, useLoader } from '@react-three/fiber';
+import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, Sphere, Box, Torus, Text, Float, PerspectiveCamera } from '@react-three/drei';
-import { motion } from 'framer-motion-3d';
 import * as THREE from 'three';
 
 // Animated Security Shield
@@ -52,16 +51,15 @@ const DataCubes = () => {
         key={i}
         position={position}
         args={[0.1, 0.1, 0.1]}
-        material={
-          <meshStandardMaterial
-            color="#06b6d4"
-            transparent
-            opacity={0.6}
-            emissive="#006064"
-            emissiveIntensity={0.2}
-          />
-        }
-      />
+      >
+        <meshStandardMaterial
+          color="#06b6d4"
+          transparent
+          opacity={0.6}
+          emissive="#006064"
+          emissiveIntensity={0.2}
+        />
+      </Box>
     );
   }
   return <>{cubes}</>;
