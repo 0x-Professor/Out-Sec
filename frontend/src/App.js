@@ -2,16 +2,13 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { 
-  Header, 
-  Hero, 
-  About, 
-  Services, 
-  Team, 
-  Projects, 
-  Blog, 
-  Contact, 
-  Footer,
-  LiveChatWidget
+  Navigation, 
+  HeroSection, 
+  ServicesSection, 
+  TeamSection, 
+  ProjectsSection, 
+  ContactSection, 
+  Footer
 } from "./components";
 
 function App() {
@@ -19,7 +16,7 @@ function App() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['home', 'about', 'services', 'team', 'projects', 'blog', 'contact'];
+      const sections = ['home', 'services', 'team', 'projects', 'contact'];
       const scrollPosition = window.scrollY + 100;
 
       for (const section of sections) {
@@ -46,18 +43,15 @@ function App() {
         <Routes>
           <Route path="/" element={
             <>
-              <Header activeSection={activeSection} />
+              <Navigation activeSection={activeSection} />
               <main role="main">
-                <Hero />
-                <About />
-                <Services />
-                <Team />
-                <Projects />
-                <Blog />
-                <Contact />
+                <HeroSection />
+                <ServicesSection />
+                <TeamSection />
+                <ProjectsSection />
+                <ContactSection />
               </main>
               <Footer />
-              <LiveChatWidget />
             </>
           } />
         </Routes>

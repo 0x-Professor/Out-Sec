@@ -79,3 +79,53 @@ webpack compiled successfully
 Compiling...
 Compiled successfully!
 webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Failed to compile.
+
+Attempted import error: 'Header' is not exported from './components' (imported as 'Header').
+ERROR in ./src/App.js 39:44-50
+export 'Header' (imported as 'Header') was not found in './components' (possible exports: ContactSection, Footer, HeroSection, Navigation, ProjectsSection, ServicesSection, TeamSection)
+
+ERROR in ./src/App.js 47:46-50
+export 'Hero' (imported as 'Hero') was not found in './components' (possible exports: ContactSection, Footer, HeroSection, Navigation, ProjectsSection, ServicesSection, TeamSection)
+
+ERROR in ./src/App.js 51:45-50
+export 'About' (imported as 'About') was not found in './components' (possible exports: ContactSection, Footer, HeroSection, Navigation, ProjectsSection, ServicesSection, TeamSection)
+
+ERROR in ./src/App.js 55:45-53
+export 'Services' (imported as 'Services') was not found in './components' (possible exports: ContactSection, Footer, HeroSection, Navigation, ProjectsSection, ServicesSection, TeamSection)
+
+ERROR in ./src/App.js 59:45-49
+export 'Team' (imported as 'Team') was not found in './components' (possible exports: ContactSection, Footer, HeroSection, Navigation, ProjectsSection, ServicesSection, TeamSection)
+
+ERROR in ./src/App.js 63:45-53
+export 'Projects' (imported as 'Projects') was not found in './components' (possible exports: ContactSection, Footer, HeroSection, Navigation, ProjectsSection, ServicesSection, TeamSection)
+
+ERROR in ./src/App.js 67:45-49
+export 'Blog' (imported as 'Blog') was not found in './components' (possible exports: ContactSection, Footer, HeroSection, Navigation, ProjectsSection, ServicesSection, TeamSection)
+
+ERROR in ./src/App.js 71:45-52
+export 'Contact' (imported as 'Contact') was not found in './components' (possible exports: ContactSection, Footer, HeroSection, Navigation, ProjectsSection, ServicesSection, TeamSection)
+
+ERROR in ./src/App.js 84:43-57
+export 'LiveChatWidget' (imported as 'LiveChatWidget') was not found in './components' (possible exports: ContactSection, Footer, HeroSection, Navigation, ProjectsSection, ServicesSection, TeamSection)
+
+webpack compiled with 9 errors
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
