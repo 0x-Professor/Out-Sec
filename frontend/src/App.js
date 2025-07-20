@@ -61,6 +61,15 @@ function App() {
               <LiveChatWidget />
             </>
           } />
+          <Route path="/blog" element={
+            <>
+              <Header activeSection="blog" />
+              <main role="main">
+                <Blog />
+              </main>
+              <Footer />
+            </>
+          } />
           <Route path="/blog/:id" element={
             <>
               <Header activeSection="blog" />
