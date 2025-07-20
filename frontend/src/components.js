@@ -965,17 +965,17 @@ export const Services = () => {
       <div className="absolute inset-0 bg-gradient-to-br from-blue-900/10 to-purple-900/10"></div>
       
       <div className="container mx-auto px-6 relative z-10">
-        <div className="text-center mb-20" ref={ref}>
+        <div className="text-center mb-16" ref={ref}>
           <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-            <span className="inline-block bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-full text-sm font-medium mb-4">
-              <SVGIcon type="security" className="w-4 h-4 inline mr-2" />
-              OUR SERVICES
+            <span className="inline-block bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 text-white px-6 py-2 rounded-full text-sm font-medium mb-6 cyber-glow animate-cyber-pulse">
+              <SVGIcon type="security" className="w-4 h-4 inline mr-2 animate-neon-flicker" />
+              CYBER SERVICES
             </span>
-            <h2 className="text-5xl md:text-6xl font-black text-white mb-6">
-              Comprehensive <span className="gradient-text">Cybersecurity</span> Solutions
+            <h2 className="text-4xl md:text-5xl font-black text-white mb-6">
+              Next-Gen <span className="hologram-text">Cybersecurity</span> Arsenal
             </h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Advanced security solutions tailored to protect your digital assets from evolving threats
+            <p className="text-lg text-gray-300 max-w-2xl mx-auto">
+              Cutting-edge security solutions powered by AI and quantum-resistant technologies
             </p>
           </div>
         </div>
@@ -985,68 +985,90 @@ export const Services = () => {
           <div className="relative">
             <input
               type="text"
-              placeholder="Search services..."
+              placeholder="Search cyber services..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 pl-12 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:bg-white/20 transition-all duration-300"
+              className="w-full bg-black/30 border border-cyan-500/30 rounded-lg px-4 py-3 pl-12 text-white placeholder-gray-400 focus:outline-none focus:border-cyan-500 focus:bg-black/50 transition-all duration-300 cyber-glow backdrop-blur-sm"
             />
-            <SVGIcon type="penetration" className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+            <SVGIcon type="penetration" className="absolute left-4 top-1/2 transform -translate-y-1/2 text-cyan-400 w-5 h-5 animate-neon-flicker" />
           </div>
         </div>
         
-        <div className="grid-12 gap-8">
+        <div className="grid-12 gap-6">
           {filteredServices.map((service, index) => (
             <div 
               key={index} 
-              className={`col-12 md:col-6 lg:col-4 glass-card p-8 card-interactive transition-all duration-500 ${
+              className={`col-12 md:col-6 lg:col-3 cyber-card p-6 card-interactive-compact animate-cyber-float transition-all duration-500 ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}
-              style={{ transitionDelay: `${index * 100}ms` }}
+              style={{ 
+                transitionDelay: `${index * 100}ms`,
+                animationDelay: `${index * 0.2}s`
+              }}
               onMouseEnter={() => setActiveService(index)}
             >
-              <div className="relative overflow-hidden rounded-2xl mb-6 group">
+              <div className="relative overflow-hidden rounded-xl mb-4 group">
                 <img 
                   src={service.image} 
                   alt={service.title}
-                  className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-700"
+                  className="w-full h-32 object-cover group-hover:scale-110 transition-transform duration-700"
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                <div className="absolute bottom-4 left-4">
-                  <SVGIcon type={service.icon} className="w-8 h-8 text-white" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                <div className="absolute top-3 right-3">
+                  <div className="w-8 h-8 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-lg flex items-center justify-center animate-cyber-pulse">
+                    <SVGIcon type={service.icon} className="w-4 h-4 text-white" />
+                  </div>
+                </div>
+                <div className="absolute bottom-3 left-3">
+                  <div className="w-2 h-2 bg-cyan-400 rounded-full animate-neon-flicker"></div>
                 </div>
               </div>
               
-              <h3 className="text-2xl font-bold text-white mb-4">{service.title}</h3>
-              <p className="text-gray-300 mb-6 leading-relaxed">{service.description}</p>
+              <h3 className="text-lg font-bold hologram-text mb-3">{service.title}</h3>
+              <p className="text-gray-300 text-sm mb-4 leading-relaxed line-clamp-2">{service.description}</p>
               
-              <div className="space-y-4 mb-6">
+              <div className="space-y-3 mb-4">
                 <div>
-                  <h4 className="text-sm font-semibold text-blue-400 mb-2">Key Features:</h4>
-                  <div className="space-y-2">
-                    {service.features.map((feature, featureIndex) => (
-                      <div key={featureIndex} className="flex items-center text-sm">
-                        <div className="w-2 h-2 bg-blue-500 rounded-full mr-3"></div>
+                  <h4 className="text-xs font-semibold text-cyan-400 mb-2 flex items-center">
+                    <div className="w-1 h-1 bg-cyan-400 rounded-full mr-2 animate-neon-flicker"></div>
+                    Key Features
+                  </h4>
+                  <div className="space-y-1">
+                    {service.features.slice(0, 2).map((feature, featureIndex) => (
+                      <div key={featureIndex} className="flex items-center text-xs">
+                        <div className="w-1.5 h-1.5 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full mr-2"></div>
                         <span className="text-gray-300">{feature}</span>
                       </div>
                     ))}
+                    {service.features.length > 2 && (
+                      <div className="text-xs text-cyan-400">+{service.features.length - 2} more</div>
+                    )}
                   </div>
                 </div>
                 
                 <div>
-                  <h4 className="text-sm font-semibold text-purple-400 mb-2">Technologies:</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {service.technologies.map((tech, techIndex) => (
-                      <span key={techIndex} className="bg-purple-600/20 text-purple-300 px-2 py-1 rounded text-xs">
+                  <h4 className="text-xs font-semibold text-purple-400 mb-2 flex items-center">
+                    <div className="w-1 h-1 bg-purple-400 rounded-full mr-2 animate-neon-flicker"></div>
+                    Tech Stack
+                  </h4>
+                  <div className="flex flex-wrap gap-1">
+                    {service.technologies.slice(0, 2).map((tech, techIndex) => (
+                      <span key={techIndex} className="bg-gradient-to-r from-purple-600/30 to-pink-600/30 text-purple-300 px-2 py-0.5 rounded text-xs border border-purple-500/30">
                         {tech}
                       </span>
                     ))}
+                    {service.technologies.length > 2 && (
+                      <span className="bg-gray-700/50 text-gray-400 px-2 py-0.5 rounded text-xs border border-gray-600/30">
+                        +{service.technologies.length - 2}
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>
               
-              <button className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 rounded-xl font-semibold hover:from-blue-600 hover:to-purple-700 transition-all duration-300 hover-scale">
-                Learn More
+              <button className="w-full bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 text-white py-2 rounded-lg text-sm font-semibold hover:from-cyan-400 hover:via-blue-400 hover:to-purple-500 transition-all duration-300 hover-scale cyber-glow">
+                Explore
               </button>
             </div>
           ))}
@@ -1131,39 +1153,42 @@ export const Team = () => {
       <div className="absolute inset-0 bg-gradient-to-br from-purple-900/5 to-blue-900/5"></div>
       
       <div className="container mx-auto px-6 relative z-10">
-        <div className="text-center mb-20" ref={ref}>
+        <div className="text-center mb-16" ref={ref}>
           <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-            <span className="inline-block bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-full text-sm font-medium mb-4">
-              <SVGIcon type="security" className="w-4 h-4 inline mr-2" />
-              OUR TEAM
+            <span className="inline-block bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 text-white px-6 py-2 rounded-full text-sm font-medium mb-6 cyber-glow animate-cyber-pulse">
+              <SVGIcon type="soc" className="w-4 h-4 inline mr-2 animate-neon-flicker" />
+              CYBER TEAM
             </span>
-            <h2 className="text-5xl md:text-6xl font-black text-white mb-6">
-              Meet Our <span className="gradient-text">Expert Team</span>
+            <h2 className="text-4xl md:text-5xl font-black text-white mb-6">
+              Elite <span className="hologram-text">Security</span> Specialists
             </h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Cybersecurity professionals driving innovation and securing the digital future
+            <p className="text-lg text-gray-300 max-w-2xl mx-auto">
+              Advanced cybersecurity experts pioneering the future of digital defense
             </p>
           </div>
         </div>
         
-        <div className="grid-12 gap-8">
+        <div className="grid-12 gap-6">
           {teamMembers.map((member, index) => (
             <div 
               key={index} 
-              className={`col-12 md:col-6 lg:col-4 glass-card card-interactive transition-all duration-500 ${
+              className={`col-12 md:col-6 lg:col-4 glass-card p-6 card-interactive cursor-pointer transition-all duration-500 ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}
-              style={{ transitionDelay: `${index * 100}ms` }}
+              style={{ 
+                transitionDelay: `${index * 100}ms`,
+                animationDelay: `${index * 0.3}s`
+              }}
               onClick={() => setSelectedMember(member)}
             >
-              <div className="relative overflow-hidden rounded-2xl mb-6 group">
+              <div className="relative overflow-hidden rounded-xl mb-4 group">
                 <img 
                   src={member.image} 
                   alt={member.name}
-                  className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-700"
+                  className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-700"
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
                 <div className="absolute bottom-4 left-4 right-4">
                   <div className="bg-white/10 backdrop-blur-sm rounded-lg p-2">
                     <p className="text-white font-medium text-sm">{member.experience}</p>
@@ -1172,19 +1197,19 @@ export const Team = () => {
               </div>
               
               <div className="text-center">
-                <h3 className="text-xl font-bold text-white mb-2">{member.name}</h3>
-                <p className="text-blue-400 font-medium mb-3">{member.role}</p>
-                <p className="text-gray-400 text-sm mb-4 line-clamp-2">{member.specialization}</p>
+                <h3 className="text-lg font-bold hologram-text mb-2">{member.name}</h3>
+                <p className="text-cyan-400 font-medium text-sm mb-3">{member.role}</p>
+                <p className="text-gray-400 text-xs mb-4 line-clamp-2">{member.specialization}</p>
                 
-                <div className="flex flex-wrap gap-2 justify-center">
+                <div className="flex flex-wrap gap-1 justify-center">
                   {member.expertise.slice(0, 2).map((skill, skillIndex) => (
-                    <span key={skillIndex} className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-3 py-1 rounded-full text-xs">
+                    <span key={skillIndex} className="bg-gradient-to-r from-cyan-500/30 to-purple-600/30 text-cyan-300 px-2 py-1 rounded-full text-xs border border-cyan-500/30">
                       {skill}
                     </span>
                   ))}
                   {member.expertise.length > 2 && (
-                    <span className="bg-gray-700 text-gray-300 px-3 py-1 rounded-full text-xs">
-                      +{member.expertise.length - 2} more
+                    <span className="bg-gray-700/50 text-gray-400 px-2 py-1 rounded-full text-xs border border-gray-600/30">
+                      +{member.expertise.length - 2}
                     </span>
                   )}
                 </div>
@@ -1278,31 +1303,31 @@ export const Projects = () => {
       <div className="absolute inset-0 bg-gradient-to-br from-purple-900/5 to-blue-900/5"></div>
       
       <div className="container mx-auto px-6 relative z-10">
-        <div className="text-center mb-20" ref={ref}>
+        <div className="text-center mb-16" ref={ref}>
           <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-            <span className="inline-block bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-full text-sm font-medium mb-4">
-              <SVGIcon type="security" className="w-4 h-4 inline mr-2" />
-              OUR PROJECTS
+            <span className="inline-block bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 text-white px-6 py-2 rounded-full text-sm font-medium mb-6 cyber-glow animate-cyber-pulse">
+              <SVGIcon type="work" className="w-4 h-4 inline mr-2 animate-neon-flicker" />
+              CYBER PROJECTS
             </span>
-            <h2 className="text-5xl md:text-6xl font-black text-white mb-6">
-              Latest <span className="gradient-text">Security</span> Projects
+            <h2 className="text-4xl md:text-5xl font-black text-white mb-6">
+              Advanced <span className="hologram-text">Security</span> Deployments
             </h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Showcase of our recent cybersecurity implementations and solutions
+            <p className="text-lg text-gray-300 max-w-2xl mx-auto">
+              Cutting-edge cybersecurity implementations and breakthrough solutions
             </p>
           </div>
         </div>
 
         {/* Category Filter */}
-        <div className="flex flex-wrap gap-2 justify-center mb-16">
+        <div className="flex flex-wrap gap-3 justify-center mb-16">
           {categories.map((category) => (
             <button
               key={category}
               onClick={() => setSelectedCategory(category)}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 hover-scale ${
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover-scale border ${
                 selectedCategory === category
-                  ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white'
-                  : 'glass-card text-gray-300 hover:text-white'
+                  ? 'bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 text-white border-cyan-500/50 cyber-glow'
+                  : 'cyber-card text-gray-300 hover:text-white border-gray-600/30 hover:border-cyan-500/50'
               }`}
             >
               {category === 'all' ? 'All Projects' : category}
@@ -1310,51 +1335,59 @@ export const Projects = () => {
           ))}
         </div>
         
-        <div className="grid-12 gap-8">
+        <div className="grid-12 gap-6">
           {filteredProjects.map((project, index) => (
             <div 
               key={index} 
-              className={`col-12 md:col-6 lg:col-4 glass-card p-6 card-interactive transition-all duration-500 ${
+              className={`col-12 md:col-6 lg:col-4 cyber-card p-5 card-interactive-compact animate-cyber-float transition-all duration-500 ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}
-              style={{ transitionDelay: `${index * 100}ms` }}
+              style={{ 
+                transitionDelay: `${index * 100}ms`,
+                animationDelay: `${index * 0.4}s`
+              }}
             >
-              <div className="relative overflow-hidden rounded-2xl mb-6 group">
+              <div className="relative overflow-hidden rounded-xl mb-4 group">
                 <img 
                   src={project.image} 
                   alt={project.title}
-                  className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-700"
+                  className="w-full h-40 object-cover group-hover:scale-110 transition-transform duration-700"
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                <div className="absolute top-4 right-4">
-                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                    project.status === 'Completed' ? 'bg-green-500 text-white' : 'bg-yellow-500 text-black'
-                  }`}>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                <div className="absolute top-3 right-3">
+                  <span className={`px-2 py-1 rounded-lg text-xs font-medium border ${
+                    project.status === 'Completed' 
+                      ? 'bg-green-500/20 text-green-400 border-green-500/30' 
+                      : 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30'
+                  } animate-neon-flicker`}>
                     {project.status}
                   </span>
                 </div>
+                <div className="absolute bottom-3 left-3">
+                  <div className="w-2 h-2 bg-cyan-400 rounded-full animate-neon-flicker"></div>
+                </div>
               </div>
               
-              <div className="mb-4">
-                <span className="bg-blue-500/20 text-blue-300 px-3 py-1 rounded-full text-sm">
+              <div className="mb-3">
+                <span className="bg-gradient-to-r from-cyan-500/30 to-blue-500/30 text-cyan-300 px-3 py-1 rounded-full text-xs border border-cyan-500/30">
                   {project.category}
                 </span>
               </div>
               
-              <h3 className="text-xl font-bold text-white mb-3">{project.title}</h3>
-              <p className="text-gray-300 mb-4 leading-relaxed">{project.description}</p>
+              <h3 className="text-lg font-bold hologram-text mb-3">{project.title}</h3>
+              <p className="text-gray-300 text-sm mb-4 leading-relaxed line-clamp-2">{project.description}</p>
               
-              <div className="flex flex-wrap gap-2 mb-4">
+              <div className="flex flex-wrap gap-1 mb-4">
                 {project.technologies.map((tech, techIndex) => (
-                  <span key={techIndex} className="bg-purple-600/20 text-purple-300 px-2 py-1 rounded text-xs">
+                  <span key={techIndex} className="bg-gradient-to-r from-purple-600/30 to-pink-600/30 text-purple-300 px-2 py-0.5 rounded text-xs border border-purple-500/30">
                     {tech}
                   </span>
                 ))}
               </div>
               
-              <button className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 rounded-xl font-semibold hover:from-blue-600 hover:to-purple-700 transition-all duration-300 hover-scale">
-                View Project
+              <button className="w-full bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 text-white py-2 rounded-lg text-sm font-semibold hover:from-cyan-400 hover:via-blue-400 hover:to-purple-500 transition-all duration-300 hover-scale cyber-glow">
+                Access Project
               </button>
             </div>
           ))}
