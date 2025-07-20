@@ -138,11 +138,11 @@ export default function BlogPost() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-white py-20">
       <Helmet>
-        <title>{post.title} | Out-Sec Blog</title>
-        <meta name="description" content={post.excerpt} />
-        <meta property="og:title" content={post.title} />
-        <meta property="og:description" content={post.excerpt} />
-        {post.image && <meta property="og:image" content={post.image} />}
+        <title>{post?.title || 'Blog Post'} | Out-Sec Blog</title>
+        <meta name="description" content={post?.excerpt || 'Cybersecurity blog post'} />
+        <meta property="og:title" content={post?.title || 'Blog Post'} />
+        <meta property="og:description" content={post?.excerpt || 'Cybersecurity blog post'} />
+        <meta property="og:image" content={post?.image || '/images/cyber-security.jpg'} />
       </Helmet>
       <article className="max-w-4xl mx-auto px-4 py-12">
         <header className="mb-8">
