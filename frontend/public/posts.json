@@ -7,5 +7,14 @@
     "categories": ["security", "cyber"],
     "image": "/images/cyber-security.jpg",
     "featured": true
+  },
+  {
+    "id": "Your Blog Post Title",
+    "title": "Your Blog Post Title",
+    "excerpt": "brief summary of your blog post that will be shown in the blog listing",
+    "date": "2025-07-20",
+    "categories": ["security", "cyber"],
+    "image": "/images/cyber-security.jpg",
+    "featured": true
   }
 ]
