@@ -96,24 +96,6 @@ export default function BlogPost() {
       data: {},
       content: content.trim()
     };
-    const frontMatter = {};
-    let contentStart = 0;
-    
-    if (lines[0] === '---') {
-      for (let i = 1; i < lines.length; i++) {
-        if (lines[i] === '---') {
-          contentStart = i + 1;
-          break;
-        }
-        const [key, ...value] = lines[i].split(':');
-        frontMatter[key.trim()] = value.join(':').trim().replace(/^['"]|['"]$/g, '');
-      }
-    }
-    
-    return {
-      data: frontMatter,
-      content: lines.slice(contentStart).join('\n')
-    };
   };
 
   if (isLoading) {
