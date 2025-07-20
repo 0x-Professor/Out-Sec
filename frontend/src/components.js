@@ -1150,7 +1150,7 @@ export const Team = () => {
           {teamMembers.map((member, index) => (
             <div 
               key={index} 
-              className={`col-12 md:col-6 lg:col-4 glass-card p-6 card-interactive cursor-pointer transition-all duration-500 ${
+              className={`col-12 md:col-6 lg:col-4 glass-card card-interactive transition-all duration-500 ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}
               style={{ transitionDelay: `${index * 100}ms` }}
@@ -1163,7 +1163,7 @@ export const Team = () => {
                   className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-700"
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
                 <div className="absolute bottom-4 left-4 right-4">
                   <div className="bg-white/10 backdrop-blur-sm rounded-lg p-2">
                     <p className="text-white font-medium text-sm">{member.experience}</p>
