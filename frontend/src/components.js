@@ -1150,7 +1150,7 @@ export const Team = () => {
           {teamMembers.map((member, index) => (
             <div 
               key={index} 
-              className={`col-12 sm:col-6 lg:col-4 glass-card p-4 sm:p-5 card-interactive cursor-pointer transition-all duration-500 ${
+              className={`col-12 md:col-6 lg:col-4 glass-card p-4 sm:p-5 card-interactive cursor-pointer transition-all duration-500 ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}
               style={{ 
@@ -1323,7 +1323,7 @@ export const Projects = () => {
           {filteredProjects.map((project, index) => (
             <div 
               key={index} 
-              className={`col-12 sm:col-6 lg:col-4 glass-card p-4 sm:p-5 card-interactive transition-all duration-500 ${
+              className={`col-12 md:col-6 lg:col-4 glass-card p-4 sm:p-5 card-interactive transition-all duration-500 ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}
               style={{ 
@@ -1531,7 +1531,7 @@ export const Blog = () => {
           {filteredPosts.map((post, index) => (
             <article 
               key={index} 
-              className={`${post.featured ? 'col-12 lg:col-8' : 'col-12 sm:col-6 lg:col-4'} glass-card card-interactive transition-all duration-500 ${
+              className={`${post.featured ? 'col-12 lg:col-8' : 'col-12 md:col-6 lg:col-4'} glass-card card-interactive transition-all duration-500 ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}
               style={{ 
