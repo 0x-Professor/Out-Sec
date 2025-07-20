@@ -1146,11 +1146,11 @@ export const Team = () => {
           </div>
         </div>
         
-        <div className="grid-12 gap-4 sm:gap-6">
+        <div className="flex flex-wrap -mx-2">
           {teamMembers.map((member, index) => (
             <div 
               key={index} 
-              className={`col-12 md:col-6 lg:col-4 glass-card p-4 sm:p-5 card-interactive cursor-pointer transition-all duration-500 ${
+              className={`w-full md:w-1/2 lg:w-1/3 px-2 mb-4 glass-card p-4 sm:p-5 card-interactive cursor-pointer transition-all duration-500 ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}
               style={{ 
@@ -1319,11 +1319,11 @@ export const Projects = () => {
           ))}
         </div>
         
-        <div className="grid-12 gap-4 sm:gap-6">
+        <div className="flex flex-wrap -mx-2">
           {filteredProjects.map((project, index) => (
             <div 
               key={index} 
-              className={`col-12 md:col-6 lg:col-4 glass-card p-4 sm:p-5 card-interactive transition-all duration-500 ${
+              className={`w-full md:w-1/2 lg:w-1/3 px-2 mb-4 glass-card p-4 sm:p-5 card-interactive transition-all duration-500 ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}
               style={{ 
@@ -1527,11 +1527,11 @@ export const Blog = () => {
           </div>
         </div>
         
-        <div className="grid-12 gap-4 sm:gap-6">
+        <div className="flex flex-wrap -mx-2">
           {filteredPosts.map((post, index) => (
             <article 
               key={index} 
-              className={`${post.featured ? 'col-12 lg:col-8' : 'col-12 md:col-6 lg:col-4'} glass-card card-interactive transition-all duration-500 ${
+              className={`${post.featured ? 'w-full lg:w-2/3' : 'w-full md:w-1/2 lg:w-1/3'} px-2 mb-4 glass-card card-interactive transition-all duration-500 ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}
               style={{ 
