@@ -1146,48 +1146,54 @@ export const Team = () => {
           </div>
         </div>
         
-        <div className="grid-12 gap-6">
+        <div className="grid-12 gap-4 sm:gap-6">
           {teamMembers.map((member, index) => (
             <div 
               key={index} 
-              className={`col-12 md:col-6 lg:col-4 glass-card p-6 card-interactive cursor-pointer transition-all duration-500 ${
+              className={`col-12 sm:col-6 lg:col-4 glass-card p-4 sm:p-5 card-interactive cursor-pointer transition-all duration-500 ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}
               style={{ 
                 transitionDelay: `${index * 100}ms`,
-                animationDelay: `${index * 0.3}s`
+                animationDelay: `${index * 0.2}s`,
+                display: 'flex',
+                flexDirection: 'column',
+                height: '100%'
               }}
               onClick={() => setSelectedMember(member)}
             >
-              <div className="relative overflow-hidden rounded-xl mb-4 group">
+              <div className="relative overflow-hidden rounded-xl mb-3 sm:mb-4 group flex-shrink-0">
                 <img 
                   src={member.image} 
                   alt={member.name}
-                  className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-700"
+                  className="w-full h-36 sm:h-40 object-cover group-hover:scale-110 transition-transform duration-700"
                   loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
-                <div className="absolute bottom-4 left-4 right-4">
-                  <div className="bg-white/10 backdrop-blur-sm rounded-lg p-2">
-                    <p className="text-white font-medium text-sm">{member.experience}</p>
+                <div className="absolute bottom-3 left-3 right-3">
+                  <div className="bg-white/10 backdrop-blur-sm rounded-lg p-1.5">
+                    <p className="text-white font-medium text-xs sm:text-sm truncate">{member.experience}</p>
                   </div>
                 </div>
               </div>
               
-              <div className="text-center">
-                <h3 className="text-lg font-bold hologram-text mb-2">{member.name}</h3>
-                <p className="text-cyan-400 font-medium text-sm mb-3">{member.role}</p>
-                <p className="text-gray-400 text-xs mb-4 line-clamp-2">{member.specialization}</p>
+              <div className="flex flex-col flex-grow">
+                <h3 className="text-base sm:text-lg font-bold text-white mb-1 sm:mb-2 line-clamp-1">{member.name}</h3>
+                <p className="text-cyan-400 font-medium text-xs sm:text-sm mb-2 sm:mb-3">{member.role}</p>
+                <p className="text-gray-400 text-xs mb-3 sm:mb-4 line-clamp-2 flex-grow">{member.specialization}</p>
                 
-                <div className="flex flex-wrap gap-1 justify-center">
-                  {member.expertise.slice(0, 2).map((skill, skillIndex) => (
-                    <span key={skillIndex} className="bg-gradient-to-r from-cyan-500/30 to-purple-600/30 text-cyan-300 px-2 py-1 rounded-full text-xs border border-cyan-500/30">
+                <div className="flex flex-wrap gap-1 justify-center mt-auto">
+                  {member.expertise.slice(0, 3).map((skill, skillIndex) => (
+                    <span 
+                      key={skillIndex} 
+                      className="bg-gradient-to-r from-cyan-500/30 to-purple-600/30 text-cyan-300 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full text-[10px] xs:text-xs border border-cyan-500/30"
+                    >
                       {skill}
                     </span>
                   ))}
-                  {member.expertise.length > 2 && (
-                    <span className="bg-gray-700/50 text-gray-400 px-2 py-1 rounded-full text-xs border border-gray-600/30">
-                      +{member.expertise.length - 2}
+                  {member.expertise.length > 3 && (
+                    <span className="bg-gray-700/50 text-gray-400 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full text-[10px] xs:text-xs border border-gray-600/30">
+                      +{member.expertise.length - 3}
                     </span>
                   )}
                 </div>
@@ -1313,28 +1319,31 @@ export const Projects = () => {
           ))}
         </div>
         
-        <div className="grid-12 gap-6">
+        <div className="grid-12 gap-4 sm:gap-6">
           {filteredProjects.map((project, index) => (
             <div 
               key={index} 
-              className={`col-12 md:col-6 lg:col-4 glass-card p-6 card-interactive transition-all duration-500 ${
+              className={`col-12 sm:col-6 lg:col-4 glass-card p-4 sm:p-5 card-interactive transition-all duration-500 ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}
               style={{ 
                 transitionDelay: `${index * 100}ms`,
-                animationDelay: `${index * 0.2}s`
+                animationDelay: `${index * 0.15}s`,
+                display: 'flex',
+                flexDirection: 'column',
+                height: '100%'
               }}
             >
-              <div className="relative overflow-hidden rounded-xl mb-4 group">
+              <div className="relative overflow-hidden rounded-xl mb-3 sm:mb-4 group flex-shrink-0">
                 <img 
                   src={project.image} 
                   alt={project.title}
-                  className="w-full h-40 object-cover group-hover:scale-110 transition-transform duration-700"
+                  className="w-full h-36 sm:h-40 object-cover group-hover:scale-110 transition-transform duration-700"
                   loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
-                <div className="absolute top-3 right-3">
-                  <span className={`px-3 py-1 rounded-full text-xs font-medium backdrop-blur-sm ${
+                <div className="absolute top-2 right-2 sm:top-3 sm:right-3">
+                  <span className={`px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-[10px] xs:text-xs font-medium backdrop-blur-sm ${
                     project.status === 'Completed' 
                       ? 'bg-green-500/20 text-green-300 border border-green-500/30' 
                       : 'bg-yellow-500/20 text-yellow-300 border border-yellow-500/30'
@@ -1342,26 +1351,34 @@ export const Projects = () => {
                     {project.status}
                   </span>
                 </div>
-                <div className="absolute bottom-4 left-4 right-4">
-                  <div className="bg-white/10 backdrop-blur-sm rounded-lg p-2">
-                    <p className="text-white font-medium text-sm">{project.title}</p>
+                <div className="absolute bottom-3 left-3 right-3">
+                  <div className="bg-white/10 backdrop-blur-sm rounded-lg p-1.5">
+                    <p className="text-white font-medium text-xs sm:text-sm truncate">{project.title}</p>
                   </div>
                 </div>
               </div>
               
-              <div className="text-center">
-                <p className="text-cyan-400 font-medium text-sm mb-3">{project.category}</p>
-                <p className="text-gray-400 text-sm mb-4 leading-relaxed line-clamp-2">{project.description}</p>
+              <div className="flex flex-col flex-grow">
+                <p className="text-cyan-400 font-medium text-xs sm:text-sm mb-2 sm:mb-3">{project.category}</p>
+                <p className="text-gray-400 text-xs sm:text-sm mb-3 sm:mb-4 line-clamp-3 flex-grow">{project.description}</p>
                 
-                <div className="flex flex-wrap gap-2 justify-center mb-4">
-                  {project.technologies.map((tech, techIndex) => (
-                    <span key={techIndex} className="bg-gradient-to-r from-cyan-500/30 to-purple-600/30 text-cyan-300 px-2 py-1 rounded-full text-xs border border-cyan-500/30">
+                <div className="flex flex-wrap gap-1 justify-center mb-3 sm:mb-4">
+                  {project.technologies.slice(0, 3).map((tech, techIndex) => (
+                    <span 
+                      key={techIndex} 
+                      className="bg-gradient-to-r from-cyan-500/30 to-purple-600/30 text-cyan-300 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full text-[10px] xs:text-xs border border-cyan-500/30"
+                    >
                       {tech}
                     </span>
                   ))}
+                  {project.technologies.length > 3 && (
+                    <span className="bg-gray-700/50 text-gray-400 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full text-[10px] xs:text-xs border border-gray-600/30">
+                      +{project.technologies.length - 3}
+                    </span>
+                  )}
                 </div>
                 
-                <button className="w-full bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 text-white py-2 rounded-lg text-sm font-semibold hover:from-cyan-400 hover:via-blue-400 hover:to-purple-500 transition-all duration-300 hover-scale cyber-glow">
+                <button className="w-full bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 text-white py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold hover:from-cyan-400 hover:via-blue-400 hover:to-purple-500 transition-all duration-300 hover-scale cyber-glow">
                   View Details
                 </button>
               </div>
@@ -1510,67 +1527,80 @@ export const Blog = () => {
           </div>
         </div>
         
-        <div className="grid-12 gap-8">
+        <div className="grid-12 gap-4 sm:gap-6">
           {filteredPosts.map((post, index) => (
             <article 
               key={index} 
-              className={`${post.featured ? 'col-12 md:col-8' : 'col-12 md:col-6 lg:col-4'} glass-card card-interactive transition-all duration-500 ${
+              className={`${post.featured ? 'col-12 lg:col-8' : 'col-12 sm:col-6 lg:col-4'} glass-card card-interactive transition-all duration-500 ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}
-              style={{ transitionDelay: `${index * 100}ms` }}
+              style={{ 
+                transitionDelay: `${index * 100}ms`,
+                display: 'flex',
+                flexDirection: 'column',
+                height: '100%'
+              }}
             >
-              <div className="relative overflow-hidden rounded-2xl mb-6 group">
+              <div className="relative overflow-hidden rounded-xl mb-3 sm:mb-4 group flex-shrink-0">
                 <img 
                   src={post.image} 
                   alt={post.title}
                   className={`w-full object-cover group-hover:scale-110 transition-transform duration-700 ${
-                    post.featured ? 'h-64' : 'h-48'
+                    post.featured ? 'h-48 sm:h-56' : 'h-36 sm:h-40'
                   }`}
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                <div className="absolute top-4 left-4">
-                  <span className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-3 py-1 rounded-full text-xs font-medium">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+                <div className="absolute top-2 left-2 sm:top-3 sm:left-3">
+                  <span className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-[10px] xs:text-xs font-medium">
                     {post.category}
                   </span>
                 </div>
                 {post.featured && (
-                  <div className="absolute top-4 right-4">
-                    <span className="bg-yellow-500 text-black px-3 py-1 rounded-full text-xs font-bold">
+                  <div className="absolute top-2 right-2 sm:top-3 sm:right-3">
+                    <span className="bg-yellow-500 text-black px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-[10px] xs:text-xs font-bold">
                       FEATURED
                     </span>
                   </div>
                 )}
               </div>
               
-              <div className="p-6">
-                <div className="flex items-center text-gray-400 text-sm mb-4">
+              <div className="flex flex-col flex-grow p-4 sm:p-5">
+                <div className="flex items-center text-gray-400 text-xs sm:text-sm mb-2 sm:mb-3 flex-wrap">
                   <span className="text-blue-400">{post.author}</span>
-                  <span className="mx-2">•</span>
+                  <span className="mx-1 sm:mx-2">•</span>
                   <span>{post.date}</span>
-                  <span className="mx-2">•</span>
-                  <span>{post.readTime}</span>
+                  <span className="mx-1 sm:mx-2">•</span>
+                  <span className="whitespace-nowrap">{post.readTime}</span>
                 </div>
                 
-                <h3 className={`font-bold text-white mb-4 line-clamp-2 ${
-                  post.featured ? 'text-2xl' : 'text-xl'
+                <h3 className={`font-bold text-white mb-2 sm:mb-3 line-clamp-2 ${
+                  post.featured ? 'text-xl sm:text-2xl' : 'text-base sm:text-lg'
                 }`}>
                   {post.title}
                 </h3>
                 
-                <p className="text-gray-300 mb-6 line-clamp-3 leading-relaxed">
+                <p className="text-gray-300 text-xs sm:text-sm mb-3 sm:mb-4 line-clamp-3 leading-relaxed flex-grow">
                   {post.excerpt}
                 </p>
                 
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {post.categories.map((cat, catIndex) => (
-                    <span key={catIndex} className="bg-blue-500/20 text-blue-300 px-3 py-1 rounded-full text-xs">
+                <div className="flex flex-wrap gap-1 mb-3 sm:mb-4">
+                  {post.categories.slice(0, 3).map((cat, catIndex) => (
+                    <span 
+                      key={catIndex} 
+                      className="bg-blue-500/20 text-blue-300 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full text-[10px] xs:text-xs"
+                    >
                       {cat}
                     </span>
                   ))}
+                  {post.categories.length > 3 && (
+                    <span className="bg-gray-700/50 text-gray-400 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full text-[10px] xs:text-xs">
+                      +{post.categories.length - 3}
+                    </span>
+                  )}
                 </div>
                 
-                <button className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 rounded-xl font-semibold hover:from-blue-600 hover:to-purple-700 transition-all duration-300 hover-scale">
+                <button className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold hover:from-blue-600 hover:to-purple-700 transition-all duration-300 hover-scale">
                   Read Article
                 </button>
               </div>
