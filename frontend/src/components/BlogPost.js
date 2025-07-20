@@ -146,21 +146,21 @@ export default function BlogPost() {
       </Helmet>
       <article className="max-w-4xl mx-auto px-4 py-12">
         <header className="mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2">{post.title}</h1>
+          <h1 className="text-4xl font-bold text-white mb-2">{post?.title || 'Untitled Post'}</h1>
           <div className="flex items-center text-gray-400 text-sm mb-4">
-            <span>{post.author}</span>
+            <span>{post?.author || 'Out-Sec Team'}</span>
             <span className="mx-2">•</span>
-            <time dateTime={post.date}>
-              {new Date(post.date).toLocaleDateString('en-US', {
+            <time dateTime={post?.date || new Date().toISOString()}>
+              {new Date(post?.date || new Date()).toLocaleDateString('en-US', {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric',
               })}
             </time>
           </div>
-          {post.categories && (
+          {post?.categories?.length > 0 && (
             <div className="flex flex-wrap gap-2 mb-6">
-              {post.categories.map((category) => (
+              {post.categories.map((category, index) => (
                 <span
                   key={category}
                   className="bg-gradient-to-r from-cyan-500/30 to-purple-600/30 text-cyan-300 px-3 py-1 rounded-full text-sm"
