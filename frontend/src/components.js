@@ -998,7 +998,7 @@ export const Services = () => {
           {filteredServices.map((service, index) => (
             <div 
               key={index} 
-              className={`col-12 md:col-6 lg:col-3 cyber-card p-6 card-interactive-compact animate-cyber-float transition-all duration-500 ${
+              className={`col-12 md:col-6 lg:col-4 glass-card p-6 card-interactive transition-all duration-500 ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}
               style={{ 
@@ -1011,65 +1011,43 @@ export const Services = () => {
                 <img 
                   src={service.image} 
                   alt={service.title}
-                  className="w-full h-32 object-cover group-hover:scale-110 transition-transform duration-700"
+                  className="w-full h-40 object-cover group-hover:scale-110 transition-transform duration-700"
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
                 <div className="absolute top-3 right-3">
-                  <div className="w-8 h-8 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-lg flex items-center justify-center animate-cyber-pulse">
+                  <div className="w-8 h-8 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-lg flex items-center justify-center animate-cyber-pulse">
                     <SVGIcon type={service.icon} className="w-4 h-4 text-white" />
                   </div>
                 </div>
-                <div className="absolute bottom-3 left-3">
-                  <div className="w-2 h-2 bg-cyan-400 rounded-full animate-neon-flicker"></div>
+                <div className="absolute bottom-4 left-4 right-4">
+                  <div className="bg-white/10 backdrop-blur-sm rounded-lg p-2">
+                    <p className="text-white font-medium text-sm">{service.title}</p>
+                  </div>
                 </div>
               </div>
               
-              <h3 className="text-lg font-bold hologram-text mb-3">{service.title}</h3>
-              <p className="text-gray-300 text-sm mb-4 leading-relaxed line-clamp-2">{service.description}</p>
-              
-              <div className="space-y-3 mb-4">
-                <div>
-                  <h4 className="text-xs font-semibold text-cyan-400 mb-2 flex items-center">
-                    <div className="w-1 h-1 bg-cyan-400 rounded-full mr-2 animate-neon-flicker"></div>
-                    Key Features
-                  </h4>
-                  <div className="space-y-1">
-                    {service.features.slice(0, 2).map((feature, featureIndex) => (
-                      <div key={featureIndex} className="flex items-center text-xs">
-                        <div className="w-1.5 h-1.5 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full mr-2"></div>
-                        <span className="text-gray-300">{feature}</span>
-                      </div>
-                    ))}
-                    {service.features.length > 2 && (
-                      <div className="text-xs text-cyan-400">+{service.features.length - 2} more</div>
-                    )}
-                  </div>
+              <div className="text-center">
+                <p className="text-cyan-400 font-medium text-sm mb-3">{service.category}</p>
+                <p className="text-gray-400 text-sm mb-4 leading-relaxed line-clamp-2">{service.description}</p>
+                
+                <div className="flex flex-wrap gap-1 justify-center mb-4">
+                  {service.technologies.slice(0, 4).map((tech, techIndex) => (
+                    <span key={techIndex} className="bg-gradient-to-r from-cyan-500/30 to-purple-600/30 text-cyan-300 px-2 py-1 rounded-full text-xs border border-cyan-500/30">
+                      {tech}
+                    </span>
+                  ))}
+                  {service.technologies.length > 4 && (
+                    <span className="bg-gray-700/50 text-gray-400 px-2 py-1 rounded-full text-xs border border-gray-600/30">
+                      +{service.technologies.length - 4}
+                    </span>
+                  )}
                 </div>
                 
-                <div>
-                  <h4 className="text-xs font-semibold text-purple-400 mb-2 flex items-center">
-                    <div className="w-1 h-1 bg-purple-400 rounded-full mr-2 animate-neon-flicker"></div>
-                    Tech Stack
-                  </h4>
-                  <div className="flex flex-wrap gap-1">
-                    {service.technologies.slice(0, 2).map((tech, techIndex) => (
-                      <span key={techIndex} className="bg-gradient-to-r from-purple-600/30 to-pink-600/30 text-purple-300 px-2 py-0.5 rounded text-xs border border-purple-500/30">
-                        {tech}
-                      </span>
-                    ))}
-                    {service.technologies.length > 2 && (
-                      <span className="bg-gray-700/50 text-gray-400 px-2 py-0.5 rounded text-xs border border-gray-600/30">
-                        +{service.technologies.length - 2}
-                      </span>
-                    )}
-                  </div>
-                </div>
+                <button className="w-full bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 text-white py-2 rounded-lg text-sm font-semibold hover:from-cyan-400 hover:via-blue-400 hover:to-purple-500 transition-all duration-300 hover-scale cyber-glow">
+                  Learn More
+                </button>
               </div>
-              
-              <button className="w-full bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 text-white py-2 rounded-lg text-sm font-semibold hover:from-cyan-400 hover:via-blue-400 hover:to-purple-500 transition-all duration-300 hover-scale cyber-glow">
-                Explore
-              </button>
             </div>
           ))}
         </div>
@@ -1339,12 +1317,12 @@ export const Projects = () => {
           {filteredProjects.map((project, index) => (
             <div 
               key={index} 
-              className={`col-12 md:col-6 lg:col-4 cyber-card p-5 card-interactive-compact animate-cyber-float transition-all duration-500 ${
+              className={`col-12 md:col-6 lg:col-4 glass-card p-6 card-interactive transition-all duration-500 ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}
               style={{ 
                 transitionDelay: `${index * 100}ms`,
-                animationDelay: `${index * 0.4}s`
+                animationDelay: `${index * 0.2}s`
               }}
             >
               <div className="relative overflow-hidden rounded-xl mb-4 group">
@@ -1354,41 +1332,39 @@ export const Projects = () => {
                   className="w-full h-40 object-cover group-hover:scale-110 transition-transform duration-700"
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
                 <div className="absolute top-3 right-3">
-                  <span className={`px-2 py-1 rounded-lg text-xs font-medium border ${
+                  <span className={`px-3 py-1 rounded-full text-xs font-medium backdrop-blur-sm ${
                     project.status === 'Completed' 
-                      ? 'bg-green-500/20 text-green-400 border-green-500/30' 
-                      : 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30'
-                  } animate-neon-flicker`}>
+                      ? 'bg-green-500/20 text-green-300 border border-green-500/30' 
+                      : 'bg-yellow-500/20 text-yellow-300 border border-yellow-500/30'
+                  }`}>
                     {project.status}
                   </span>
                 </div>
-                <div className="absolute bottom-3 left-3">
-                  <div className="w-2 h-2 bg-cyan-400 rounded-full animate-neon-flicker"></div>
+                <div className="absolute bottom-4 left-4 right-4">
+                  <div className="bg-white/10 backdrop-blur-sm rounded-lg p-2">
+                    <p className="text-white font-medium text-sm">{project.title}</p>
+                  </div>
                 </div>
               </div>
               
-              <div className="mb-3">
-                <span className="bg-gradient-to-r from-cyan-500/30 to-blue-500/30 text-cyan-300 px-3 py-1 rounded-full text-xs border border-cyan-500/30">
-                  {project.category}
-                </span>
+              <div className="text-center">
+                <p className="text-cyan-400 font-medium text-sm mb-3">{project.category}</p>
+                <p className="text-gray-400 text-sm mb-4 leading-relaxed line-clamp-2">{project.description}</p>
+                
+                <div className="flex flex-wrap gap-2 justify-center mb-4">
+                  {project.technologies.map((tech, techIndex) => (
+                    <span key={techIndex} className="bg-gradient-to-r from-cyan-500/30 to-purple-600/30 text-cyan-300 px-2 py-1 rounded-full text-xs border border-cyan-500/30">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+                
+                <button className="w-full bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 text-white py-2 rounded-lg text-sm font-semibold hover:from-cyan-400 hover:via-blue-400 hover:to-purple-500 transition-all duration-300 hover-scale cyber-glow">
+                  View Details
+                </button>
               </div>
-              
-              <h3 className="text-lg font-bold hologram-text mb-3">{project.title}</h3>
-              <p className="text-gray-300 text-sm mb-4 leading-relaxed line-clamp-2">{project.description}</p>
-              
-              <div className="flex flex-wrap gap-1 mb-4">
-                {project.technologies.map((tech, techIndex) => (
-                  <span key={techIndex} className="bg-gradient-to-r from-purple-600/30 to-pink-600/30 text-purple-300 px-2 py-0.5 rounded text-xs border border-purple-500/30">
-                    {tech}
-                  </span>
-                ))}
-              </div>
-              
-              <button className="w-full bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 text-white py-2 rounded-lg text-sm font-semibold hover:from-cyan-400 hover:via-blue-400 hover:to-purple-500 transition-all duration-300 hover-scale cyber-glow">
-                Access Project
-              </button>
             </div>
           ))}
         </div>
