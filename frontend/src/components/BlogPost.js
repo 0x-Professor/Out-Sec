@@ -48,11 +48,13 @@ export default function BlogPost() {
 
   // Simple markdown parser that extracts frontmatter and content
   const parseMarkdown = (content) => {
+    if (!content) return { data: {}, content: '' };
+    
     const lines = content.split('\n');
     
     // Check if content has frontmatter (starts with ---)
     if (lines[0] === '---') {
-      const frontmatterEnd = lines.slice(1).findIndex(line => line === '---') + 1;
+      const frontmatterEnd = lines.slice(1).findIndex(line => line.trim() === '---') + 1;
       if (frontmatterEnd > 0) {
         const frontmatter = {};
         const frontmatterLines = lines.slice(1, frontmatterEnd);
@@ -63,12 +65,18 @@ export default function BlogPost() {
             const key = match[1].trim().toLowerCase();
             let value = match[2].trim();
             
+            // Remove surrounding quotes if present
+            if ((value.startsWith('"') && value.endsWith('"')) || 
+                (value.startsWith("'") && value.endsWith("'"))) {
+              value = value.slice(1, -1);
+            }
+            
             // Parse arrays (for categories, tags, etc.)
             if (value.startsWith('[') && value.endsWith(']')) {
               value = value
                 .slice(1, -1)
                 .split(',')
-                .map(item => item.trim().replace(/['"]/g, ''))
+                .map(item => item.trim().replace(/^['"](.*)['"]$/, '$1'))
                 .filter(Boolean);
             }
             
@@ -78,7 +86,7 @@ export default function BlogPost() {
         
         return {
           data: frontmatter,
-          content: lines.slice(frontmatterEnd + 1).join('\n')
+          content: lines.slice(frontmatterEnd + 1).join('\n').trim()
         };
       }
     }
@@ -86,7 +94,7 @@ export default function BlogPost() {
     // If no frontmatter, return the whole content
     return {
       data: {},
-      content: content
+      content: content.trim()
     };
     const frontMatter = {};
     let contentStart = 0;
@@ -158,9 +166,9 @@ export default function BlogPost() {
               })}
             </time>
           </div>
-          {post?.categories?.length > 0 && (
+          {Array.isArray(post?.categories) && post.categories.length > 0 && (
             <div className="flex flex-wrap gap-2 mb-6">
-              {post.categories.map((category, index) => (
+              {post.categories.map((category) => (
                 <span
                   key={category}
                   className="bg-gradient-to-r from-cyan-500/30 to-purple-600/30 text-cyan-300 px-3 py-1 rounded-full text-sm"
@@ -173,7 +181,11 @@ export default function BlogPost() {
         </header>
 
         <div className="prose prose-invert max-w-none">
-          <ReactMarkdown>{post.content}</ReactMarkdown>
+          {post?.content ? (
+            <ReactMarkdown>{post.content}</ReactMarkdown>
+          ) : (
+            <p className="text-red-400">No content available for this post.</p>
+          )}
         </div>
       </article>
     </div>
