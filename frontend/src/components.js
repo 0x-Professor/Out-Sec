@@ -1150,52 +1150,56 @@ export const Team = () => {
           {teamMembers.map((member, index) => (
             <div 
               key={index} 
-              className={`w-full md:w-1/2 lg:w-1/3 px-2 mb-4 glass-card p-4 sm:p-5 card-interactive cursor-pointer transition-all duration-500 ${
-                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-              }`}
-              style={{ 
-                transitionDelay: `${index * 100}ms`,
-                animationDelay: `${index * 0.2}s`,
-                display: 'flex',
-                flexDirection: 'column',
-                height: '100%'
-              }}
-              onClick={() => setSelectedMember(member)}
+              className="w-full md:w-1/2 lg:w-1/3 px-2 mb-6"
             >
-              <div className="relative overflow-hidden rounded-xl mb-3 sm:mb-4 group flex-shrink-0">
-                <img 
-                  src={member.image} 
-                  alt={member.name}
-                  className="w-full h-36 sm:h-40 object-cover group-hover:scale-110 transition-transform duration-700"
-                  loading="lazy"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
-                <div className="absolute bottom-3 left-3 right-3">
-                  <div className="bg-white/10 backdrop-blur-sm rounded-lg p-1.5">
-                    <p className="text-white font-medium text-xs sm:text-sm truncate">{member.experience}</p>
+              <div 
+                className="h-full glass-card p-4 sm:p-5 card-interactive cursor-pointer transition-all duration-500 flex flex-col"
+                style={{ 
+                  transitionDelay: `${index * 100}ms`,
+                  animationDelay: `${index * 0.2}s`,
+                  opacity: isVisible ? 1 : 0,
+                  transform: isVisible ? 'translateY(0)' : 'translateY(10px)'
+                }}
+                onClick={() => setSelectedMember(member)}
+              >
+                {/* Image Container */}
+                <div className="relative overflow-hidden rounded-xl mb-4 group flex-shrink-0 aspect-video">
+                  <img 
+                    src={member.image} 
+                    alt={member.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+                  <div className="absolute bottom-3 left-3 right-3">
+                    <div className="bg-white/10 backdrop-blur-sm rounded-lg px-2 py-1">
+                      <p className="text-white font-medium text-xs sm:text-sm truncate">{member.experience}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-              
-              <div className="flex flex-col flex-grow">
-                <h3 className="text-base sm:text-lg font-bold text-white mb-1 sm:mb-2 line-clamp-1">{member.name}</h3>
-                <p className="text-cyan-400 font-medium text-xs sm:text-sm mb-2 sm:mb-3">{member.role}</p>
-                <p className="text-gray-400 text-xs mb-3 sm:mb-4 line-clamp-2 flex-grow">{member.specialization}</p>
                 
-                <div className="flex flex-wrap gap-1 justify-center mt-auto">
-                  {member.expertise.slice(0, 3).map((skill, skillIndex) => (
-                    <span 
-                      key={skillIndex} 
-                      className="bg-gradient-to-r from-cyan-500/30 to-purple-600/30 text-cyan-300 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full text-[10px] xs:text-xs border border-cyan-500/30"
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                  {member.expertise.length > 3 && (
-                    <span className="bg-gray-700/50 text-gray-400 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full text-[10px] xs:text-xs border border-gray-600/30">
-                      +{member.expertise.length - 3}
-                    </span>
-                  )}
+                {/* Content */}
+                <div className="flex flex-col flex-grow">
+                  <h3 className="text-base sm:text-lg font-bold text-white mb-1 line-clamp-1">{member.name}</h3>
+                  <p className="text-cyan-400 font-medium text-xs sm:text-sm mb-2">{member.role}</p>
+                  <p className="text-gray-400 text-xs sm:text-sm mb-4 line-clamp-2 flex-grow">{member.specialization}</p>
+                  
+                  {/* Skills */}
+                  <div className="flex flex-wrap gap-1.5 mt-auto">
+                    {member.expertise.slice(0, 3).map((skill, skillIndex) => (
+                      <span 
+                        key={skillIndex} 
+                        className="bg-gradient-to-r from-cyan-500/30 to-purple-600/30 text-cyan-300 px-2 py-0.5 rounded-full text-[10px] sm:text-xs border border-cyan-500/30"
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                    {member.expertise.length > 3 && (
+                      <span className="text-gray-400 text-xs flex items-center">
+                        +{member.expertise.length - 3} more
+                      </span>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -1323,70 +1327,74 @@ export const Projects = () => {
           {filteredProjects.map((project, index) => (
             <div 
               key={index} 
-              className={`w-full md:w-1/2 lg:w-1/3 px-2 mb-4 glass-card p-4 sm:p-5 card-interactive transition-all duration-500 ${
-                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-              }`}
-              style={{ 
-                transitionDelay: `${index * 100}ms`,
-                animationDelay: `${index * 0.15}s`,
-                display: 'flex',
-                flexDirection: 'column',
-                height: '100%'
-              }}
+              className="w-full md:w-1/2 lg:w-1/3 px-2 mb-6"
             >
-              <div className="relative overflow-hidden rounded-xl mb-3 sm:mb-4 group flex-shrink-0">
-                <img 
-                  src={project.image} 
-                  alt={project.title}
-                  className="w-full h-36 sm:h-40 object-cover group-hover:scale-110 transition-transform duration-700"
-                  loading="lazy"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
-                <div className="absolute top-2 right-2 sm:top-3 sm:right-3">
-                  <span className={`px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-[10px] xs:text-xs font-medium backdrop-blur-sm ${
-                    project.status === 'Completed' 
-                      ? 'bg-green-500/20 text-green-300 border border-green-500/30' 
-                      : 'bg-yellow-500/20 text-yellow-300 border border-yellow-500/30'
-                  }`}>
-                    {project.status}
-                  </span>
-                </div>
-                <div className="absolute bottom-3 left-3 right-3">
-                  <div className="bg-white/10 backdrop-blur-sm rounded-lg p-1.5">
-                    <p className="text-white font-medium text-xs sm:text-sm truncate">{project.title}</p>
+              <div 
+                className="h-full glass-card p-4 sm:p-5 card-interactive transition-all duration-500 flex flex-col"
+                style={{
+                  transitionDelay: `${index * 100}ms`,
+                  animationDelay: `${index * 0.15}s`,
+                  opacity: isVisible ? 1 : 0,
+                  transform: isVisible ? 'translateY(0)' : 'translateY(10px)'
+                }}
+              >
+                {/* Image Container */}
+                <div className="relative overflow-hidden rounded-xl mb-4 group flex-shrink-0 aspect-video">
+                  <img 
+                    src={project.image} 
+                    alt={project.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+                  <div className="absolute top-2 right-2 sm:top-3 sm:right-3">
+                    <span className={`px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-[10px] xs:text-xs font-medium backdrop-blur-sm ${
+                      project.status === 'Completed' 
+                        ? 'bg-green-500/20 text-green-300 border border-green-500/30' 
+                        : 'bg-yellow-500/20 text-yellow-300 border border-yellow-500/30'
+                    }`}>
+                      {project.status}
+                    </span>
+                  </div>
+                  <div className="absolute bottom-3 left-3 right-3">
+                    <div className="bg-white/10 backdrop-blur-sm rounded-lg px-2 py-1">
+                      <p className="text-white font-medium text-xs sm:text-sm truncate">{project.title}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-              
-              <div className="flex flex-col flex-grow">
-                <p className="text-cyan-400 font-medium text-xs sm:text-sm mb-2 sm:mb-3">{project.category}</p>
-                <p className="text-gray-400 text-xs sm:text-sm mb-3 sm:mb-4 line-clamp-3 flex-grow">{project.description}</p>
                 
-                <div className="flex flex-wrap gap-1 justify-center mb-3 sm:mb-4">
-                  {project.technologies.slice(0, 3).map((tech, techIndex) => (
-                    <span 
-                      key={techIndex} 
-                      className="bg-gradient-to-r from-cyan-500/30 to-purple-600/30 text-cyan-300 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full text-[10px] xs:text-xs border border-cyan-500/30"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                  {project.technologies.length > 3 && (
-                    <span className="bg-gray-700/50 text-gray-400 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full text-[10px] xs:text-xs border border-gray-600/30">
-                      +{project.technologies.length - 3}
-                    </span>
-                  )}
-                </div>
+                {/* Content */}
+                <div className="flex flex-col flex-grow">
+                  <p className="text-cyan-400 font-medium text-xs sm:text-sm mb-2">{project.category}</p>
+                  <p className="text-gray-400 text-xs sm:text-sm mb-4 line-clamp-3 flex-grow">{project.description}</p>
+                  
+                  {/* Technologies */}
+                  <div className="flex flex-wrap gap-1.5 mb-4">
+                    {project.technologies.slice(0, 3).map((tech, techIndex) => (
+                      <span 
+                        key={techIndex} 
+                        className="bg-gradient-to-r from-cyan-500/30 to-purple-600/30 text-cyan-300 px-2 py-0.5 rounded-full text-[10px] sm:text-xs border border-cyan-500/30"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                    {project.technologies.length > 3 && (
+                      <span className="bg-gray-700/50 text-gray-400 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full text-[10px] xs:text-xs border border-gray-600/30">
+                        +{project.technologies.length - 3}
+                      </span>
+                    )}
+                  </div>
                 
                 <button className="w-full bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 text-white py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold hover:from-cyan-400 hover:via-blue-400 hover:to-purple-500 transition-all duration-300 hover-scale cyber-glow">
                   View Details
                 </button>
               </div>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
-    </section>
+    </div>
+  </section>
   );
 };
 
