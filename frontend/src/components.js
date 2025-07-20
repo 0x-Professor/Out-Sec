@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
+import { Link } from 'react-scroll';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from "framer-motion";
 
 // SVG Icons Component
@@ -96,8 +98,21 @@ const ProgressBar = () => {
       setProgress(progressPercentage);
     };
 
-    window.addEventListener('scroll', updateProgress);
-    return () => window.removeEventListener('scroll', updateProgress);
+    // Use requestAnimationFrame for better performance
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          updateProgress();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    // Use passive event listener for better scroll performance
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll, { passive: true });
   }, []);
 
   return (
@@ -1395,116 +1410,116 @@ export const Projects = () => {
   );
 };
 
-// Enhanced Blog Component
+// Blog Component with Markdown Support
 export const Blog = () => {
-  const [ref, isVisible] = useScrollReveal();
+  const [posts, setPosts] = useState([]);
+  const [filteredPosts, setFilteredPosts] = useState([]);
+  const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
-
-  const blogPosts = [
-    {
-      title: "Secure communication of IoT Devices using blockchain",
-      author: "Mohsin Mukhtiar",
-      category: "Blockchain",
-      categories: ["Blockchain", "Network Security", "IoT Security"],
-      date: "December 4, 2024",
-      readTime: "4 mins",
-      excerpt: "Exploring how blockchain technology can enhance IoT device security and communication protocols through decentralized authentication and encrypted data transmission...",
-      image: "https://images.unsplash.com/photo-1660732106134-f3009a1e90ea?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njl8MHwxfHNlYXJjaHwxfHxkaWdpdGFsJTIwc2VjdXJpdHl8ZW58MHx8fGJsdWV8MTc1MjY0OTU5OHww&ixlib=rb-4.1.0&q=85",
-      featured: true
-    },
-    {
-      title: "Advanced Malware Analysis Techniques",
-      author: "Ali Ejaz",
-      category: "Malware Analysis",
-      categories: ["Malware Analysis", "Security Research"],
-      date: "November 28, 2024",
-      readTime: "6 mins",
-      excerpt: "Deep dive into modern malware analysis methodologies and reverse engineering techniques using dynamic analysis, behavioral detection, and AI-powered classification...",
-      image: "https://images.unsplash.com/photo-1590494165264-1ebe3602eb80?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwyfHxjeWJlcnNlY3VyaXR5fGVufDB8fHxibHVlfDE3NTI2NDk1ODJ8MA&ixlib=rb-4.1.0&q=85",
-      featured: false
-    },
-    {
-      title: "Hardware Security in Modern Systems",
-      author: "Khizar Ali Shah",
-      category: "Hardware Security",
-      categories: ["Hardware Security", "IoT Security"],
-      date: "November 22, 2024",
-      readTime: "5 mins",
-      excerpt: "Understanding hardware-level security threats and mitigation strategies for modern systems including secure boot, hardware attestation, and side-channel attacks...",
-      image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1NzZ8MHwxfHNlYXJjaHwyfHxuZXR3b3JrJTIwc2VjdXJpdHl8ZW58MHx8fGJsdWV8MTc1MjY0OTU4OXww&ixlib=rb-4.1.0&q=85",
-      featured: false
-    },
-    {
-      title: "Web Application Security Best Practices",
-      author: "Mazhar Saeed",
-      category: "Web Security",
-      categories: ["Web Security", "Application Security"],
-      date: "November 15, 2024",
-      readTime: "7 mins",
-      excerpt: "Comprehensive guide to securing web applications against modern attack vectors including OWASP Top 10, secure coding practices, and security testing methodologies...",
-      image: "https://images.unsplash.com/photo-1567619363836-e5fd63f69b20?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1NzZ8MHwxfHNlYXJjaHwyfHxoYWNraW5nfGVufDB8fHxibHVlfDE3NTI1NjA1NTN8MA&ixlib=rb-4.1.0&q=85",
-      featured: false
-    },
-    {
-      title: "Cryptography in Cybersecurity",
-      author: "Muhammad Fazeel",
-      category: "Cryptography",
-      categories: ["Cryptography", "Security"],
-      date: "November 8, 2024",
-      readTime: "5 mins",
-      excerpt: "Exploring the role of cryptography in modern cybersecurity implementations including quantum-resistant algorithms, post-quantum cryptography, and secure key management...",
-      image: "https://images.unsplash.com/photo-1593407089396-93f0c7a575f0?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njl8MHwxfHNlYXJjaHwyfHxkaWdpdGFsJTIwc2VjdXJpdHl8ZW58MHx8fGJsdWV8MTc1MjY0OTU5OHww&ixlib=rb-4.1.0&q=85",
-      featured: false
-    },
-    {
-      title: "Network Penetration Testing Methodologies",
-      author: "Wahab Khan",
-      category: "Penetration Testing",
-      categories: ["Penetration Testing", "Network Security"],
-      date: "November 1, 2024",
-      readTime: "8 mins",
-      excerpt: "Advanced techniques and methodologies for effective network penetration testing including reconnaissance, vulnerability assessment, and exploit development...",
-      image: "https://images.unsplash.com/photo-1597733336794-12d05021d510?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1NzZ8MHwxfHNlYXJjaHwxfHxuZXR3b3JrJTIwc2VjdXJpdHl8ZW58MHx8fGJsdWV8MTc1MjY0OTU4OXww&ixlib=rb-4.1.0&q=85",
-      featured: false
-    }
+  const [isLoading, setIsLoading] = useState(true);
+  
+  // Define available categories
+  const allCategories = [
+    { id: 'all', name: 'All' },
+    { id: 'security', name: 'Security' },
+    { id: 'cyber', name: 'Cyber Security' },
+    { id: 'privacy', name: 'Privacy' },
+    { id: 'hacking', name: 'Hacking' },
   ];
+  
+  // Get unique categories from posts
+  const postCategories = ['all', ...new Set(posts.flatMap(post => post.categories || []))];
 
-  const categories = ['all', 'Blockchain', 'Malware Analysis', 'Hardware Security', 'Web Security', 'Cryptography', 'Penetration Testing'];
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        setIsLoading(true);
+        
+        // Fetch blog posts from the public directory
+        const response = await fetch('/posts.json');
+        let data = await response.json();
+        
+        // Ensure data is an array
+        if (!Array.isArray(data)) {
+          console.error('Expected posts.json to be an array');
+          data = [];
+        }
+        
+        // Sort posts by date (newest first)
+        data.sort((a, b) => new Date(b.date) - new Date(a.date));
+        
+        setPosts(data);
+        setFilteredPosts(data);
+      } catch (error) {
+        console.error('Error fetching blog posts:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  const filteredPosts = blogPosts.filter(post => {
-    const matchesCategory = selectedCategory === 'all' || post.category === selectedCategory;
-    const matchesSearch = searchTerm === '' || 
-      post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      post.excerpt.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      post.author.toLowerCase().includes(searchTerm.toLowerCase());
+    fetchPosts();
+  }, []);
+
+  useEffect(() => {
+    let filtered = [...posts];
     
-    return matchesCategory && matchesSearch;
-  });
+    if (searchTerm) {
+      const term = searchTerm.toLowerCase();
+      filtered = filtered.filter(post => 
+        post.title.toLowerCase().includes(term) || 
+        (post.excerpt && post.excerpt.toLowerCase().includes(term)) ||
+        (post.content && post.content.toLowerCase().includes(term))
+      );
+    }
+    
+    if (selectedCategory !== 'all') {
+      filtered = filtered.filter(post => 
+        post.categories && 
+        (Array.isArray(post.categories) 
+          ? post.categories.includes(selectedCategory)
+          : post.categories === selectedCategory)
+      );
+    }
+    
+    setFilteredPosts(filtered);
+  }, [searchTerm, selectedCategory, posts]);
+
+  if (isLoading) {
+    return (
+      <section id="blog" className="py-24 bg-black relative overflow-hidden min-h-screen">
+        <div className="container mx-auto px-6 text-center">
+          <p className="text-white">Loading posts...</p>
+        </div>
+      </section>
+    );
+  }
+
+  const handleReadMore = (postId) => {
+    navigate(`/blog/${postId}`);
+  };
 
   return (
     <section id="blog" className="py-24 bg-black relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-blue-900/5 to-purple-900/5"></div>
       
       <div className="container mx-auto px-6 relative z-10">
-        <div className="text-center mb-16" ref={ref}>
-          <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-            <span className="inline-block bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-full text-sm font-medium mb-4">
-              <SVGIcon type="security" className="w-4 h-4 inline mr-2" />
-              BLOG & INSIGHTS
-            </span>
-            <h2 className="text-5xl md:text-6xl font-black text-white mb-6">
-              Latest <span className="gradient-text">Cybersecurity</span> Insights
-            </h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Stay updated with the latest research, techniques, and insights in cybersecurity
-            </p>
-          </div>
+        <div className="text-center mb-16">
+          <span className="inline-block bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-full text-sm font-medium mb-4">
+            <SVGIcon type="security" className="w-4 h-4 inline mr-2" />
+            CYBER BLOG
+          </span>
+          <h2 className="text-4xl md:text-5xl font-black text-white mb-6">
+            Security <span className="hologram-text">Insights</span>
+          </h2>
+          <p className="text-lg text-gray-300 max-w-2xl mx-auto">
+            Stay updated with the latest research, techniques, and insights in cybersecurity
+          </p>
         </div>
 
         {/* Search and Filter */}
         <div className="flex flex-col md:flex-row gap-4 items-center justify-center mb-16">
-          <div className="relative max-w-md">
+          <div className="relative max-w-md w-full">
             <input
               type="text"
               placeholder="Search articles..."
@@ -1515,18 +1530,18 @@ export const Blog = () => {
             <SVGIcon type="penetration" className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
           </div>
           
-          <div className="flex flex-wrap gap-2">
-            {categories.map((category) => (
+          <div className="flex flex-wrap gap-2 justify-center">
+            {allCategories.map((category) => (
               <button
                 key={category}
-                onClick={() => setSelectedCategory(category)}
+                onClick={() => setSelectedCategory(category.id)}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 hover-scale ${
-                  selectedCategory === category
+                  selectedCategory === category.id
                     ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white'
                     : 'glass-card text-gray-300 hover:text-white'
                 }`}
               >
-                {category === 'all' ? 'All Posts' : category}
+                {category.name}
               </button>
             ))}
           </div>
@@ -1534,91 +1549,94 @@ export const Blog = () => {
         
         <div className="flex flex-wrap -mx-2">
           {filteredPosts.map((post, index) => (
-            <div 
-              key={index} 
-              className="w-full md:w-1/2 lg:w-1/3 px-2 mb-6"
-            >
-              <div 
-                className="h-full glass-card p-4 sm:p-5 card-interactive transition-all duration-500 flex flex-col"
-                style={{
-                  transitionDelay: `${index * 100}ms`,
-                  animationDelay: `${index * 0.15}s`,
-                  opacity: isVisible ? 1 : 0,
-                  transform: isVisible ? 'translateY(0)' : 'translateY(10px)'
-                }}
-            >
-                {/* Image Container */}
-                <div className="relative overflow-hidden rounded-xl mb-4 group flex-shrink-0 aspect-video">
-                  <img 
-                    src={post.image} 
-                    alt={post.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
-                  
-                  {/* Category Badge */}
-                  <div className="absolute bottom-3 left-3 right-3">
-                    <div className="bg-white/10 backdrop-blur-sm rounded-lg px-2 py-1">
-                      <p className="text-white font-medium text-xs sm:text-sm truncate">{post.category}</p>
+            <div key={post.id || index} className="w-full md:w-1/2 lg:w-1/3 px-2 mb-6">
+              <Link href={`/blog/${post.id}`} passHref>
+                <a className="h-full block">
+                  <div className="h-full glass-card p-4 sm:p-5 card-interactive transition-all duration-500 flex flex-col">
+                    {/* Image Container */}
+                    <div className="relative overflow-hidden rounded-xl mb-4 group flex-shrink-0 aspect-video">
+                      <img 
+                        src={post.image || '/images/blog-placeholder.jpg'} 
+                        alt={post.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+                      
+                      {/* Category Badge */}
+                      {post.categories && post.categories.length > 0 && (
+                        <div className="absolute bottom-3 left-3 right-3">
+                          <div className="bg-white/10 backdrop-blur-sm rounded-lg px-2 py-1 inline-block">
+                            <p className="text-white font-medium text-xs sm:text-sm truncate">
+                              {post.categories[0]}
+                            </p>
+                          </div>
+                        </div>
+                      )}
+                      
+                      {/* Featured Badge */}
+                      {post.featured && (
+                        <div className="absolute top-2 right-2">
+                          <span className="bg-yellow-500/90 text-black px-2 py-0.5 rounded-full text-[10px] font-bold">
+                            FEATURED
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                    
+                    {/* Content */}
+                    <div className="flex flex-col flex-grow">
+                      <div className="flex items-center text-gray-400 text-xs mb-2 flex-wrap">
+                        <span className="text-cyan-400">{post.author || 'Out-Sec Team'}</span>
+                        <span className="mx-2">•</span>
+                        <span>
+                          {new Date(post.date).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric',
+                          })}
+                        </span>
+                      </div>
+                      
+                      <h3 className="text-base font-bold text-white mb-2 line-clamp-2">
+                        {post.title}
+                      </h3>
+                      
+                      <p className="text-gray-300 text-xs sm:text-sm mb-4 line-clamp-3 flex-grow">
+                        {post.excerpt}
+                      </p>
+                      
+                      {/* Categories */}
+                      {post.categories && post.categories.length > 0 && (
+                        <div className="flex flex-wrap gap-1.5 mb-4">
+                          {post.categories.slice(0, 3).map((cat, catIndex) => (
+                            <span 
+                              key={catIndex} 
+                              className="bg-gradient-to-r from-cyan-500/30 to-purple-600/30 text-cyan-300 px-2 py-0.5 rounded-full text-[10px] sm:text-xs border border-cyan-500/30"
+                            >
+                              {cat}
+                            </span>
+                          ))}
+                          {post.categories.length > 3 && (
+                            <span className="bg-gray-700/50 text-gray-400 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full text-[10px] xs:text-xs">
+                              +{post.categories.length - 3}
+                            </span>
+                          )}
+                        </div>
+                      )}
+                      
+                      <span className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold text-center hover:from-blue-600 hover:to-purple-700 transition-all duration-300 hover-scale inline-block" onClick={() => handleReadMore(post.id)}>
+                        Read Article
+                      </span>
                     </div>
                   </div>
-                  
-                  {/* Featured Badge */}
-                  {post.featured && (
-                    <div className="absolute top-2 right-2">
-                      <span className="bg-yellow-500/90 text-black px-2 py-0.5 rounded-full text-[10px] font-bold">
-                        FEATURED
-                      </span>
-                    </div>
-                  )}
-                </div>
-                
-                {/* Content */}
-                <div className="flex flex-col flex-grow">
-                  <div className="flex items-center text-gray-400 text-xs mb-2 flex-wrap">
-                    <span className="text-cyan-400">{post.author}</span>
-                    <span className="mx-2">•</span>
-                    <span>{post.date}</span>
-                    <span className="mx-2">•</span>
-                    <span className="whitespace-nowrap">{post.readTime}</span>
-                  </div>
-                  
-                  <h3 className="text-base font-bold text-white mb-2 line-clamp-2">
-                    {post.title}
-                  </h3>
-                  
-                  <p className="text-gray-300 text-xs sm:text-sm mb-4 line-clamp-3 flex-grow">
-                    {post.excerpt}
-                  </p>
-                  
-                  {/* Categories */}
-                  <div className="flex flex-wrap gap-1.5 mb-4">
-                    {post.categories.slice(0, 3).map((cat, catIndex) => (
-                      <span 
-                        key={catIndex} 
-                        className="bg-gradient-to-r from-cyan-500/30 to-purple-600/30 text-cyan-300 px-2 py-0.5 rounded-full text-[10px] sm:text-xs border border-cyan-500/30"
-                      >
-                        {cat}
-                      </span>
-                    ))}
-                    {post.categories.length > 3 && (
-                      <span className="bg-gray-700/50 text-gray-400 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full text-[10px] xs:text-xs">
-                        +{post.categories.length - 3}
-                      </span>
-                    )}
-                  </div>
-                  
-                  <button className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold hover:from-blue-600 hover:to-purple-700 transition-all duration-300 hover-scale">
-                    Read Article
-                  </button>
-                </div>
-              </div>
+                </a>
+              </Link>
             </div>
           ))}
         </div>
 
-        {filteredPosts.length === 0 && (
+        {filteredPosts.length === 0 && !isLoading && (
           <div className="text-center py-12">
             <div className="text-6xl mb-4">📚</div>
             <h3 className="text-2xl font-bold text-white mb-2">No articles found</h3>
@@ -1629,7 +1647,6 @@ export const Blog = () => {
     </section>
   );
 };
-
 
 // Enhanced Contact Component
 export const Contact = () => {

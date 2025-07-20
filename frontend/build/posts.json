@@ -1,0 +1,11 @@
+[
+  {
+    "id": "welcome-to-outsec",
+    "title": "Welcome to Out-Sec",
+    "excerpt": "Learn about our cybersecurity services and how we can help protect your business.",
+    "date": "2025-07-20",
+    "categories": ["security", "cyber"],
+    "image": "/images/cyber-security.jpg",
+    "featured": true
+  }
+]

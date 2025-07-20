@@ -13,6 +13,7 @@ import {
   Footer,
   LiveChatWidget
 } from "./components";
+import BlogPost from "./components/BlogPost";
 
 function App() {
   const [activeSection, setActiveSection] = useState('home');
@@ -58,6 +59,15 @@ function App() {
               </main>
               <Footer />
               <LiveChatWidget />
+            </>
+          } />
+          <Route path="/blog/:id" element={
+            <>
+              <Header activeSection="blog" />
+              <main role="main">
+                <BlogPost />
+              </main>
+              <Footer />
             </>
           } />
         </Routes>
