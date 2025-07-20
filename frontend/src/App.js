@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { 
-  Navigation, 
-  HeroSection, 
-  ServicesSection, 
-  TeamSection, 
-  ProjectsSection, 
-  ContactSection, 
-  Footer
+  SpaceNavigation, 
+  SpaceHeroSection, 
+  SpaceServicesSection, 
+  SpaceTeamSection, 
+  SpaceProjectsSection, 
+  SpaceContactSection, 
+  SpaceFooter
 } from "./components";
 
 function App() {
@@ -43,15 +43,15 @@ function App() {
         <Routes>
           <Route path="/" element={
             <>
-              <Navigation activeSection={activeSection} />
+              <SpaceNavigation activeSection={activeSection} />
               <main role="main">
-                <HeroSection />
-                <ServicesSection />
-                <TeamSection />
-                <ProjectsSection />
-                <ContactSection />
+                <SpaceHeroSection />
+                <SpaceServicesSection />
+                <SpaceTeamSection />
+                <SpaceProjectsSection />
+                <SpaceContactSection />
               </main>
-              <Footer />
+              <SpaceFooter />
             </>
           } />
         </Routes>

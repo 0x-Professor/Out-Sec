@@ -129,3 +129,61 @@ webpack compiled successfully
 Compiling...
 Compiled successfully!
 webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Failed to compile.
+
+Attempted import error: 'Navigation' is not exported from './components' (imported as 'Navigation').
+WARNING in ./node_modules/@mediapipe/tasks-vision/vision_bundle.mjs
+Module Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+Failed to parse source map from '/workspace/Out-Sec/frontend/node_modules/@mediapipe/tasks-vision/vision_bundle_mjs.js.map' file: Error: ENOENT: no such file or directory, open '/workspace/Out-Sec/frontend/node_modules/@mediapipe/tasks-vision/vision_bundle_mjs.js.map'
+
+ERROR in ./src/App.js 39:44-54
+export 'Navigation' (imported as 'Navigation') was not found in './components' (possible exports: SpaceContactSection, SpaceFooter, SpaceHeroSection, SpaceNavigation, SpaceProjectsSection, SpaceServicesSection, SpaceTeamSection)
+
+ERROR in ./src/App.js 47:46-57
+export 'HeroSection' (imported as 'HeroSection') was not found in './components' (possible exports: SpaceContactSection, SpaceFooter, SpaceHeroSection, SpaceNavigation, SpaceProjectsSection, SpaceServicesSection, SpaceTeamSection)
+
+ERROR in ./src/App.js 51:45-60
+export 'ServicesSection' (imported as 'ServicesSection') was not found in './components' (possible exports: SpaceContactSection, SpaceFooter, SpaceHeroSection, SpaceNavigation, SpaceProjectsSection, SpaceServicesSection, SpaceTeamSection)
+
+ERROR in ./src/App.js 55:45-56
+export 'TeamSection' (imported as 'TeamSection') was not found in './components' (possible exports: SpaceContactSection, SpaceFooter, SpaceHeroSection, SpaceNavigation, SpaceProjectsSection, SpaceServicesSection, SpaceTeamSection)
+
+ERROR in ./src/App.js 59:45-60
+export 'ProjectsSection' (imported as 'ProjectsSection') was not found in './components' (possible exports: SpaceContactSection, SpaceFooter, SpaceHeroSection, SpaceNavigation, SpaceProjectsSection, SpaceServicesSection, SpaceTeamSection)
+
+ERROR in ./src/App.js 63:45-59
+export 'ContactSection' (imported as 'ContactSection') was not found in './components' (possible exports: SpaceContactSection, SpaceFooter, SpaceHeroSection, SpaceNavigation, SpaceProjectsSection, SpaceServicesSection, SpaceTeamSection)
+
+ERROR in ./src/App.js 72:43-49
+export 'Footer' (imported as 'Footer') was not found in './components' (possible exports: SpaceContactSection, SpaceFooter, SpaceHeroSection, SpaceNavigation, SpaceProjectsSection, SpaceServicesSection, SpaceTeamSection)
+
+webpack compiled with 7 errors and 1 warning
+Compiling...
+Compiled with warnings.
+
+Failed to parse source map from '/workspace/Out-Sec/frontend/node_modules/@mediapipe/tasks-vision/vision_bundle_mjs.js.map' file: Error: ENOENT: no such file or directory, open '/workspace/Out-Sec/frontend/node_modules/@mediapipe/tasks-vision/vision_bundle_mjs.js.map'
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in ./node_modules/@mediapipe/tasks-vision/vision_bundle.mjs
+Module Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+Failed to parse source map from '/workspace/Out-Sec/frontend/node_modules/@mediapipe/tasks-vision/vision_bundle_mjs.js.map' file: Error: ENOENT: no such file or directory, open '/workspace/Out-Sec/frontend/node_modules/@mediapipe/tasks-vision/vision_bundle_mjs.js.map'
+
+webpack compiled with 1 warning
