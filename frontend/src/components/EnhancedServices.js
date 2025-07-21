@@ -1,5 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
+import Particles from 'react-tsparticles';
 
 const services = [
   {
@@ -129,12 +131,23 @@ const ServiceCard = ({ service, index, scrollYProgress }) => {
 };
 
 const EnhancedServices = () => {
-  const ref = useRef(null);
+  const scrollRef = useRef(null);
+  const containerRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
-  
+  const [loading, setLoading] = useState(true);
+  const [inViewRef, inView] = useInView({
+    threshold: 0.2,
+    triggerOnce: true,
+  });
+
+  useEffect(() => {
+    // Simulate loading state
+    setTimeout(() => setLoading(false), 1000);
+  }, []);
+
   const { scrollYProgress } = useScroll({
-    target: ref,
+    target: scrollRef,
     offset: ["start end", "end start"]
   });
   
@@ -149,11 +162,117 @@ const EnhancedServices = () => {
   
   return (
     <section id="services" className="relative py-32 overflow-hidden bg-gradient-to-br from-gray-950 to-black">
-      {/* Animated background elements */}
+      {/* Scroll indicator */}
+      <div className="hidden md:block fixed right-10 top-1/2 transform -translate-y-1/2 z-20">
+        <motion.div 
+          className="w-2 h-48 bg-white/10 rounded-full"
+          initial={{ height: 0 }}
+          animate={{ height: '192px' }}
+          transition={{ duration: 1 }}
+        />
+        <div className="flex flex-col items-center space-y-2 mt-4">
+          <motion.div 
+            className="w-1.5 h-1.5 rounded-full bg-white/10"
+            animate={{
+              scale: [1, 1.2, 1],
+              rotate: [0, 180, 0]
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity
+            }}
+          />
+          <span className="text-xs text-white/30">Scroll</span>
+        </div>
+      </div>
+      {/* Enhanced background with parallax effect */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/4 -left-20 w-96 h-96 bg-blue-500/10 rounded-full mix-blend-screen filter blur-3xl animate-float-slow"></div>
-        <div className="absolute top-1/2 -right-20 w-96 h-96 bg-purple-500/10 rounded-full mix-blend-screen filter blur-3xl animate-float-medium animation-delay-2000"></div>
-        <div className="absolute bottom-1/4 left-1/3 w-96 h-96 bg-cyan-500/10 rounded-full mix-blend-screen filter blur-3xl animate-float-slow animation-delay-4000"></div>
+        {/* Parallax elements */}
+        <div className="absolute inset-0">
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full mix-blend-screen filter blur-3xl" style={{
+            transform: `translateY(${scrollYProgress.get() * 100}px)`
+          }}></div>
+          <div className="absolute top-1/2 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full mix-blend-screen filter blur-3xl" style={{
+            transform: `translateY(${scrollYProgress.get() * -100}px)`
+          }}></div>
+          <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full mix-blend-screen filter blur-3xl" style={{
+            transform: `translateY(${scrollYProgress.get() * 50}px)`
+          }}></div>
+        </div>
+
+        {/* Particle background */}
+        <Particles
+          id="tsparticles"
+          options={{
+            background: {
+              color: {
+                value: "transparent"
+              }
+            },
+            fpsLimit: 120,
+            interactivity: {
+              events: {
+                onClick: {
+                  enable: true,
+                  mode: "push"
+                },
+                onHover: {
+                  enable: true,
+                  mode: "repulse"
+                },
+                resize: true
+              },
+              modes: {
+                push: {
+                  quantity: 4
+                },
+                repulse: {
+                  distance: 200,
+                  duration: 0.4
+                }
+              }
+            },
+            particles: {
+              color: {
+                value: "#00ffff"
+              },
+              links: {
+                color: "#00ffff",
+                distance: 150,
+                enable: true,
+                opacity: 0.5,
+                width: 1
+              },
+              move: {
+                direction: "none",
+                enable: true,
+                outModes: {
+                  default: "bounce"
+                },
+                random: false,
+                speed: 2,
+                straight: false
+              },
+              number: {
+                density: {
+                  enable: true,
+                  area: 800
+                },
+                value: 80
+              },
+              opacity: {
+                value: 0.5
+              },
+              shape: {
+                type: "circle"
+              },
+              size: {
+                value: { min: 1, max: 5 }
+              }
+            },
+            detectRetina: true
+          }}
+        />
       </div>
       
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -192,17 +311,40 @@ const EnhancedServices = () => {
         </div>
         
         {/* Services Grid */}
-        <div ref={ref} className="relative">
-          <AnimatePresence>
-            {services.map((service, index) => (
-              <ServiceCard 
-                key={index} 
-                service={service} 
-                index={index} 
-                scrollYProgress={scrollYProgress} 
-              />
-            ))}
-          </AnimatePresence>
+        <div ref={scrollRef} className="relative">
+          {loading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[...Array(6)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  className="bg-gray-800/50 rounded-2xl p-6 animate-pulse"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.1 }}
+                >
+                  <div className="h-16 w-16 rounded-full bg-gray-700 mb-4"></div>
+                  <div className="h-4 bg-gray-700 w-48 mb-2"></div>
+                  <div className="h-3 bg-gray-700 w-64 mb-4"></div>
+                  <div className="flex gap-2">
+                    {[...Array(3)].map((_, j) => (
+                      <div key={j} className="h-6 w-24 bg-gray-700 rounded-full"></div>
+                    ))}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          ) : (
+            <AnimatePresence>
+              {services.map((service, index) => (
+                <ServiceCard 
+                  key={index} 
+                  service={service} 
+                  index={index} 
+                  scrollYProgress={scrollYProgress} 
+                />
+              ))}
+            </AnimatePresence>
+          )}
           
           {/* Active indicator */}
           <motion.div 
