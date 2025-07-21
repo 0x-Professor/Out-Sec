@@ -366,43 +366,56 @@ const ThreatMap = () => {
     const drawThreatMap = () => {
       ctx.clearRect(0, 0, width, height);
       
-      // Draw world map
-      const mapAspect = mapImage.width / mapImage.height;
-      let mapWidth = width;
-      let mapHeight = mapWidth / mapAspect;
-      
-      if (mapHeight < height) {
-        mapHeight = height;
-        mapWidth = mapHeight * mapAspect;
-      }
-      
-      const offsetX = (width - mapWidth) / 2;
-      const offsetY = (height - mapHeight) / 2;
-      
-      // Draw map with dark overlay
-      ctx.globalAlpha = 0.7;
-      ctx.drawImage(mapImage, offsetX, offsetY, mapWidth, mapHeight);
-      
-      // Add color overlay
-      ctx.globalAlpha = 0.5;
-      ctx.fillStyle = '#0f172a';
+      // Draw dark background
+      ctx.fillStyle = '#0a0e17';
       ctx.fillRect(0, 0, width, height);
-      ctx.globalAlpha = 1;
       
-      // Draw connection lines between threats
-      ctx.strokeStyle = 'rgba(99, 102, 241, 0.3)';
+      // Draw grid lines
+      ctx.strokeStyle = '#1a1f2e';
       ctx.lineWidth = 0.5;
       
+      // Vertical grid lines
+      for (let x = 0; x <= width; x += 40) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, height);
+        ctx.stroke();
+      }
+      
+      // Horizontal grid lines
+      for (let y = 0; y <= height; y += 40) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(width, y);
+        ctx.stroke();
+      }
+      
+      // Draw connection lines between threats
       for (let i = 0; i < threats.length; i++) {
         for (let j = i + 1; j < threats.length; j++) {
           const a = threats[i];
           const b = threats[j];
-          const aPos = project(a.lat, a.lng, width, height);
-          const bPos = project(b.lat, b.lng, width, height);
+          const aPos = { x: a.x, y: a.y };
+          const bPos = { x: b.x, y: b.y };
           
-          // Only draw lines for nearby threats
-          const distance = Math.hypot(aPos.x - bPos.x, aPos.y - bPos.y);
-          if (distance < 300) {
+          // Calculate distance between points
+          const dx = aPos.x - bPos.x;
+          const dy = aPos.y - bPos.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          
+          // Only draw lines for nearby points
+          if (distance < 200) {
+            // Calculate opacity based on distance (closer = more opaque)
+            const opacity = 1 - (distance / 200);
+            
+            // Create gradient for the line
+            const gradient = ctx.createLinearGradient(aPos.x, aPos.y, bPos.x, bPos.y);
+            gradient.addColorStop(0, `rgba(56, 182, 255, ${opacity * 0.5})`);
+            gradient.addColorStop(1, `rgba(124, 58, 237, ${opacity * 0.5})`);
+            
+            // Draw the line
+            ctx.strokeStyle = gradient;
+            ctx.lineWidth = 0.8;
             ctx.beginPath();
             ctx.moveTo(aPos.x, aPos.y);
             ctx.lineTo(bPos.x, bPos.y);
@@ -411,39 +424,58 @@ const ThreatMap = () => {
         }
       }
       
-      // Draw threats
+      // Draw threats as glowing dots
       threats.forEach((threat, index) => {
         const pulse = Math.sin(time + threat.pulse) * 0.5 + 0.5;
-        const { x, y } = project(threat.lat, threat.lng, width, height);
-        const radius = 4 + pulse * 4 * threat.intensity;
+        const x = threat.x * width;
+        const y = threat.y * height;
+        const baseRadius = 2 + threat.intensity * 3;
+        const pulseRadius = baseRadius + pulse * 2;
         
         // Skip if off-screen
         if (x < 0 || x > width || y < 0 || y > height) return;
         
         // Draw connection line to cursor if hovered
         if (hoveredThreat === index) {
-          ctx.strokeStyle = 'rgba(99, 102, 241, 0.5)';
-          ctx.lineWidth = 1;
+          const gradient = ctx.createLinearGradient(x, y, width - 30, 30);
+          gradient.addColorStop(0, 'rgba(56, 182, 255, 0.8)');
+          gradient.addColorStop(1, 'rgba(124, 58, 237, 0.8)');
+          
+          ctx.strokeStyle = gradient;
+          ctx.lineWidth = 1.5;
+          ctx.setLineDash([2, 2]);
           ctx.beginPath();
           ctx.moveTo(x, y);
-          ctx.lineTo(width - 20, 20);
+          ctx.lineTo(width - 30, 30);
           ctx.stroke();
+          ctx.setLineDash([]);
         }
         
-        // Threat glow
-        const gradient = ctx.createRadialGradient(x, y, 0, x, y, radius * 3);
-        gradient.addColorStop(0, `rgba(239, 68, 68, ${0.7 * threat.intensity})`);
-        gradient.addColorStop(1, 'rgba(239, 68, 68, 0)');
+        // Outer glow
+        const gradient = ctx.createRadialGradient(
+          x, y, 0,
+          x, y, pulseRadius * 2.5
+        );
+        gradient.addColorStop(0, `rgba(56, 182, 255, ${0.7 * threat.intensity})`);
+        gradient.addColorStop(1, 'rgba(56, 182, 255, 0)');
         
         ctx.fillStyle = gradient;
         ctx.beginPath();
-        ctx.arc(x, y, radius * 3, 0, Math.PI * 2);
+        ctx.arc(x, y, pulseRadius * 2.5, 0, Math.PI * 2);
         ctx.fill();
         
-        // Threat dot
-        ctx.fillStyle = `rgba(239, 68, 68, ${0.8 + 0.2 * pulse})`;
+        // Inner glow
+        const innerGradient = ctx.createRadialGradient(
+          x, y, 0,
+          x, y, baseRadius * 1.5
+        );
+        innerGradient.addColorStop(0, 'rgba(255, 255, 255, 0.9)');
+        innerGradient.addColorStop(1, 'rgba(56, 182, 255, 0.5)');
+        
+        // Draw the dot
+        ctx.fillStyle = innerGradient;
         ctx.beginPath();
-        ctx.arc(x, y, radius, 0, Math.PI * 2);
+        ctx.arc(x, y, baseRadius, 0, Math.PI * 2);
         ctx.fill();
         
         // Draw threat count if hovered
@@ -2414,15 +2446,15 @@ export const Footer = () => {
   const [stars, setStars] = useState([]);
 
   useEffect(() => {
-    // Generate random stars
-    const newStars = Array.from({ length: 50 }, () => ({
+    // Generate more stars (increased from 50 to 150)
+    const newStars = Array.from({ length: 150 }, () => ({
       id: Math.random().toString(36).substr(2, 9),
       x: Math.random() * 100,
       y: Math.random() * 100,
-      size: Math.random() * 2 + 0.5,
-      opacity: Math.random() * 0.5 + 0.2,
-      delay: Math.random() * 5,
-      duration: Math.random() * 2 + 1
+      size: Math.random() * 1.5 + 0.5, // Slightly smaller stars for better density
+      opacity: Math.random() * 0.7 + 0.1, // Wider opacity range
+      delay: Math.random() * 10,
+      duration: Math.random() * 3 + 1 // More varied durations
     }));
     setStars(newStars);
   }, []);
@@ -2460,9 +2492,9 @@ export const Footer = () => {
       <div className="absolute inset-0 bg-gradient-to-br from-blue-900/5 via-purple-900/5 to-transparent"></div>
       
       <div className="container mx-auto px-6 py-16 relative z-10">
-        <div className="grid-12 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Company Info */}
-          <div className="col-12 lg:col-5 mb-8 lg:mb-0">
+          <div className="lg:col-span-4">
             <div className="flex items-center space-x-3 mb-6">
               <div className="w-12 h-12 bg-gradient-to-br from-blue-500/90 to-purple-600/90 rounded-xl flex items-center justify-center backdrop-blur-sm border border-white/10 shadow-lg">
                 <span className="text-white font-bold text-lg">OS</span>
@@ -2502,24 +2534,29 @@ export const Footer = () => {
             </div>
           </div>
           
-          {/* Footer Links */}
-          {Object.entries(footerLinks).map(([category, links]) => (
-            <div key={category} className="col-12 md:col-4 lg:col-2">
-              <h4 className="text-white font-bold mb-4">{category}</h4>
-              <ul className="space-y-2">
-                {links.map((link) => (
-                  <li key={link}>
-                    <a 
-                      href="#" 
-                      className="text-gray-400 hover:text-blue-400 transition-colors duration-200 text-sm"
-                    >
-                      {link}
-                    </a>
-                  </li>
-                ))}
-              </ul>
+          {/* Footer Links - All in one row */}
+          <div className="lg:col-span-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {Object.entries(footerLinks).map(([category, links]) => (
+                <div key={category}>
+                  <h4 className="text-white font-bold mb-4 text-lg">{category}</h4>
+                  <ul className="space-y-3">
+                    {links.map((link) => (
+                      <li key={link}>
+                        <a 
+                          href="#" 
+                          className="text-gray-400 hover:text-blue-300 transition-colors duration-200 text-sm flex items-center group"
+                        >
+                          <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mr-2 opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                          {link}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
         
         {/* Bottom Bar */}
