@@ -1,5 +1,4 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 
 const services = [
   {
@@ -98,121 +97,100 @@ const ServiceModal = ({ service, isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <AnimatePresence>
-      <motion.div
-        className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        onClick={onClose}
+    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+      <div
+        className="bg-slate-900 border border-slate-700 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto transform transition-all duration-300 scale-100 opacity-100"
+        onClick={(e) => e.stopPropagation()}
       >
-        <motion.div
-          className="bg-slate-900 border border-slate-700 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto"
-          initial={{ scale: 0.9, opacity: 0, y: 20 }}
-          animate={{ scale: 1, opacity: 1, y: 0 }}
-          exit={{ scale: 0.9, opacity: 0, y: 20 }}
-          onClick={(e) => e.stopPropagation()}
-          transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        >
-          <div className="p-8">
-            <div className="flex items-start justify-between mb-6">
-              <div className="flex items-center">
-                <div 
-                  className="w-16 h-16 rounded-xl flex items-center justify-center text-2xl mr-4"
-                  style={{ backgroundColor: `${service.accent}15` }}
-                >
-                  {service.icon}
-                </div>
-                <div>
-                  <div className="text-sm font-medium text-gray-400 mb-1">{service.category}</div>
-                  <h3 className="text-2xl font-bold text-white">{service.title}</h3>
-                </div>
-              </div>
-              <button
-                onClick={onClose}
-                className="text-gray-400 hover:text-white transition-colors p-2"
+        <div className="p-8">
+          <div className="flex items-start justify-between mb-6">
+            <div className="flex items-center">
+              <div 
+                className="w-16 h-16 rounded-xl flex items-center justify-center text-2xl mr-4"
+                style={{ backgroundColor: `${service.accent}15` }}
               >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-
-            <div className="mb-8">
-              <h4 className="text-lg font-semibold text-white mb-4">Overview</h4>
-              <p className="text-gray-300 leading-relaxed mb-6">{service.detailedDescription}</p>
-              
-              <h4 className="text-lg font-semibold text-white mb-4">Key Capabilities</h4>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {service.features.map((feature, index) => (
-                  <div key={index} className="flex items-center">
-                    <div 
-                      className="w-2 h-2 rounded-full mr-3"
-                      style={{ backgroundColor: service.accent }}
-                    />
-                    <span className="text-gray-300">{feature}</span>
-                  </div>
-                ))}
+                {service.icon}
+              </div>
+              <div>
+                <div className="text-sm font-medium text-gray-400 mb-1">{service.category}</div>
+                <h3 className="text-2xl font-bold text-white">{service.title}</h3>
               </div>
             </div>
+            <button
+              onClick={onClose}
+              className="text-gray-400 hover:text-white transition-colors p-2"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
 
-            <div className="flex flex-col sm:flex-row gap-4">
-              <button
-                className="flex-1 px-6 py-3 rounded-xl font-medium text-white transition-all duration-300"
-                style={{
-                  backgroundColor: service.accent,
-                  boxShadow: `0 4px 14px ${service.accent}40`
-                }}
-                onClick={() => {
-                  // Add contact/consultation logic here
-                  alert(`Contact us about ${service.title}`);
-                }}
-              >
-                Request Consultation
-              </button>
-              <button
-                onClick={onClose}
-                className="flex-1 px-6 py-3 rounded-xl font-medium text-gray-300 border border-slate-600 hover:border-slate-500 transition-colors"
-              >
-                Close
-              </button>
+          <div className="mb-8">
+            <h4 className="text-lg font-semibold text-white mb-4">Overview</h4>
+            <p className="text-gray-300 leading-relaxed mb-6">{service.detailedDescription}</p>
+            
+            <h4 className="text-lg font-semibold text-white mb-4">Key Capabilities</h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {service.features.map((feature, index) => (
+                <div key={index} className="flex items-center">
+                  <div 
+                    className="w-2 h-2 rounded-full mr-3"
+                    style={{ backgroundColor: service.accent }}
+                  />
+                  <span className="text-gray-300">{feature}</span>
+                </div>
+              ))}
             </div>
           </div>
-        </motion.div>
-      </motion.div>
-    </AnimatePresence>
+
+          <div className="flex flex-col sm:flex-row gap-4">
+            <button
+              className="flex-1 px-6 py-3 rounded-xl font-medium text-white transition-all duration-300"
+              style={{
+                backgroundColor: service.accent,
+                boxShadow: `0 4px 14px ${service.accent}40`
+              }}
+              onClick={() => {
+                alert(`Contact us about ${service.title}`);
+              }}
+            >
+              Request Consultation
+            </button>
+            <button
+              onClick={onClose}
+              className="flex-1 px-6 py-3 rounded-xl font-medium text-gray-300 border border-slate-600 hover:border-slate-500 transition-colors"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 
-const ServiceCard = ({ service, index, isVisible }) => {
+const ServiceCard = ({ service, index, isVisible, isActive }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
   return (
     <>
-      <motion.div
-        className="relative mb-24 last:mb-0"
-        initial={{ opacity: 0, y: 100 }}
-        animate={{ 
-          opacity: isVisible ? 1 : 0,
-          y: isVisible ? 0 : 100
-        }}
-        transition={{ 
-          duration: 0.8,
-          type: "spring",
-          stiffness: 100,
-          damping: 20,
-          delay: index * 0.1
-        }}
+      <div
+        id={`service-${index}`}
+        data-service={index}
+        className={`relative min-h-screen flex items-center justify-center py-20 transition-all duration-700 ${
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-30 translate-y-12'
+        } ${
+          isActive ? 'scale-100' : 'scale-95'
+        }`}
       >
-        <motion.div
-          className={`relative bg-gradient-to-br ${service.gradient} border border-slate-700/50 rounded-2xl overflow-hidden group`}
-          onHoverStart={() => setIsHovered(true)}
-          onHoverEnd={() => setIsHovered(false)}
-          whileHover={{ 
-            scale: 1.02,
-            transition: { duration: 0.3, type: "spring", stiffness: 300 }
-          }}
+        <div
+          className={`relative bg-gradient-to-br ${service.gradient} border border-slate-700/50 rounded-2xl overflow-hidden group transition-all duration-300 ${
+            isHovered ? 'scale-102' : 'scale-100'
+          }`}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
           style={{
             boxShadow: isHovered 
               ? `0 25px 50px -12px ${service.accent}20, 0 0 0 1px ${service.accent}10`
@@ -239,20 +217,17 @@ const ServiceCard = ({ service, index, isVisible }) => {
             {/* Header */}
             <div className="flex items-start justify-between mb-6">
               <div className="flex items-center">
-                <motion.div 
-                  className="w-16 h-16 rounded-xl flex items-center justify-center text-2xl mr-6 border border-slate-600/50"
+                <div 
+                  className={`w-16 h-16 rounded-xl flex items-center justify-center text-2xl mr-6 border border-slate-600/50 transition-transform duration-300 ${
+                    isHovered ? 'scale-110 rotate-3' : 'scale-100 rotate-0'
+                  }`}
                   style={{ 
                     backgroundColor: `${service.accent}08`,
                     borderColor: `${service.accent}20`
                   }}
-                  animate={isHovered ? {
-                    scale: [1, 1.1, 1],
-                    rotate: [0, 5, 0]
-                  } : {}}
-                  transition={{ duration: 0.6 }}
                 >
                   {service.icon}
-                </motion.div>
+                </div>
                 <div>
                   <div className="text-xs font-bold tracking-wider text-gray-400 mb-2">
                     {service.category}
@@ -263,15 +238,15 @@ const ServiceCard = ({ service, index, isVisible }) => {
                 </div>
               </div>
               
-              <motion.div
-                className="text-gray-500"
-                animate={isHovered ? { rotate: 15 } : { rotate: 0 }}
-                transition={{ duration: 0.3 }}
+              <div
+                className={`text-gray-500 transition-transform duration-300 ${
+                  isHovered ? 'rotate-12' : 'rotate-0'
+                }`}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                 </svg>
-              </motion.div>
+              </div>
             </div>
 
             {/* Description */}
@@ -283,17 +258,15 @@ const ServiceCard = ({ service, index, isVisible }) => {
             <div className="mb-8">
               <div className="grid grid-cols-2 gap-x-6 gap-y-3">
                 {service.features.map((feature, i) => (
-                  <motion.div 
+                  <div 
                     key={i}
-                    className="flex items-center text-sm text-gray-300"
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ 
-                      opacity: isVisible ? 1 : 0,
-                      x: isVisible ? 0 : -20
-                    }}
-                    transition={{ 
-                      delay: (index * 0.1) + (i * 0.05),
-                      duration: 0.5
+                    className={`flex items-center text-sm text-gray-300 transition-all duration-500 ${
+                      isVisible 
+                        ? 'opacity-100 translate-x-0' 
+                        : 'opacity-0 -translate-x-5'
+                    }`}
+                    style={{
+                      transitionDelay: `${(index * 0.1) + (i * 0.05)}s`
                     }}
                   >
                     <div 
@@ -301,51 +274,45 @@ const ServiceCard = ({ service, index, isVisible }) => {
                       style={{ backgroundColor: service.accent }}
                     />
                     <span className="text-sm">{feature}</span>
-                  </motion.div>
+                  </div>
                 ))}
               </div>
             </div>
 
             {/* CTA Button */}
-            <motion.button
+            <button
               onClick={() => setShowModal(true)}
-              className="group flex items-center px-6 py-3 text-sm font-medium text-white rounded-xl transition-all duration-300 relative overflow-hidden"
+              className={`group flex items-center px-6 py-3 text-sm font-medium text-white rounded-xl transition-all duration-300 relative overflow-hidden ${
+                isHovered ? 'scale-105' : 'scale-100'
+              }`}
               style={{
                 backgroundColor: `${service.accent}15`,
                 border: `1px solid ${service.accent}30`,
+                boxShadow: isHovered ? `0 8px 25px ${service.accent}25` : 'none'
               }}
-              whileHover={{ 
-                scale: 1.02,
-                boxShadow: `0 8px 25px ${service.accent}25`
-              }}
-              whileTap={{ scale: 0.98 }}
             >
               <span className="relative z-10">Learn More</span>
-              <motion.svg 
-                className="w-4 h-4 ml-2 relative z-10" 
+              <svg 
+                className={`w-4 h-4 ml-2 relative z-10 transition-transform duration-300 ${
+                  isHovered ? 'translate-x-1' : 'translate-x-0'
+                }`} 
                 fill="none" 
                 viewBox="0 0 24 24" 
                 stroke="currentColor"
-                animate={isHovered ? { x: 4 } : { x: 0 }}
-                transition={{ duration: 0.3 }}
               >
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-              </motion.svg>
+              </svg>
               
-              <motion.div
-                className="absolute inset-0 rounded-xl"
+              <div
+                className={`absolute inset-0 rounded-xl transition-all duration-300 ${
+                  isHovered ? 'scale-100 opacity-10' : 'scale-0 opacity-0'
+                }`}
                 style={{ backgroundColor: service.accent }}
-                initial={{ scale: 0, opacity: 0 }}
-                whileHover={{ 
-                  scale: 1, 
-                  opacity: 0.1,
-                  transition: { duration: 0.3 }
-                }}
               />
-            </motion.button>
+            </button>
           </div>
-        </motion.div>
-      </motion.div>
+        </div>
+      </div>
 
       <ServiceModal 
         service={service}
@@ -357,60 +324,114 @@ const ServiceCard = ({ service, index, isVisible }) => {
 };
 
 const EnhancedServices = () => {
+  const [activeService, setActiveService] = useState(0);
+  const [visibleCards, setVisibleCards] = useState([0]);
   const containerRef = useRef(null);
-  const [visibleCards, setVisibleCards] = useState([]);
-  const [activeIndex, setActiveIndex] = useState(0);
+  const isScrolling = useRef(false);
+  const scrollTimeout = useRef(null);
   
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start end', 'end start']
-  });
-
-  // Handle scroll-based card visibility
+  // Update active service based on scroll position
   useEffect(() => {
     const handleScroll = () => {
-      const container = containerRef.current;
-      if (!container) return;
-
-      const containerRect = container.getBoundingClientRect();
-      const containerCenter = containerRect.top + containerRect.height / 2;
-      const windowCenter = window.innerHeight / 2;
+      if (isScrolling.current) return;
       
-      // Calculate how far we've scrolled through the container
-      const scrollProgress = Math.max(0, Math.min(1, (windowCenter - containerRect.top) / containerRect.height));
+      const services = Array.from(document.querySelectorAll('[data-service]'));
+      const containerCenter = window.innerHeight / 2;
+      let closestService = 0;
+      let minDistance = Infinity;
       
-      // Show cards progressively based on scroll
-      const newVisibleCards = [];
-      services.forEach((_, index) => {
-        const cardThreshold = (index + 1) / services.length;
-        if (scrollProgress >= cardThreshold * 0.3) {
-          newVisibleCards.push(index);
+      services.forEach((service, index) => {
+        const rect = service.getBoundingClientRect();
+        const serviceCenter = rect.top + rect.height / 2;
+        const distance = Math.abs(serviceCenter - containerCenter);
+        
+        if (distance < minDistance) {
+          minDistance = distance;
+          closestService = index;
         }
       });
       
-      setVisibleCards(newVisibleCards);
-      
-      // Update active index based on scroll
-      const newActiveIndex = Math.min(
-        services.length - 1,
-        Math.floor(scrollProgress * services.length * 1.2)
-      );
-      setActiveIndex(newActiveIndex);
+      if (closestService !== activeService) {
+        setActiveService(closestService);
+        // Add visible cards progressively
+        setVisibleCards(prev => {
+          const newVisible = [...prev];
+          if (!newVisible.includes(closestService)) {
+            newVisible.push(closestService);
+          }
+          return newVisible;
+        });
+      }
     };
-
+    
     window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Initial check
+    handleScroll(); // Initial call
     
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [activeService]);
   
+  // Smooth scroll to service when clicking on indicator
+  const scrollToService = (index) => {
+    if (isScrolling.current || index < 0 || index >= services.length) return;
+    
+    const service = document.getElementById(`service-${index}`);
+    if (service) {
+      isScrolling.current = true;
+      setActiveService(index);
+      
+      // Add to visible cards
+      setVisibleCards(prev => {
+        const newVisible = [...prev];
+        if (!newVisible.includes(index)) {
+          newVisible.push(index);
+        }
+        return newVisible;
+      });
+      
+      service.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center'
+      });
+      
+      // Reset scroll lock after animation completes
+      setTimeout(() => {
+        isScrolling.current = false;
+      }, 1000);
+    }
+  };
+  
+  // Handle wheel events for smoother scrolling
+  const handleWheel = (e) => {
+    if (isScrolling.current || Math.abs(e.deltaY) < 10) return;
+    
+    // Clear any existing timeout
+    if (scrollTimeout.current) {
+      clearTimeout(scrollTimeout.current);
+    }
+    
+    // Set a small timeout to debounce scroll events
+    scrollTimeout.current = setTimeout(() => {
+      const direction = e.deltaY > 0 ? 1 : -1;
+      const nextService = Math.min(Math.max(0, activeService + direction), services.length - 1);
+      
+      if (nextService !== activeService) {
+        scrollToService(nextService);
+      }
+    }, 50);
+  };
+
   return (
-    <section 
+    <div 
       ref={containerRef}
-      className="relative py-20 lg:py-32 overflow-hidden bg-slate-950"
+      className="relative overflow-hidden bg-slate-950"
+      onWheel={handleWheel}
+      style={{
+        scrollBehavior: 'smooth',
+        WebkitOverflowScrolling: 'touch',
+      }}
     >
       {/* Professional background */}
-      <div className="absolute inset-0">
+      <div className="fixed inset-0">
         <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950" />
         <div className="absolute inset-0 opacity-30">
           <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl" />
@@ -419,56 +440,13 @@ const EnhancedServices = () => {
         </div>
       </div>
       
-      {/* Progress indicator */}
-      <div className="hidden lg:block fixed right-8 top-1/2 transform -translate-y-1/2 z-20">
-        <div className="flex flex-col items-center space-y-4">
-          <div className="w-px h-24 bg-slate-700 relative">
-            <motion.div
-              className="absolute top-0 left-0 w-px bg-gradient-to-b from-cyan-400 to-blue-500"
-              style={{
-                height: useTransform(scrollYProgress, [0, 1], ["0%", "100%"])
-              }}
-            />
-          </div>
-          <div className="flex flex-col space-y-2">
-            {services.map((_, index) => (
-              <button
-                key={index}
-                className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                  visibleCards.includes(index) 
-                    ? 'bg-cyan-400 scale-125' 
-                    : 'bg-slate-600'
-                }`}
-                onClick={() => {
-                  document.querySelector(`#service-${index}`)?.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'center'
-                  });
-                }}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
-      
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <motion.div 
-          className="text-center mb-20 lg:mb-28"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-        >
-          <motion.div 
-            className="inline-flex items-center px-4 py-2 text-sm font-medium text-cyan-400 bg-cyan-900/10 border border-cyan-500/20 rounded-full mb-8"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.2 }}
-          >
-            <div className="w-2 h-2 rounded-full bg-cyan-400 mr-2" />
+        <div className="text-center mb-20 lg:mb-28 pt-20">
+          <div className="inline-flex items-center px-4 py-2 text-sm font-medium text-cyan-400 bg-cyan-900/10 border border-cyan-500/20 rounded-full mb-8">
+            <div className="w-2 h-2 rounded-full bg-cyan-400 mr-2 animate-pulse" />
             PROFESSIONAL SECURITY SERVICES
-          </motion.div>
+          </div>
           
           <h1 className="text-4xl lg:text-7xl font-bold text-white mb-8 leading-tight">
             Enterprise-Grade
@@ -482,22 +460,68 @@ const EnhancedServices = () => {
             Protecting your digital infrastructure with military-grade security protocols, 
             advanced threat detection, and comprehensive risk management strategies.
           </p>
-        </motion.div>
+        </div>
         
         {/* Services */}
         <div className="relative">
           {services.map((service, index) => (
-            <div key={index} id={`service-${index}`}>
-              <ServiceCard 
-                service={service} 
-                index={index} 
-                isVisible={visibleCards.includes(index)}
+            <ServiceCard 
+              key={index}
+              service={service} 
+              index={index}
+              isVisible={visibleCards.includes(index)}
+              isActive={index === activeService}
+            />
+          ))}
+          
+          {/* Scroll indicators */}
+          <div className="fixed right-8 top-1/2 transform -translate-y-1/2 z-20 hidden lg:block">
+            <div className="flex flex-col items-center space-y-4">
+              {services.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => scrollToService(index)}
+                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                    index === activeService 
+                      ? 'bg-gradient-to-br from-cyan-400 to-blue-500 scale-125 shadow-lg' 
+                      : visibleCards.includes(index)
+                      ? 'bg-slate-400 scale-110'
+                      : 'bg-slate-600 hover:bg-slate-400'
+                  }`}
+                  aria-label={`View ${services[index].title}`}
+                />
+              ))}
+            </div>
+          </div>
+          
+          {/* Progress line */}
+          <div className="fixed right-10 top-1/2 transform -translate-y-1/2 translate-x-6 z-10 hidden lg:block">
+            <div className="w-px h-32 bg-slate-700 relative">
+              <div
+                className="absolute top-0 left-0 w-px bg-gradient-to-b from-cyan-400 to-blue-500 transition-all duration-500"
+                style={{
+                  height: `${((activeService + 1) / services.length) * 100}%`
+                }}
               />
             </div>
-          ))}
+          </div>
+          
+          {/* Scroll hint */}
+          <div 
+            className={`fixed bottom-8 left-1/2 transform -translate-x-1/2 z-10 text-center transition-all duration-500 ${
+              activeService < services.length - 1 ? 'opacity-100' : 'opacity-0'
+            }`}
+          >
+            <div className="text-sm text-slate-400 mb-2">Scroll down</div>
+            <div className="w-6 h-10 border-2 border-slate-500 rounded-full mx-auto relative">
+              <div 
+                className="w-1 h-2 bg-slate-400 rounded-full absolute left-1/2 top-2 -translate-x-1/2 animate-bounce"
+              />
+            </div>
+          </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 
