@@ -1,449 +1,503 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
-import Particles from 'react-tsparticles';
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 
 const services = [
   {
-    title: "Cryptography Integration",
-    description: "Advanced encryption solutions with quantum-resistant algorithms",
-    icon: "🔒",
-    color: "from-blue-500 to-cyan-400"
+    title: "Advanced Cryptography Solutions",
+    description: "Enterprise-grade cryptographic implementations featuring post-quantum resistant algorithms, secure key management, and hardware security module (HSM) integration. Our solutions ensure data confidentiality, integrity, and authenticity across all digital assets.",
+    detailedDescription: "Our cryptography solutions provide military-grade security for enterprise environments. We implement cutting-edge post-quantum cryptographic algorithms that remain secure against future quantum computing threats. Our comprehensive approach includes advanced key lifecycle management, secure hardware module integration, and compliance with international standards including FIPS 140-3 Level 4. We offer end-to-end encryption solutions that protect data at rest, in transit, and in use, ensuring your sensitive information remains secure against even the most sophisticated attacks.",
+    icon: "🔐",
+    gradient: "from-slate-800 to-slate-900",
+    accent: "#3b82f6",
+    category: "CRYPTOGRAPHY",
+    features: [
+      "Quantum-resistant algorithms",
+      "FIPS 140-3 compliant",
+      "HSM integration",
+      "End-to-end encryption"
+    ]
   },
   {
-    title: "Malware Analysis",
-    description: "Expert analysis and development of security solutions",
+    title: "Malware Analysis & Reverse Engineering",
+    description: "Comprehensive analysis of sophisticated malware using static and dynamic techniques. We provide detailed reports on malware behavior, capabilities, and indicators of compromise (IoCs) to strengthen your security posture.",
+    detailedDescription: "Our malware analysis team employs advanced reverse engineering techniques to dissect the most complex threats. Using state-of-the-art sandboxing environments and static analysis tools, we uncover malware capabilities, communication protocols, and attack vectors. Our experts provide comprehensive threat intelligence reports including YARA rules, IOCs, and mitigation strategies. We specialize in analyzing APT campaigns, zero-day exploits, and sophisticated polymorphic malware that traditional security tools might miss.",
     icon: "🛡️",
-    color: "from-purple-500 to-pink-500"
+    gradient: "from-slate-800 to-slate-900",
+    accent: "#8b5cf6",
+    category: "MALWARE ANALYSIS",
+    features: [
+      "Behavioral analysis",
+      "Memory forensics",
+      "YARA rule development",
+      "Threat intelligence correlation"
+    ]
   },
   {
-    title: "Blockchain Security",
-    description: "Secure blockchain and smart contract development",
+    title: "Blockchain Security & Smart Contract Audits",
+    description: "End-to-end security assessments for blockchain networks, smart contracts, and decentralized applications. Our team identifies vulnerabilities and provides remediation strategies to protect your blockchain assets.",
+    detailedDescription: "Our blockchain security specialists conduct thorough audits of smart contracts, DeFi protocols, and blockchain infrastructure. We identify common vulnerabilities such as reentrancy attacks, integer overflows, and access control issues. Our comprehensive approach includes automated scanning, manual code review, and economic modeling to ensure your blockchain applications are secure and economically sound. We provide detailed remediation guidance and post-deployment monitoring services.",
     icon: "⛓️",
-    color: "from-green-500 to-emerald-400"
+    gradient: "from-slate-800 to-slate-900",
+    accent: "#10b981",
+    category: "BLOCKCHAIN",
+    features: [
+      "Smart contract auditing",
+      "Consensus mechanism security",
+      "DeFi protocol analysis",
+      "Wallet security"
+    ]
   },
   {
-    title: "Penetration Testing",
-    description: "Comprehensive security testing for networks and applications",
+    title: "Penetration Testing Services",
+    description: "Simulated cyber attacks to identify and remediate vulnerabilities before they can be exploited. Our certified ethical hackers use industry-standard methodologies to test your security defenses.",
+    detailedDescription: "Our penetration testing services simulate real-world attack scenarios to identify vulnerabilities in your systems. Our certified ethical hackers follow industry-standard methodologies including OWASP, NIST, and PTES frameworks. We conduct comprehensive testing across web applications, network infrastructure, wireless systems, and social engineering vectors. Each engagement includes detailed vulnerability assessment, exploitation demonstrations, and prioritized remediation recommendations with business impact analysis.",
     icon: "🎯",
-    color: "from-yellow-500 to-orange-500"
+    gradient: "from-slate-800 to-slate-900",
+    accent: "#f59e0b",
+    category: "PENETRATION TESTING",
+    features: [
+      "Web application testing",
+      "Network penetration testing",
+      "Social engineering",
+      "Red team exercises"
+    ]
   },
   {
-    title: "Cloud Security",
-    description: "End-to-end security for cloud infrastructure",
+    title: "Cloud Security Architecture",
+    description: "Comprehensive security solutions for multi-cloud and hybrid environments. We design and implement secure cloud architectures with defense-in-depth strategies tailored to your specific cloud service model.",
+    detailedDescription: "Our cloud security architects design and implement robust security frameworks for AWS, Azure, GCP, and hybrid cloud environments. We provide comprehensive cloud security posture management, identity and access management solutions, and automated compliance monitoring. Our defense-in-depth approach includes network segmentation, encryption key management, container security, and serverless security. We help organizations achieve compliance with SOC 2, ISO 27001, and industry-specific regulations.",
     icon: "☁️",
-    color: "from-pink-500 to-violet-500"
+    gradient: "from-slate-800 to-slate-900",
+    accent: "#8b5cf6",
+    category: "CLOUD SECURITY",
+    features: [
+      "Cloud Security Posture Management",
+      "Identity & Access Management",
+      "Data protection",
+      "Compliance as Code"
+    ]
   },
   {
-    title: "Threat Intelligence",
-    description: "Proactive threat detection and response",
+    title: "Threat Intelligence & Hunting",
+    description: "Proactive identification and mitigation of emerging threats through advanced threat intelligence and hunting services. We help organizations stay ahead of sophisticated adversaries.",
+    detailedDescription: "Our threat intelligence and hunting services provide proactive defense against advanced persistent threats and emerging attack vectors. We leverage machine learning algorithms, behavioral analytics, and threat intelligence feeds to identify indicators of compromise before they become incidents. Our team conducts hypothesis-driven threat hunting, develops custom detection rules, and provides strategic threat intelligence briefings to help organizations understand their threat landscape and adversary tactics.",
     icon: "🔍",
-    color: "from-cyan-500 to-blue-500"
+    gradient: "from-slate-800 to-slate-900",
+    accent: "#06b6d4",
+    category: "THREAT INTELLIGENCE",
+    features: [
+      "Threat intelligence platforms",
+      "IOC management",
+      "Threat hunting",
+      "Incident response"
+    ]
   }
 ];
 
-const ServiceCard = ({ service, index, scrollYProgress }) => {
-  const ref = useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
-  
-  // Calculate position in viewport with spring physics for smoother motion
-  const yRange = useSpring(
-    useTransform(
-      scrollYProgress,
-      [0, 0.3, 0.7, 1],
-      [index % 2 === 0 ? 50 : -50, 0, 0, index % 2 === 0 ? -50 : 50]
-    ),
-    { stiffness: 300, damping: 30 }
-  );
-  
-  // More refined opacity with smooth entry and exit
-  const opacity = useSpring(
-    useTransform(
-      scrollYProgress,
-      [0, 0.1, 0.2, 0.8, 0.9, 1],
-      [0, 0.5, 1, 1, 0.5, 0]
-    ),
-    { stiffness: 100, damping: 20 }
-  );
-  
-  // Scale with more subtle animation
-  const scale = useSpring(
-    useTransform(
-      scrollYProgress,
-      [0, 0.1, 0.2, 0.8, 0.9, 1],
-      [0.9, 0.95, 1, 1, 0.95, 0.9]
-    ),
-    { stiffness: 200, damping: 20 }
-  );
-  
-  // Subtle rotation effect
-  const rotate = useSpring(
-    useTransform(
-      scrollYProgress,
-      [0, 0.5, 1],
-      [index % 2 === 0 ? -2 : 2, 0, index % 2 === 0 ? 2 : -2]
-    ),
-    { stiffness: 100, damping: 20 }
-  );
-  
+const ServiceModal = ({ service, isOpen, onClose }) => {
+  if (!isOpen) return null;
+
   return (
-    <motion.div
-      ref={ref}
-      className={`relative w-full max-w-2xl mx-auto mb-16`}
-      style={{
-        y: yRange,
-        opacity,
-        scale,
-        rotate,
-        zIndex: isVisible ? 10 : 1,
-      }}
-      onViewportEnter={() => setIsVisible(true)}
-      onViewportLeave={() => setIsVisible(false)}
-      viewport={{ margin: "-20% 0px -20% 0px" }}
-    >
-      <div className={`relative p-8 rounded-3xl bg-gradient-to-br ${service.color} bg-opacity-10 backdrop-blur-lg border border-white/10 shadow-2xl overflow-hidden`}>
-        <div className="absolute inset-0 bg-grid-white/[0.05] [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
-        
-        <div className="relative z-10">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm flex items-center justify-center text-2xl mb-6">
-            {service.icon}
+    <AnimatePresence>
+      <motion.div
+        className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={onClose}
+      >
+        <motion.div
+          className="bg-slate-900 border border-slate-700 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto"
+          initial={{ scale: 0.9, opacity: 0, y: 20 }}
+          animate={{ scale: 1, opacity: 1, y: 0 }}
+          exit={{ scale: 0.9, opacity: 0, y: 20 }}
+          onClick={(e) => e.stopPropagation()}
+          transition={{ type: "spring", stiffness: 300, damping: 30 }}
+        >
+          <div className="p-8">
+            <div className="flex items-start justify-between mb-6">
+              <div className="flex items-center">
+                <div 
+                  className="w-16 h-16 rounded-xl flex items-center justify-center text-2xl mr-4"
+                  style={{ backgroundColor: `${service.accent}15` }}
+                >
+                  {service.icon}
+                </div>
+                <div>
+                  <div className="text-sm font-medium text-gray-400 mb-1">{service.category}</div>
+                  <h3 className="text-2xl font-bold text-white">{service.title}</h3>
+                </div>
+              </div>
+              <button
+                onClick={onClose}
+                className="text-gray-400 hover:text-white transition-colors p-2"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            <div className="mb-8">
+              <h4 className="text-lg font-semibold text-white mb-4">Overview</h4>
+              <p className="text-gray-300 leading-relaxed mb-6">{service.detailedDescription}</p>
+              
+              <h4 className="text-lg font-semibold text-white mb-4">Key Capabilities</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {service.features.map((feature, index) => (
+                  <div key={index} className="flex items-center">
+                    <div 
+                      className="w-2 h-2 rounded-full mr-3"
+                      style={{ backgroundColor: service.accent }}
+                    />
+                    <span className="text-gray-300">{feature}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-4">
+              <button
+                className="flex-1 px-6 py-3 rounded-xl font-medium text-white transition-all duration-300"
+                style={{
+                  backgroundColor: service.accent,
+                  boxShadow: `0 4px 14px ${service.accent}40`
+                }}
+                onClick={() => {
+                  // Add contact/consultation logic here
+                  alert(`Contact us about ${service.title}`);
+                }}
+              >
+                Request Consultation
+              </button>
+              <button
+                onClick={onClose}
+                className="flex-1 px-6 py-3 rounded-xl font-medium text-gray-300 border border-slate-600 hover:border-slate-500 transition-colors"
+              >
+                Close
+              </button>
+            </div>
           </div>
-          
-          <h3 className="text-2xl font-bold text-white mb-3">
-            {service.title}
-          </h3>
-          
-          <p className="text-gray-300 mb-6">
-            {service.description}
-          </p>
-          
-          <motion.button
-            className="px-6 py-2.5 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg text-white text-sm font-medium hover:bg-white/10 transition-colors"
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            Learn More
-          </motion.button>
-        </div>
-        
-        {/* Animated elements */}
-        <motion.div 
-          className="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-white/5 backdrop-blur-sm"
-          animate={{
-            x: [0, 20, 0],
-            y: [0, -20, 0],
-            scale: [1, 1.2, 1],
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
+  );
+};
+
+const ServiceCard = ({ service, index, isVisible }) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+
+  return (
+    <>
+      <motion.div
+        className="relative mb-24 last:mb-0"
+        initial={{ opacity: 0, y: 100 }}
+        animate={{ 
+          opacity: isVisible ? 1 : 0,
+          y: isVisible ? 0 : 100
+        }}
+        transition={{ 
+          duration: 0.8,
+          type: "spring",
+          stiffness: 100,
+          damping: 20,
+          delay: index * 0.1
+        }}
+      >
+        <motion.div
+          className={`relative bg-gradient-to-br ${service.gradient} border border-slate-700/50 rounded-2xl overflow-hidden group`}
+          onHoverStart={() => setIsHovered(true)}
+          onHoverEnd={() => setIsHovered(false)}
+          whileHover={{ 
+            scale: 1.02,
+            transition: { duration: 0.3, type: "spring", stiffness: 300 }
           }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            ease: "easeInOut",
+          style={{
+            boxShadow: isHovered 
+              ? `0 25px 50px -12px ${service.accent}20, 0 0 0 1px ${service.accent}10`
+              : '0 8px 25px -5px rgba(0, 0, 0, 0.3)'
           }}
-        />
-      </div>
-    </motion.div>
+        >
+          {/* Subtle gradient overlay */}
+          <div 
+            className="absolute inset-0 opacity-5"
+            style={{
+              background: `linear-gradient(135deg, ${service.accent}40 0%, transparent 70%)`
+            }}
+          />
+          
+          {/* Grid pattern */}
+          <div className="absolute inset-0 opacity-[0.02]">
+            <div className="absolute inset-0" style={{
+              backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.5) 1px, transparent 0)',
+              backgroundSize: '20px 20px'
+            }} />
+          </div>
+
+          <div className="relative p-8 lg:p-10">
+            {/* Header */}
+            <div className="flex items-start justify-between mb-6">
+              <div className="flex items-center">
+                <motion.div 
+                  className="w-16 h-16 rounded-xl flex items-center justify-center text-2xl mr-6 border border-slate-600/50"
+                  style={{ 
+                    backgroundColor: `${service.accent}08`,
+                    borderColor: `${service.accent}20`
+                  }}
+                  animate={isHovered ? {
+                    scale: [1, 1.1, 1],
+                    rotate: [0, 5, 0]
+                  } : {}}
+                  transition={{ duration: 0.6 }}
+                >
+                  {service.icon}
+                </motion.div>
+                <div>
+                  <div className="text-xs font-bold tracking-wider text-gray-400 mb-2">
+                    {service.category}
+                  </div>
+                  <h3 className="text-2xl lg:text-3xl font-bold text-white leading-tight">
+                    {service.title}
+                  </h3>
+                </div>
+              </div>
+              
+              <motion.div
+                className="text-gray-500"
+                animate={isHovered ? { rotate: 15 } : { rotate: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+              </motion.div>
+            </div>
+
+            {/* Description */}
+            <p className="text-gray-300 mb-8 leading-relaxed text-base lg:text-lg">
+              {service.description}
+            </p>
+
+            {/* Features */}
+            <div className="mb-8">
+              <div className="grid grid-cols-2 gap-x-6 gap-y-3">
+                {service.features.map((feature, i) => (
+                  <motion.div 
+                    key={i}
+                    className="flex items-center text-sm text-gray-300"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ 
+                      opacity: isVisible ? 1 : 0,
+                      x: isVisible ? 0 : -20
+                    }}
+                    transition={{ 
+                      delay: (index * 0.1) + (i * 0.05),
+                      duration: 0.5
+                    }}
+                  >
+                    <div 
+                      className="w-1.5 h-1.5 rounded-full mr-3 flex-shrink-0"
+                      style={{ backgroundColor: service.accent }}
+                    />
+                    <span className="text-sm">{feature}</span>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+
+            {/* CTA Button */}
+            <motion.button
+              onClick={() => setShowModal(true)}
+              className="group flex items-center px-6 py-3 text-sm font-medium text-white rounded-xl transition-all duration-300 relative overflow-hidden"
+              style={{
+                backgroundColor: `${service.accent}15`,
+                border: `1px solid ${service.accent}30`,
+              }}
+              whileHover={{ 
+                scale: 1.02,
+                boxShadow: `0 8px 25px ${service.accent}25`
+              }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <span className="relative z-10">Learn More</span>
+              <motion.svg 
+                className="w-4 h-4 ml-2 relative z-10" 
+                fill="none" 
+                viewBox="0 0 24 24" 
+                stroke="currentColor"
+                animate={isHovered ? { x: 4 } : { x: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </motion.svg>
+              
+              <motion.div
+                className="absolute inset-0 rounded-xl"
+                style={{ backgroundColor: service.accent }}
+                initial={{ scale: 0, opacity: 0 }}
+                whileHover={{ 
+                  scale: 1, 
+                  opacity: 0.1,
+                  transition: { duration: 0.3 }
+                }}
+              />
+            </motion.button>
+          </div>
+        </motion.div>
+      </motion.div>
+
+      <ServiceModal 
+        service={service}
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+      />
+    </>
   );
 };
 
 const EnhancedServices = () => {
   const containerRef = useRef(null);
-  const scrollRef = useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
+  const [visibleCards, setVisibleCards] = useState([]);
+  const [activeIndex, setActiveIndex] = useState(0);
   
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start end', 'end start']
   });
-  
-  // Container animations
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        when: 'beforeChildren',
-        staggerChildren: 0.1,
-      },
-    },
-  };
-  
-  // Fade in/out effect for the entire section
-  const sectionOpacity = useSpring(
-    useTransform(
-      scrollYProgress,
-      [0, 0.1, 0.9, 1],
-      [0, 1, 1, 0]
-    ),
-    { stiffness: 100, damping: 20 }
-  );
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const [inViewRef, inView] = useInView({
-    threshold: 0.2,
-    triggerOnce: true,
-  });
 
+  // Handle scroll-based card visibility
   useEffect(() => {
-    // Simulate loading state
-    setTimeout(() => setLoading(false), 1000);
-  }, []);
+    const handleScroll = () => {
+      const container = containerRef.current;
+      if (!container) return;
 
-  // Auto-rotate active service
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % services.length);
-    }, 5000);
+      const containerRect = container.getBoundingClientRect();
+      const containerCenter = containerRect.top + containerRect.height / 2;
+      const windowCenter = window.innerHeight / 2;
+      
+      // Calculate how far we've scrolled through the container
+      const scrollProgress = Math.max(0, Math.min(1, (windowCenter - containerRect.top) / containerRect.height));
+      
+      // Show cards progressively based on scroll
+      const newVisibleCards = [];
+      services.forEach((_, index) => {
+        const cardThreshold = (index + 1) / services.length;
+        if (scrollProgress >= cardThreshold * 0.3) {
+          newVisibleCards.push(index);
+        }
+      });
+      
+      setVisibleCards(newVisibleCards);
+      
+      // Update active index based on scroll
+      const newActiveIndex = Math.min(
+        services.length - 1,
+        Math.floor(scrollProgress * services.length * 1.2)
+      );
+      setActiveIndex(newActiveIndex);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Initial check
     
-    return () => clearInterval(interval);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
   
   return (
-    <motion.section 
+    <section 
       ref={containerRef}
-      className="relative py-20 overflow-hidden bg-gradient-to-b from-gray-900 to-black"
-      style={{ opacity: sectionOpacity }}
-      variants={containerVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.2 }}
+      className="relative py-20 lg:py-32 overflow-hidden bg-slate-950"
     >
-      {/* Scroll indicator */}
-      <div className="hidden md:block fixed right-10 top-1/2 transform -translate-y-1/2 z-20">
-        <motion.div 
-          className="w-2 h-48 bg-white/10 rounded-full"
-          initial={{ height: 0 }}
-          animate={{ height: '192px' }}
-          transition={{ duration: 1 }}
-        />
-        <div className="flex flex-col items-center space-y-2 mt-4">
-          <motion.div 
-            className="w-1.5 h-1.5 rounded-full bg-white/10"
-            animate={{
-              scale: [1, 1.2, 1],
-              rotate: [0, 180, 0]
-            }}
-            transition={{
-              duration: 2,
-              repeat: Infinity
-            }}
-          />
-          <span className="text-xs text-white/30">Scroll</span>
+      {/* Professional background */}
+      <div className="absolute inset-0">
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950" />
+        <div className="absolute inset-0 opacity-30">
+          <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl" />
+          <div className="absolute top-1/2 right-1/4 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-1/3 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl" />
         </div>
-      </div>
-      {/* Enhanced background with parallax effect */}
-      <div className="absolute inset-0 overflow-hidden">
-        {/* Parallax elements */}
-        <div className="absolute inset-0">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full mix-blend-screen filter blur-3xl" style={{
-            transform: `translateY(${scrollYProgress.get() * 100}px)`
-          }}></div>
-          <div className="absolute top-1/2 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full mix-blend-screen filter blur-3xl" style={{
-            transform: `translateY(${scrollYProgress.get() * -100}px)`
-          }}></div>
-          <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full mix-blend-screen filter blur-3xl" style={{
-            transform: `translateY(${scrollYProgress.get() * 50}px)`
-          }}></div>
-        </div>
-
-        {/* Particle background */}
-        <Particles
-          id="tsparticles"
-          options={{
-            background: {
-              color: {
-                value: "transparent"
-              }
-            },
-            fpsLimit: 120,
-            interactivity: {
-              events: {
-                onClick: {
-                  enable: true,
-                  mode: "push"
-                },
-                onHover: {
-                  enable: true,
-                  mode: "repulse"
-                },
-                resize: true
-              },
-              modes: {
-                push: {
-                  quantity: 4
-                },
-                repulse: {
-                  distance: 200,
-                  duration: 0.4
-                }
-              }
-            },
-            particles: {
-              color: {
-                value: "#00ffff"
-              },
-              links: {
-                color: "#00ffff",
-                distance: 150,
-                enable: true,
-                opacity: 0.5,
-                width: 1
-              },
-              move: {
-                direction: "none",
-                enable: true,
-                outModes: {
-                  default: "bounce"
-                },
-                random: false,
-                speed: 2,
-                straight: false
-              },
-              number: {
-                density: {
-                  enable: true,
-                  area: 800
-                },
-                value: 80
-              },
-              opacity: {
-                value: 0.5
-              },
-              shape: {
-                type: "circle"
-              },
-              size: {
-                value: { min: 1, max: 5 }
-              }
-            },
-            detectRetina: true
-          }}
-        />
       </div>
       
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div 
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-20%" }}
-          transition={{ duration: 0.6 }}
-        >
-          <h2 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 mb-4">
-            Our Services
-          </h2>
-          <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-            Cutting-edge security solutions tailored to your needs
-          </p>
-        </motion.div>
-        {/* Section Header */}
-        <div className="text-center mb-24">
-          <motion.span 
-            className="inline-flex items-center px-6 py-2 text-sm font-semibold text-cyan-400 bg-cyan-900/30 rounded-full mb-6"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-          >
-            <span className="relative flex h-2 w-2 mr-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
-            </span>
-            OUR SERVICES
-          </motion.span>
-          
-          <motion.h2 
-            className="text-4xl md:text-6xl font-bold text-white mb-6"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-          >
-            Cutting-Edge <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent">Security</span> Solutions
-          </motion.h2>
-          
-          <motion.p 
-            className="text-xl text-gray-400 max-w-3xl mx-auto"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4 }}
-          >
-            Innovative security services designed to protect your digital assets in an evolving threat landscape.
-          </motion.p>
-        </div>
-        
-        {/* Services Grid */}
-        <div ref={scrollRef} className="relative">
-          {loading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {[...Array(6)].map((_, i) => (
-                <motion.div
-                  key={i}
-                  className="bg-gray-800/50 rounded-2xl p-6 animate-pulse"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.1 }}
-                >
-                  <div className="h-16 w-16 rounded-full bg-gray-700 mb-4"></div>
-                  <div className="h-4 bg-gray-700 w-48 mb-2"></div>
-                  <div className="h-3 bg-gray-700 w-64 mb-4"></div>
-                  <div className="flex gap-2">
-                    {[...Array(3)].map((_, j) => (
-                      <div key={j} className="h-6 w-24 bg-gray-700 rounded-full"></div>
-                    ))}
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          ) : (
-            <AnimatePresence>
-              {services.map((service, index) => (
-                <ServiceCard 
-                  key={index} 
-                  service={service} 
-                  index={index} 
-                  scrollYProgress={scrollYProgress} 
-                />
-              ))}
-            </AnimatePresence>
-          )}
-          
-          {/* Active indicator */}
-          <motion.div 
-            className="hidden md:block fixed right-10 top-1/2 transform -translate-y-1/2 z-20"
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ 
-              opacity: 1, 
-              x: 0,
-              transition: { delay: 0.5 }
-            }}
-          >
-            <div className="flex flex-col items-center space-y-4">
-              {services.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => {
-                    document.querySelector(`#service-${index}`)?.scrollIntoView({
-                      behavior: 'smooth'
-                    });
-                  }}
-                  className="w-3 h-3 rounded-full bg-white/20 transition-all relative"
-                >
-                  {activeIndex === index && (
-                    <motion.span
-                      className="absolute inset-0 bg-white rounded-full"
-                      layoutId="activeDot"
-                      transition={{
-                        type: "spring",
-                        stiffness: 500,
-                        damping: 30
-                      }}
-                    />
-                  )}
-                </button>
-              ))}
-            </div>
-          </motion.div>
+      {/* Progress indicator */}
+      <div className="hidden lg:block fixed right-8 top-1/2 transform -translate-y-1/2 z-20">
+        <div className="flex flex-col items-center space-y-4">
+          <div className="w-px h-24 bg-slate-700 relative">
+            <motion.div
+              className="absolute top-0 left-0 w-px bg-gradient-to-b from-cyan-400 to-blue-500"
+              style={{
+                height: useTransform(scrollYProgress, [0, 1], ["0%", "100%"])
+              }}
+            />
+          </div>
+          <div className="flex flex-col space-y-2">
+            {services.map((_, index) => (
+              <button
+                key={index}
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                  visibleCards.includes(index) 
+                    ? 'bg-cyan-400 scale-125' 
+                    : 'bg-slate-600'
+                }`}
+                onClick={() => {
+                  document.querySelector(`#service-${index}`)?.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                  });
+                }}
+              />
+            ))}
+          </div>
         </div>
       </div>
-    </motion.section>
+      
+      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <motion.div 
+          className="text-center mb-20 lg:mb-28"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
+          <motion.div 
+            className="inline-flex items-center px-4 py-2 text-sm font-medium text-cyan-400 bg-cyan-900/10 border border-cyan-500/20 rounded-full mb-8"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2 }}
+          >
+            <div className="w-2 h-2 rounded-full bg-cyan-400 mr-2" />
+            PROFESSIONAL SECURITY SERVICES
+          </motion.div>
+          
+          <h1 className="text-4xl lg:text-7xl font-bold text-white mb-8 leading-tight">
+            Enterprise-Grade
+            <br />
+            <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
+              Cybersecurity Solutions
+            </span>
+          </h1>
+          
+          <p className="text-xl lg:text-2xl text-gray-400 max-w-4xl mx-auto leading-relaxed">
+            Protecting your digital infrastructure with military-grade security protocols, 
+            advanced threat detection, and comprehensive risk management strategies.
+          </p>
+        </motion.div>
+        
+        {/* Services */}
+        <div className="relative">
+          {services.map((service, index) => (
+            <div key={index} id={`service-${index}`}>
+              <ServiceCard 
+                service={service} 
+                index={index} 
+                isVisible={visibleCards.includes(index)}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 };
 
