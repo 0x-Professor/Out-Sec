@@ -2196,21 +2196,71 @@ export const Footer = () => {
   };
 
   const socialLinks = [
-    { name: 'LinkedIn', icon: 'L', url: '#' },
-    { name: 'GitHub', icon: 'G', url: 'https://github.com/out-sec' },
-    { name: 'Twitter', icon: 'T', url: '#' },
-    { name: 'Discord', icon: 'D', url: '#' },
-    { name: 'Instagram', icon: 'I', url: '#' }
+    { 
+      name: 'GitHub', 
+      url: 'https://github.com/out-sec',
+      icon: (
+        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" />
+        </svg>
+      ),
+      color: 'from-gray-800 to-gray-900',
+      hoverColor: 'hover:from-gray-700 hover:to-gray-800'
+    },
+    { 
+      name: 'Twitter', 
+      url: '#',
+      icon: (
+        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
+        </svg>
+      ),
+      color: 'from-blue-400 to-blue-500',
+      hoverColor: 'hover:from-blue-500 hover:to-blue-600'
+    },
+    { 
+      name: 'LinkedIn', 
+      url: '#',
+      icon: (
+        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+        </svg>
+      ),
+      color: 'from-blue-600 to-blue-700',
+      hoverColor: 'hover:from-blue-700 hover:to-blue-800'
+    },
+    { 
+      name: 'Discord', 
+      url: '#',
+      icon: (
+        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.453.96-.62 1.445a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.445.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.8 8.18 1.8 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.84 19.84 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.95-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.951 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.954-2.419 2.157-2.419 1.207 0 2.177 1.096 2.157 2.42 0 1.333-.95 2.418-2.157 2.418z" />
+        </svg>
+      ),
+      color: 'from-indigo-500 to-indigo-600',
+      hoverColor: 'hover:from-indigo-600 hover:to-indigo-700'
+    },
+    { 
+      name: 'Instagram', 
+      url: '#',
+      icon: (
+        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path fillRule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-1.284.013-2.46.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clipRule="evenodd" />
+        </svg>
+      ),
+      color: 'from-pink-500 to-rose-500',
+      hoverColor: 'hover:from-pink-600 hover:to-rose-600'
+    }
   ];
 
   return (
-    <footer className="bg-black border-t border-white/10 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-900/5 to-purple-900/5"></div>
+    <footer className="bg-gradient-to-br from-gray-900 to-gray-950 border-t border-white/10 relative overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-500/5 via-transparent to-transparent opacity-20"></div>
       
       <div className="container mx-auto px-6 py-16 relative z-10">
         <div className="grid-12 gap-12">
           {/* Company Info */}
-          <div className="col-12 lg:col-5">
+          <div className="col-12 lg:col-5 mb-8 lg:mb-0">
             <div className="flex items-center space-x-3 mb-6">
               <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
                 <span className="text-white font-bold text-lg">OS</span>
@@ -2221,23 +2271,31 @@ export const Footer = () => {
               </div>
             </div>
             
-            <p className="text-gray-400 mb-6 max-w-md leading-relaxed">
+            <p className="text-gray-300 mb-6 max-w-md leading-relaxed text-sm md:text-base">
               Defending the digital world with cutting-edge strategies in cybersecurity, 
               blockchain, and IoT security solutions. Built by experts, driven by innovation.
             </p>
             
-            <div className="flex space-x-4">
-              {socialLinks.map((platform) => (
-                <a 
+            <div className="flex space-x-3">
+              {socialLinks.map((platform, index) => (
+                <motion.a 
                   key={platform.name}
                   href={platform.url} 
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold hover:from-blue-600 hover:to-purple-700 transition-all duration-300 hover-scale"
+                  className={`w-11 h-11 rounded-xl flex items-center justify-center text-white font-bold transition-all duration-300 shadow-lg hover:shadow-xl ${platform.hoverColor}`}
                   title={platform.name}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 * index, duration: 0.3 }}
+                  whileHover={{ y: -4, scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                 >
-                  {platform.icon}
-                </a>
+                  <div className={`absolute inset-0 bg-gradient-to-br ${platform.color} rounded-xl opacity-90 group-hover:opacity-100 transition-opacity duration-300`}></div>
+                  <div className="relative z-10 flex items-center justify-center w-full h-full">
+                    {platform.icon}
+                  </div>
+                </motion.a>
               ))}
             </div>
           </div>
@@ -2267,14 +2325,32 @@ export const Footer = () => {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="text-center md:text-left mb-4 md:mb-0">
               <p className="text-gray-400 text-sm">
-                © {currentYear} Out-Sec. All rights reserved. Built with expertise, driven by innovation.
+                {currentYear} Out-Sec. All rights reserved. Built with expertise, driven by innovation.
+              </p>
+              <p className="text-gray-500 text-xs mt-2">
+                Securing your digital future with cutting-edge cybersecurity solutions.
               </p>
             </div>
             
             <div className="flex flex-wrap justify-center md:justify-end gap-6 text-sm">
-              <a href="#" className="text-gray-400 hover:text-blue-400 transition-colors">Privacy Policy</a>
-              <a href="#" className="text-gray-400 hover:text-blue-400 transition-colors">Terms of Service</a>
-              <a href="#" className="text-gray-400 hover:text-blue-400 transition-colors">Security</a>
+              <a 
+                href="#" 
+                className="text-gray-400 hover:text-blue-400 transition-colors hover:underline underline-offset-4 decoration-blue-400/50"
+              >
+                Privacy Policy
+              </a>
+              <a 
+                href="#" 
+                className="text-gray-400 hover:text-blue-400 transition-colors hover:underline underline-offset-4 decoration-blue-400/50"
+              >
+                Terms of Service
+              </a>
+              <a 
+                href="#" 
+                className="text-gray-400 hover:text-blue-400 transition-colors hover:underline underline-offset-4 decoration-blue-400/50"
+              >
+                Security
+              </a>
             </div>
           </div>
         </div>
@@ -2286,85 +2362,271 @@ export const Footer = () => {
 // LiveChatWidget Component
 export const LiveChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState([
-    { id: 1, text: "Hello! How can I help you with your cybersecurity needs?", sender: "bot", timestamp: new Date() }
-  ]);
+  const [isMinimized, setIsMinimized] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
   const [inputMessage, setInputMessage] = useState("");
+  const messagesEndRef = useRef(null);
+  
+  const [messages, setMessages] = useState([
+    { 
+      id: 1, 
+      text: "Hello! I'm your OutSecure assistant. How can I help you with your cybersecurity needs today?", 
+      sender: "bot", 
+      timestamp: new Date(),
+      status: 'delivered'
+    }
+  ]);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   const handleSendMessage = () => {
-    if (inputMessage.trim()) {
-      const newMessage = {
-        id: messages.length + 1,
-        text: inputMessage,
-        sender: "user",
-        timestamp: new Date()
+    const messageText = inputMessage.trim();
+    if (!messageText) return;
+
+    // Add user message
+    const userMessage = {
+      id: Date.now(),
+      text: messageText,
+      sender: "user",
+      timestamp: new Date(),
+      status: 'sending'
+    };
+
+    setMessages(prev => [...prev, userMessage]);
+    setInputMessage("");
+    setIsTyping(true);
+
+    // Simulate typing delay
+    setTimeout(() => {
+      const botResponse = {
+        id: Date.now() + 1,
+        text: getBotResponse(messageText),
+        sender: "bot",
+        timestamp: new Date(),
+        status: 'delivered'
       };
-      setMessages([...messages, newMessage]);
-      setInputMessage("");
       
-      // Simulate bot response
-      setTimeout(() => {
-        const botResponse = {
-          id: messages.length + 2,
-          text: "Thanks for your message! Our cybersecurity experts will respond shortly. In the meantime, you can explore our services or contact us directly.",
-          sender: "bot",
-          timestamp: new Date()
-        };
-        setMessages(prev => [...prev, botResponse]);
-      }, 1000);
+      setMessages(prev => {
+        const updated = [...prev];
+        const userMsgIndex = updated.findIndex(m => m.id === userMessage.id);
+        if (userMsgIndex !== -1) {
+          updated[userMsgIndex] = { ...updated[userMsgIndex], status: 'delivered' };
+        }
+        return [...updated, botResponse];
+      });
+      
+      setIsTyping(false);
+    }, 1500);
+  };
+
+  const getBotResponse = (message) => {
+    const lowerMessage = message.toLowerCase();
+    
+    if (lowerMessage.includes('hello') || lowerMessage.includes('hi') || lowerMessage.includes('hey')) {
+      return "Hello! I'm here to help with all your cybersecurity questions. What can I assist you with today?";
+    } else if (lowerMessage.includes('service') || lowerMessage.includes('services')) {
+      return "We offer a range of cybersecurity services including Penetration Testing, Security Audits, and Incident Response. Would you like more details about any specific service?";
+    } else if (lowerMessage.includes('contact') || lowerMessage.includes('email') || lowerMessage.includes('phone')) {
+      return "You can reach our team at contact@out-sec.com or call us at +1 (555) 123-4567. Our support is available 24/7 for critical security incidents.";
+    } else if (lowerMessage.includes('pricing') || lowerMessage.includes('cost') || lowerMessage.includes('price')) {
+      return "Our pricing varies based on the scope and requirements of your project. Could you tell me more about what you're looking for so I can provide a more accurate estimate?";
+    } else if (lowerMessage.includes('emergency') || lowerMessage.includes('urgent')) {
+      return "For immediate security incidents, please call our 24/7 emergency line at +1 (555) 987-6543. Our team is standing by to assist you.";
+    } else {
+      return "Thank you for your message. Our cybersecurity experts will review your inquiry and respond shortly. In the meantime, you might find helpful information in our Knowledge Base or FAQ section.";
+    }
+  };
+
+  const formatTime = (date) => {
+    return new Date(date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  };
+
+  const toggleChat = () => {
+    setIsOpen(!isOpen);
+    if (isOpen && isMinimized) {
+      setIsMinimized(false);
+    }
+  };
+
+  const minimizeChat = () => {
+    setIsMinimized(true);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSendMessage();
     }
   };
 
   return (
     <div className="fixed bottom-6 right-6 z-50">
       {isOpen && (
-        <div className="glass-card w-80 h-96 mb-4 flex flex-col">
-          <div className="p-4 border-b border-white/20">
-            <h3 className="text-white font-semibold">OutSecure Support</h3>
-            <p className="text-sm text-gray-300">We're here to help!</p>
-          </div>
-          
-          <div className="flex-1 overflow-y-auto p-4 space-y-3">
-            {messages.map((message) => (
-              <div key={message.id} className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div className={`max-w-xs px-3 py-2 rounded-lg text-sm ${
-                  message.sender === 'user' 
-                    ? 'bg-blue-600 text-white' 
-                    : 'bg-gray-700 text-gray-200'
-                }`}>
-                  {message.text}
-                </div>
+        <motion.div 
+          initial={{ opacity: 0, y: 20, scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: 20, scale: 0.95 }}
+          className="bg-gray-900/90 backdrop-blur-lg rounded-2xl shadow-2xl overflow-hidden border border-white/10 w-96 flex flex-col"
+          style={{
+            height: isMinimized ? '60px' : '600px',
+            transition: 'height 0.3s ease-in-out'
+          }}
+        >
+          {/* Header */}
+          <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-4 flex justify-between items-center">
+            <div className="flex items-center space-x-3">
+              <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                </svg>
               </div>
-            ))}
-          </div>
-          
-          <div className="p-4 border-t border-white/20">
+              <div>
+                <h3 className="font-semibold text-white">OutSecure Support</h3>
+                <p className="text-xs text-white/80">
+                  {isTyping ? 'Typing...' : 'Online'}
+                  <span className="ml-2 inline-block w-2 h-2 rounded-full bg-green-400"></span>
+                </p>
+              </div>
+            </div>
             <div className="flex space-x-2">
-              <input
-                type="text"
-                value={inputMessage}
-                onChange={(e) => setInputMessage(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                placeholder="Type your message..."
-                className="flex-1 bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500"
-              />
-              <button
-                onClick={handleSendMessage}
-                className="btn-primary px-4 py-2 text-sm"
+              <button 
+                onClick={minimizeChat} 
+                className="text-white/80 hover:text-white transition-colors p-1"
+                aria-label="Minimize chat"
               >
-                Send
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
+                </svg>
+              </button>
+              <button 
+                onClick={toggleChat} 
+                className="text-white/80 hover:text-white transition-colors p-1"
+                aria-label="Close chat"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
               </button>
             </div>
           </div>
-        </div>
+
+          {!isMinimized && (
+            <>
+              {/* Messages */}
+              <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gradient-to-b from-gray-900/50 to-gray-900/30">
+                {messages.map((message) => (
+                  <motion.div 
+                    key={message.id}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+                  >
+                    <div className={`max-w-[80%] rounded-2xl px-4 py-2.5 relative ${
+                      message.sender === 'user' 
+                        ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-br-none' 
+                        : 'bg-gray-800/80 text-gray-100 rounded-bl-none'
+                    }`}>
+                      <div className="text-sm">{message.text}</div>
+                      <div className={`text-xs mt-1 flex items-center justify-end space-x-1 ${
+                        message.sender === 'user' ? 'text-blue-200' : 'text-gray-400'
+                      }`}>
+                        <span>{formatTime(message.timestamp)}</span>
+                        {message.sender === 'user' && (
+                          <span>
+                            {message.status === 'sending' ? (
+                              <svg className="w-3 h-3 animate-spin" fill="none" viewBox="0 0 24 24">
+                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                              </svg>
+                            ) : (
+                              <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" />
+                              </svg>
+                            )}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+                {isTyping && (
+                  <div className="flex items-center space-x-1 pl-2">
+                    <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                    <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                    <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                  </div>
+                )}
+                <div ref={messagesEndRef} />
+              </div>
+
+              {/* Input */}
+              <div className="p-4 border-t border-white/10 bg-gray-900/50">
+                <div className="relative">
+                  <textarea
+                    value={inputMessage}
+                    onChange={(e) => setInputMessage(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    placeholder="Type your message..."
+                    rows="1"
+                    className="w-full bg-gray-800/50 border border-gray-700 rounded-xl pl-4 pr-12 py-3 text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent resize-none"
+                    style={{ minHeight: '44px', maxHeight: '120px' }}
+                  />
+                  <button
+                    onClick={handleSendMessage}
+                    disabled={!inputMessage.trim()}
+                    className={`absolute right-2 bottom-2 p-2 rounded-full transition-colors ${
+                      inputMessage.trim() 
+                        ? 'bg-blue-600 text-white hover:bg-blue-700' 
+                        : 'bg-gray-700 text-gray-500 cursor-not-allowed'
+                    }`}
+                    aria-label="Send message"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                    </svg>
+                  </button>
+                </div>
+                <p className="text-xs text-gray-500 mt-2 text-center">
+                  Our team typically responds within a few minutes
+                </p>
+              </div>
+            </>
+          )}
+        </motion.div>
       )}
       
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-14 h-14 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center text-white shadow-lg hover:shadow-xl transition-all duration-300 hover-scale"
+      {/* Chat Toggle Button */}
+      <motion.button
+        onClick={toggleChat}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        className={`w-14 h-14 rounded-full flex items-center justify-center text-white shadow-xl transition-all duration-300 ${
+          isOpen ? 'hidden' : 'flex bg-gradient-to-br from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700'
+        }`}
+        aria-label={isOpen ? 'Close chat' : 'Open chat'}
       >
-        {isOpen ? '×' : '💬'}
-      </button>
+        {isOpen ? (
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        ) : (
+          <div className="relative">
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            </svg>
+            <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center text-xs font-bold">
+              1
+            </span>
+          </div>
+        )}
+      </motion.button>
     </div>
   );
 };

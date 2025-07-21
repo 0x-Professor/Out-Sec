@@ -16,6 +16,19 @@ import {
 import BlogPost from "./components/BlogPost";
 import GalaxyBackground from "./components/GalaxyBackground";
 
+// Spotlight component for Hero and Footer
+const Spotlight = ({ children, className = "" }) => (
+  <div className={`relative ${className}`}>
+    <div className="absolute inset-0 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-transparent"></div>
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-black/50 to-black/90"></div>
+    </div>
+    <div className="relative z-10">
+      {children}
+    </div>
+  </div>
+);
+
 function App() {
   const [activeSection, setActiveSection] = useState('home');
 
@@ -59,15 +72,17 @@ function App() {
 
   return (
     <div className="App">
-      <GalaxyBackground />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={
             <>
+              <GalaxyBackground />
               <Header activeSection={activeSection} scrollToSection={scrollToSection} />
               <main role="main">
-                <div id="home">
-                  <Hero scrollToSection={scrollToSection} />
+                <div id="home" className="relative overflow-hidden">
+                  <Spotlight>
+                    <Hero scrollToSection={scrollToSection} />
+                  </Spotlight>
                 </div>
                 <div id="about">
                   <About />
@@ -88,7 +103,9 @@ function App() {
                   <Contact />
                 </div>
               </main>
-              <Footer />
+              <Spotlight className="bg-black/50">
+                <Footer />
+              </Spotlight>
               <LiveChatWidget />
             </>
           } />
