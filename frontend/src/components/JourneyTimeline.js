@@ -1,5 +1,42 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+
+// Animation variants for Framer Motion
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2,
+      delayChildren: 0.3
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      duration: 0.6,
+      ease: [0.16, 1, 0.3, 1]
+    }
+  }
+};
+
+const cardVariants = {
+  initial: { scale: 1, y: 0 },
+  hover: { 
+    scale: 1.02, 
+    y: -5,
+    boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+    transition: {
+      duration: 0.3,
+      ease: [0.4, 0, 0.2, 1]
+    }
+  }
+};
 
 const JourneyTimeline = () => {
   const [activeIndex, setActiveIndex] = useState(-1);
@@ -75,10 +112,14 @@ const JourneyTimeline = () => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             setIsVisible(true);
+            observer.unobserve(entry.target);
           }
         });
       },
-      { threshold: 0.1 }
+      { 
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      }
     );
 
     if (timelineRef.current) {
@@ -93,110 +134,162 @@ const JourneyTimeline = () => {
   }, []);
 
   return (
-    <section id="journey" className="relative py-20 bg-gradient-to-b from-gray-900 to-gray-950 overflow-hidden">
-      {/* Background elements */}
-      <div className="absolute inset-0 overflow-hidden opacity-20">
-        <div className="absolute top-1/4 -left-10 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
-        <div className="absolute top-1/2 -right-10 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
-        <div className="absolute bottom-1/4 left-1/3 w-72 h-72 bg-cyan-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
+    <section id="journey" className="relative py-24 bg-gradient-to-br from-gray-900 to-gray-950 overflow-hidden">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-1/4 -left-10 w-96 h-96 bg-blue-500/20 rounded-full mix-blend-screen filter blur-3xl animate-float-slow"></div>
+        <div className="absolute top-1/2 -right-10 w-96 h-96 bg-purple-500/20 rounded-full mix-blend-screen filter blur-3xl animate-float-medium animation-delay-2000"></div>
+        <div className="absolute bottom-1/4 left-1/3 w-96 h-96 bg-cyan-500/20 rounded-full mix-blend-screen filter blur-3xl animate-float-slow animation-delay-4000"></div>
+        
+        {/* Grid pattern */}
+        <div className="absolute inset-0 opacity-5" style={{
+          backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px)',
+          backgroundSize: '40px 40px',
+        }}></div>
       </div>
       
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <motion.div 
-          className="text-center mb-16"
+          className="text-center mb-20"
           initial={{ opacity: 0, y: 20 }}
           animate={isVisible ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
-          <span className="inline-block px-4 py-2 text-sm font-semibold text-cyan-400 bg-cyan-900/30 rounded-full mb-4">
+          <motion.span 
+            className="inline-flex items-center px-4 py-2 text-sm font-semibold text-cyan-400 bg-cyan-900/30 rounded-full mb-6"
+            initial={{ opacity: 0, y: 10 }}
+            animate={isVisible ? { opacity: 1, y: 0 } : {}}
+            transition={{ delay: 0.2 }}
+          >
+            <span className="relative flex h-2 w-2 mr-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
+            </span>
             OUR JOURNEY
-          </span>
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Milestones of <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Excellence</span>
-          </h2>
-          <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-            Tracing our path from humble beginnings to becoming industry leaders in cybersecurity innovation.
-          </p>
+          </motion.span>
+          
+          <motion.h2 
+            className="text-4xl md:text-6xl font-bold text-white mb-6"
+            initial={{ opacity: 0, y: 15 }}
+            animate={isVisible ? { opacity: 1, y: 0 } : {}}
+            transition={{ delay: 0.3 }}
+          >
+            Our <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent">Journey</span> So Far
+          </motion.h2>
+          
+          <motion.p 
+            className="text-xl text-gray-400 max-w-3xl mx-auto"
+            initial={{ opacity: 0, y: 10 }}
+            animate={isVisible ? { opacity: 1, y: 0 } : {}}
+            transition={{ delay: 0.4 }}
+          >
+            From our humble beginnings to becoming a leader in cybersecurity innovation.
+            Every milestone tells a story of growth, challenges, and success.
+          </motion.p>
         </motion.div>
 
         {/* Timeline */}
-        <div 
+        <motion.div 
           ref={timelineRef}
-          className="relative max-w-5xl mx-auto"
+          className="relative max-w-6xl mx-auto"
+          variants={containerVariants}
+          initial="hidden"
+          animate={isVisible ? "visible" : "hidden"}
         >
-          {/* Timeline line */}
-          <div className="hidden md:block absolute left-1/2 w-1 h-full bg-gradient-to-b from-blue-500 via-purple-500 to-cyan-500 transform -translate-x-1/2"></div>
+          {/* Animated timeline line */}
+          <motion.div 
+            className="hidden md:block absolute left-1/2 w-1 h-full bg-gradient-to-b from-blue-500 via-purple-500 to-cyan-500 transform -translate-x-1/2"
+            initial={{ scaleY: 0, originY: 0 }}
+            animate={isVisible ? { scaleY: 1 } : {}}
+            transition={{ duration: 1.5, ease: [0.65, 0, 0.35, 1] }}
+          >
+            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent via-white/30 to-transparent opacity-30"></div>
+          </motion.div>
           
           {/* Timeline items */}
-          <div className="space-y-16 md:space-y-24">
+          <div className="space-y-20 md:space-y-32">
             {milestones.map((milestone, index) => {
               const isEven = index % 2 === 0;
-              const delay = index * 0.15;
               
               return (
                 <motion.div
                   key={index}
                   className={`relative flex flex-col md:flex-row items-center justify-between ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'}`}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={isVisible ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.6, delay }}
-                  onMouseEnter={() => setActiveIndex(index)}
-                  onMouseLeave={() => setActiveIndex(-1)}
+                  variants={itemVariants}
+                  initial="hidden"
+                  animate={isVisible ? "visible" : "hidden"}
+                  custom={index}
                 >
                   {/* Content */}
-                  <div 
-                    className={`w-full md:w-5/12 mb-6 md:mb-0 ${isEven ? 'md:pr-12' : 'md:pl-12'} transition-all duration-300 ${activeIndex === index ? 'scale-105' : ''}`}
+                  <motion.div 
+                    className={`w-full md:w-[45%] mb-8 md:mb-0 ${isEven ? 'md:pr-16' : 'md:pl-16'}`}
+                    whileHover="hover"
+                    variants={cardVariants}
+                    onHoverStart={() => setActiveIndex(index)}
+                    onHoverEnd={() => setActiveIndex(-1)}
                   >
-                    <motion.div 
-                      className={`relative p-6 bg-gray-800/50 backdrop-blur-sm rounded-2xl border border-gray-700/50 shadow-xl overflow-hidden group ${activeIndex === index ? 'ring-2 ring-cyan-500/30' : ''}`}
-                      whileHover={{ 
-                        y: -5,
-                        boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)'
-                      }}
-                      transition={{ duration: 0.3 }}
-                    >
+                    <div className={`relative p-8 bg-gray-800/60 backdrop-blur-md rounded-3xl border border-gray-700/50 shadow-2xl overflow-hidden transition-all duration-300 ${
+                      activeIndex === index ? 'ring-2 ring-cyan-500/50' : ''
+                    }`}>
                       {/* Glow effect */}
-                      <div className={`absolute -inset-0.5 bg-gradient-to-r ${milestone.color} rounded-2xl opacity-0 group-hover:opacity-30 blur transition duration-300 group-hover:duration-200`}></div>
+                      <div className={`absolute -inset-0.5 bg-gradient-to-r ${milestone.color} rounded-3xl opacity-0 transition-all duration-500 ${
+                        activeIndex === index ? 'opacity-30' : 'group-hover:opacity-20'
+                      } blur-xl`}></div>
                       
                       <div className="relative">
-                        <div className={`absolute -left-12 top-0 w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-r ${milestone.color} text-white font-bold shadow-lg md:hidden`}>
+                        {/* Mobile icon */}
+                        <div className={`absolute -left-14 top-0 w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-r ${milestone.color} text-white font-bold shadow-lg md:hidden`}>
                           {milestone.icon}
                         </div>
                         
-                        <h3 className="text-2xl font-bold text-white mb-2">{milestone.title}</h3>
-                        <p className="text-gray-300 mb-4">{milestone.description}</p>
-                        
-                        <ul className="space-y-2 mt-4">
-                          {milestone.achievements.map((achievement, i) => (
-                            <li key={i} className="flex items-start">
-                              <span className="text-cyan-400 mr-2">✓</span>
-                              <span className="text-gray-300">{achievement}</span>
-                            </li>
-                          ))}
-                        </ul>
-                        
-                        <div className="mt-4 pt-4 border-t border-gray-700/50">
-                          <span className="inline-block px-3 py-1 text-sm font-medium rounded-full bg-gray-700/50 text-cyan-400">
+                        {/* Year badge */}
+                        <div className="absolute -top-4 right-0">
+                          <span className={`inline-flex items-center px-4 py-1.5 text-sm font-medium rounded-full bg-gradient-to-r ${milestone.color} text-white shadow-lg`}>
                             {milestone.year}
                           </span>
                         </div>
+                        
+                        <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">{milestone.title}</h3>
+                        <p className="text-gray-300 mb-6 leading-relaxed">{milestone.description}</p>
+                        
+                        <ul className="space-y-3 mt-6">
+                          {milestone.achievements.map((achievement, i) => (
+                            <motion.li 
+                              key={i} 
+                              className="flex items-start group"
+                              whileHover={{ x: 5 }}
+                              transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                            >
+                              <span className="flex-shrink-0 mt-1 mr-3 text-cyan-400">
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                              </span>
+                              <span className="text-gray-300">{achievement}</span>
+                            </motion.li>
+                          ))}
+                        </ul>
                       </div>
-                    </motion.div>
-                  </div>
+                    </div>
+                  </motion.div>
                   
                   {/* Center dot */}
-                  <div className="hidden md:flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-gray-900 to-gray-800 border-4 border-gray-700 z-10 shadow-xl transition-all duration-300 hover:scale-110"
-                    style={{
-                      backgroundImage: `linear-gradient(135deg, var(--tw-gradient-stops))`,
-                      '--tw-gradient-from': `rgba(17, 24, 39, 0.9)`,
-                      '--tw-gradient-to': `rgba(31, 41, 55, 0.9)`,
+                  <motion.div 
+                    className="hidden md:flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-gray-900 to-gray-800 border-4 border-gray-700 z-10 shadow-2xl transition-all duration-300 hover:scale-110"
+                    whileHover={{ 
+                      scale: 1.1,
+                      boxShadow: `0 0 30px -5px ${milestone.color.split(' ')[1].replace('to-', '#').replace(/-500/, '')}80`
                     }}
                   >
-                    <div className={`w-12 h-12 rounded-full flex items-center justify-center text-2xl bg-gradient-to-r ${milestone.color} text-white shadow-lg`}>
+                    <motion.div 
+                      className={`w-16 h-16 rounded-full flex items-center justify-center text-3xl bg-gradient-to-r ${milestone.color} text-white shadow-lg`}
+                      animate={activeIndex === index ? { rotate: [0, 10, -10, 0] } : {}}
+                      transition={{ duration: 0.5 }}
+                    >
                       {milestone.icon}
-                    </div>
-                  </div>
+                    </motion.div>
+                  </motion.div>
                   
                   {/* Year (desktop) */}
                   <div className="hidden md:block w-5/12">
@@ -233,7 +326,7 @@ const JourneyTimeline = () => {
               />
             </>
           )}
-        </div>
+        </motion.div>
         
         {/* CTA */}
         <motion.div 
