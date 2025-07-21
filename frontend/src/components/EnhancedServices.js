@@ -1,0 +1,249 @@
+import React, { useRef, useState, useEffect } from 'react';
+import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion';
+
+const services = [
+  {
+    title: "Cryptography Integration",
+    description: "Advanced encryption solutions with quantum-resistant algorithms",
+    icon: "🔒",
+    color: "from-blue-500 to-cyan-400"
+  },
+  {
+    title: "Malware Analysis",
+    description: "Expert analysis and development of security solutions",
+    icon: "🛡️",
+    color: "from-purple-500 to-pink-500"
+  },
+  {
+    title: "Blockchain Security",
+    description: "Secure blockchain and smart contract development",
+    icon: "⛓️",
+    color: "from-green-500 to-emerald-400"
+  },
+  {
+    title: "Penetration Testing",
+    description: "Comprehensive security testing for networks and applications",
+    icon: "🎯",
+    color: "from-yellow-500 to-orange-500"
+  },
+  {
+    title: "Cloud Security",
+    description: "End-to-end security for cloud infrastructure",
+    icon: "☁️",
+    color: "from-pink-500 to-violet-500"
+  },
+  {
+    title: "Threat Intelligence",
+    description: "Proactive threat detection and response",
+    icon: "🔍",
+    color: "from-cyan-500 to-blue-500"
+  }
+];
+
+const ServiceCard = ({ service, index, scrollYProgress }) => {
+  const ref = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+  
+  // Calculate position in viewport
+  const yRange = useTransform(
+    scrollYProgress,
+    [0, 1],
+    [index % 2 === 0 ? 100 : -100, index % 2 === 0 ? -100 : 100]
+  );
+  
+  const opacity = useTransform(
+    scrollYProgress,
+    [0, 0.8, 1],
+    [0, 1, 0]
+  );
+  
+  const scale = useTransform(
+    scrollYProgress,
+    [0, 0.5, 1],
+    [0.8, 1, 0.8]
+  );
+  
+  const rotate = useTransform(
+    scrollYProgress,
+    [0, 1],
+    [index % 2 === 0 ? -5 : 5, index % 2 === 0 ? 5 : -5]
+  );
+  
+  return (
+    <motion.div
+      ref={ref}
+      className={`relative w-full max-w-2xl mx-auto mb-16`}
+      style={{
+        y: yRange,
+        opacity,
+        scale,
+        rotate,
+        zIndex: isVisible ? 10 : 1,
+      }}
+      onViewportEnter={() => setIsVisible(true)}
+      onViewportLeave={() => setIsVisible(false)}
+      viewport={{ margin: "-20% 0px -20% 0px" }}
+    >
+      <div className={`relative p-8 rounded-3xl bg-gradient-to-br ${service.color} bg-opacity-10 backdrop-blur-lg border border-white/10 shadow-2xl overflow-hidden`}>
+        <div className="absolute inset-0 bg-grid-white/[0.05] [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
+        
+        <div className="relative z-10">
+          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm flex items-center justify-center text-2xl mb-6">
+            {service.icon}
+          </div>
+          
+          <h3 className="text-2xl font-bold text-white mb-3">
+            {service.title}
+          </h3>
+          
+          <p className="text-gray-300 mb-6">
+            {service.description}
+          </p>
+          
+          <motion.button
+            className="px-6 py-2.5 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg text-white text-sm font-medium hover:bg-white/10 transition-colors"
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            Learn More
+          </motion.button>
+        </div>
+        
+        {/* Animated elements */}
+        <motion.div 
+          className="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-white/5 backdrop-blur-sm"
+          animate={{
+            x: [0, 20, 0],
+            y: [0, -20, 0],
+            scale: [1, 1.2, 1],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+      </div>
+    </motion.div>
+  );
+};
+
+const EnhancedServices = () => {
+  const ref = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
+  
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"]
+  });
+  
+  // Auto-rotate active service
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % services.length);
+    }, 5000);
+    
+    return () => clearInterval(interval);
+  }, []);
+  
+  return (
+    <section id="services" className="relative py-32 overflow-hidden bg-gradient-to-br from-gray-950 to-black">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-1/4 -left-20 w-96 h-96 bg-blue-500/10 rounded-full mix-blend-screen filter blur-3xl animate-float-slow"></div>
+        <div className="absolute top-1/2 -right-20 w-96 h-96 bg-purple-500/10 rounded-full mix-blend-screen filter blur-3xl animate-float-medium animation-delay-2000"></div>
+        <div className="absolute bottom-1/4 left-1/3 w-96 h-96 bg-cyan-500/10 rounded-full mix-blend-screen filter blur-3xl animate-float-slow animation-delay-4000"></div>
+      </div>
+      
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section Header */}
+        <div className="text-center mb-24">
+          <motion.span 
+            className="inline-flex items-center px-6 py-2 text-sm font-semibold text-cyan-400 bg-cyan-900/30 rounded-full mb-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            <span className="relative flex h-2 w-2 mr-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
+            </span>
+            OUR SERVICES
+          </motion.span>
+          
+          <motion.h2 
+            className="text-4xl md:text-6xl font-bold text-white mb-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            Cutting-Edge <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent">Security</span> Solutions
+          </motion.h2>
+          
+          <motion.p 
+            className="text-xl text-gray-400 max-w-3xl mx-auto"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+          >
+            Innovative security services designed to protect your digital assets in an evolving threat landscape.
+          </motion.p>
+        </div>
+        
+        {/* Services Grid */}
+        <div ref={ref} className="relative">
+          <AnimatePresence>
+            {services.map((service, index) => (
+              <ServiceCard 
+                key={index} 
+                service={service} 
+                index={index} 
+                scrollYProgress={scrollYProgress} 
+              />
+            ))}
+          </AnimatePresence>
+          
+          {/* Active indicator */}
+          <motion.div 
+            className="hidden md:block fixed right-10 top-1/2 transform -translate-y-1/2 z-20"
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ 
+              opacity: 1, 
+              x: 0,
+              transition: { delay: 0.5 }
+            }}
+          >
+            <div className="flex flex-col items-center space-y-4">
+              {services.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => {
+                    document.querySelector(`#service-${index}`)?.scrollIntoView({
+                      behavior: 'smooth'
+                    });
+                  }}
+                  className="w-3 h-3 rounded-full bg-white/20 transition-all relative"
+                >
+                  {activeIndex === index && (
+                    <motion.span
+                      className="absolute inset-0 bg-white rounded-full"
+                      layoutId="activeDot"
+                      transition={{
+                        type: "spring",
+                        stiffness: 500,
+                        damping: 30
+                      }}
+                    />
+                  )}
+                </button>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default EnhancedServices;
