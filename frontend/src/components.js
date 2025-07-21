@@ -279,6 +279,7 @@ const useScrollReveal = () => {
   const ref = useRef(null);
 
   useEffect(() => {
+    const currentRef = ref.current;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -288,15 +289,20 @@ const useScrollReveal = () => {
       { threshold: 0.1 }
     );
 
-    if (ref.current) {
-      observer.observe(ref.current);
+    if (currentRef) {
+      observer.observe(currentRef);
     }
 
-    return () => observer.disconnect();
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
+    };
   }, []);
 
   return [ref, isVisible];
 };
+
 const ThreatMap = () => {
   const canvasRef = useRef(null);
   const [threats, setThreats] = useState([]);
