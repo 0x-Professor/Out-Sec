@@ -896,11 +896,30 @@ export const About = () => {
   );
 };
 
-// Enhanced Services Component with 8 Services
+// Enhanced Services Component with Staggered Animations
 export const Services = () => {
   const [ref, isVisible] = useScrollReveal();
   const [activeService, setActiveService] = useState(0);
   const [searchTerm, setSearchTerm] = useState('');
+  const [hoveredCard, setHoveredCard] = useState(null);
+  const containerRef = useRef(null);
+  
+  // Animation variants for staggered children
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.3
+      }
+    }
+  };
+  
+  const item = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+  };
 
   const services = [
     {
@@ -933,7 +952,7 @@ export const Services = () => {
       icon: "penetration",
       features: ["Network Scanning", "Web App Testing", "Social Engineering", "Vulnerability Assessment"],
       technologies: ["Metasploit", "Burp Suite", "Nmap", "Wireshark"],
-      image: "https://images.unsplash.com/photo-1567619363836-e5fd63f69b20?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1NzZ8MHwxfHNlYXJjaHwyfHxoYWNraW5nfGVufDB8fHxibHVlfDE3NTI1NjA1NTN8MA&ixlib=rb-4.1.0&q=85"
+      image: "https://images.unsplash.com/photo-1567619363836-e5b2e691fc51?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1NzZ8MHwxfHNlYXJjaHwyfHxoYWNraW5nfGVufDB8fHxibHVlfDE3NTI1NjA1NTN8MA&ixlib=rb-4.1.0&q=85"
     },
     {
       title: "IoT Security",
@@ -941,7 +960,7 @@ export const Services = () => {
       icon: "iot",
       features: ["Device Authentication", "Edge Security", "Protocol Analysis", "Firmware Security"],
       technologies: ["MQTT", "CoAP", "LoRaWAN", "Zigbee"],
-      image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1NzZ8MHwxfHNlYXJjaHwyfHxuZXR3b3JrJTIwc2VjdXJpdHl8ZW58MHx8fGJsdWV8MTc1MjY0OTU4OXww&ixlib=rb-4.1.0&q=85"
+      image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1NzZ8MHwxfHNlYXJjaHwxfHxuZXR3b3JrJTIwc2VjdXJpdHl8ZW58MHx8fGJsdWV8MTc1MjY0OTU5OHww&ixlib=rb-4.1.0&q=85"
     },
     {
       title: "Security Operations Center",
@@ -976,103 +995,177 @@ export const Services = () => {
   );
 
   return (
-    <section id="services" className="py-24 gradient-bg-animated relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-900/10 to-purple-900/10"></div>
+    <section id="services" className="py-24 relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-900/5 via-purple-900/5 to-black/20"></div>
       
       <div className="container mx-auto px-6 relative z-10">
         <div className="text-center mb-16" ref={ref}>
-          <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-            <span className="inline-block bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 text-white px-6 py-2 rounded-full text-sm font-medium mb-6 cyber-glow animate-cyber-pulse">
-              <SVGIcon type="security" className="w-4 h-4 inline mr-2 animate-neon-flicker" />
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={isVisible ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8 }}
+          >
+            <motion.span 
+              className="inline-block bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 text-white px-6 py-2 rounded-full text-sm font-medium mb-6 shadow-lg"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, type: 'spring', stiffness: 300 }}
+            >
+              <SVGIcon type="security" className="w-4 h-4 inline mr-2" />
               CYBER SERVICES
-            </span>
-            <h2 className="text-4xl md:text-5xl font-black text-white mb-6">
-              Next-Gen <span className="hologram-text">Cybersecurity</span> Arsenal
-            </h2>
-            <p className="text-lg text-gray-300 max-w-2xl mx-auto">
+            </motion.span>
+            <motion.h2 
+              className="text-4xl md:text-5xl font-black text-white mb-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, type: 'spring', stiffness: 100 }}
+            >
+              Next-Gen <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">Cybersecurity</span> Arsenal
+            </motion.h2>
+            <motion.p 
+              className="text-lg text-gray-300 max-w-2xl mx-auto"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+            >
               Cutting-edge security solutions powered by AI and quantum-resistant technologies
-            </p>
-          </div>
+            </motion.p>
+          </motion.div>
         </div>
 
         {/* Search Bar */}
-        <div className="max-w-md mx-auto mb-16">
+        <motion.div 
+          className="max-w-md mx-auto mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          animate={isVisible ? { opacity: 1, y: 0 } : {}}
+          transition={{ delay: 0.5 }}
+        >
           <div className="relative">
             <input
               type="text"
               placeholder="Search cyber services..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full bg-black/30 border border-cyan-500/30 rounded-lg px-4 py-3 pl-12 text-white placeholder-gray-400 focus:outline-none focus:border-cyan-500 focus:bg-black/50 transition-all duration-300 cyber-glow backdrop-blur-sm"
+              className="w-full bg-black/30 border border-cyan-500/30 rounded-lg px-4 py-3 pl-12 text-white placeholder-gray-400 focus:outline-none focus:border-cyan-500 focus:bg-black/50 transition-all duration-300 shadow-lg backdrop-blur-sm"
             />
-            <SVGIcon type="penetration" className="absolute left-4 top-1/2 transform -translate-y-1/2 text-cyan-400 w-5 h-5 animate-neon-flicker" />
+            <SVGIcon type="penetration" className="absolute left-4 top-1/2 transform -translate-y-1/2 text-cyan-400 w-5 h-5" />
           </div>
-        </div>
+        </motion.div>
         
-        <div className="grid-12 gap-6">
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-4"
+          variants={container}
+          initial="hidden"
+          animate={isVisible ? "show" : "hidden"}
+          ref={containerRef}
+        >
           {filteredServices.map((service, index) => (
-            <div 
-              key={index} 
-              className={`col-12 md:col-6 lg:col-4 glass-card p-6 card-interactive transition-all duration-500 ${
-                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-              }`}
-              style={{ 
-                transitionDelay: `${index * 100}ms`,
-                animationDelay: `${index * 0.2}s`
+            <motion.div 
+              key={index}
+              className={`service-card relative group ${hoveredCard !== null && hoveredCard !== index ? 'opacity-60' : 'opacity-100'}`}
+              variants={item}
+              onMouseEnter={() => setHoveredCard(index)}
+              onMouseLeave={() => setHoveredCard(null)}
+              whileHover={{ 
+                scale: 1.03,
+                zIndex: 10,
+                transition: { duration: 0.3, ease: [0.4, 0, 0.2, 1] }
               }}
-              onMouseEnter={() => setActiveService(index)}
+              transition={{ 
+                type: 'spring',
+                stiffness: 300,
+                damping: 20,
+                delay: index * 0.05
+              }}
+              style={{
+                transformOrigin: 'center bottom',
+                zIndex: hoveredCard === index ? 20 : 1,
+              }}
             >
-              <div className="relative overflow-hidden rounded-xl mb-4 group">
-                <img 
-                  src={service.image} 
-                  alt={service.title}
-                  className="w-full h-40 object-cover group-hover:scale-110 transition-transform duration-700"
-                  loading="lazy"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
-                <div className="absolute top-3 right-3">
-                  <div className="w-8 h-8 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-lg flex items-center justify-center animate-cyber-pulse">
-                    <SVGIcon type={service.icon} className="w-4 h-4 text-white" />
+              <div className="h-full bg-gradient-to-br from-gray-900/80 to-gray-800/80 backdrop-blur-sm rounded-2xl overflow-hidden border border-gray-700/50 shadow-2xl transition-all duration-500 group-hover:border-cyan-500/50 group-hover:shadow-[0_0_30px_rgba(0,255,255,0.1)]">
+                <div className="relative overflow-hidden h-48">
+                  <motion.img 
+                    src={service.image} 
+                    alt={service.title}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                    initial={{ scale: 1 }}
+                    whileHover={{ scale: 1.1 }}
+                    transition={{ duration: 0.5, ease: 'easeInOut' }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                  <div className="absolute top-4 right-4">
+                    <motion.div 
+                      className="w-10 h-10 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-lg flex items-center justify-center shadow-lg"
+                      whileHover={{ rotate: 15, scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                    >
+                      <SVGIcon type={service.icon} className="w-5 h-5 text-white" />
+                    </motion.div>
                   </div>
                 </div>
-                <div className="absolute bottom-4 left-4 right-4">
-                  <div className="bg-white/10 backdrop-blur-sm rounded-lg p-2">
-                    <p className="text-white font-medium text-sm">{service.title}</p>
+                
+                <div className="p-6">
+                  <motion.h3 
+                    className="text-xl font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors"
+                    initial={{ color: '#ffffff' }}
+                    whileHover={{ color: '#22d3ee' }}
+                  >
+                    {service.title}
+                  </motion.h3>
+                  
+                  <p className="text-gray-300 text-sm mb-4 leading-relaxed">
+                    {service.description}
+                  </p>
+                  
+                  <div className="flex flex-wrap gap-2 mb-5">
+                    {service.technologies.slice(0, 3).map((tech, techIndex) => (
+                      <motion.span 
+                        key={techIndex}
+                        className="bg-gradient-to-r from-cyan-500/20 to-purple-600/20 text-cyan-300 px-3 py-1 rounded-full text-xs font-medium border border-cyan-500/30"
+                        whileHover={{ 
+                          scale: 1.1,
+                          backgroundColor: 'rgba(6, 182, 212, 0.3)'
+                        }}
+                      >
+                        {tech}
+                      </motion.span>
+                    ))}
+                    {service.technologies.length > 3 && (
+                      <span className="bg-gray-800/50 text-gray-400 px-3 py-1 rounded-full text-xs border border-gray-700/50">
+                        +{service.technologies.length - 3}
+                      </span>
+                    )}
                   </div>
+                  
+                  <motion.button 
+                    className="w-full bg-gradient-to-r from-cyan-600 to-purple-600 text-white py-2.5 rounded-lg font-medium text-sm mt-2 relative overflow-hidden group"
+                    whileHover={{ 
+                      scale: 1.02,
+                      boxShadow: '0 0 15px rgba(34, 211, 238, 0.5)'
+                    }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <span className="relative z-10">Learn More</span>
+                    <span className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                  </motion.button>
                 </div>
               </div>
-              
-              <div className="text-center">
-                <p className="text-cyan-400 font-medium text-sm mb-3">{service.category}</p>
-                <p className="text-gray-400 text-sm mb-4 leading-relaxed line-clamp-2">{service.description}</p>
-                
-                <div className="flex flex-wrap gap-1 justify-center mb-4">
-                  {service.technologies.slice(0, 4).map((tech, techIndex) => (
-                    <span key={techIndex} className="bg-gradient-to-r from-cyan-500/30 to-purple-600/30 text-cyan-300 px-2 py-1 rounded-full text-xs border border-cyan-500/30">
-                      {tech}
-                    </span>
-                  ))}
-                  {service.technologies.length > 4 && (
-                    <span className="bg-gray-700/50 text-gray-400 px-2 py-1 rounded-full text-xs border border-gray-600/30">
-                      +{service.technologies.length - 4}
-                    </span>
-                  )}
-                </div>
-                
-                <button className="w-full bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 text-white py-2 rounded-lg text-sm font-semibold hover:from-cyan-400 hover:via-blue-400 hover:to-purple-500 transition-all duration-300 hover-scale cyber-glow">
-                  Learn More
-                </button>
-              </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {filteredServices.length === 0 && (
-          <div className="text-center py-12">
-            <div className="text-6xl mb-4">🔍</div>
+          <motion.div 
+            className="text-center py-16"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <div className="text-6xl mb-6">🔍</div>
             <h3 className="text-2xl font-bold text-white mb-2">No services found</h3>
             <p className="text-gray-400">Try adjusting your search terms</p>
-          </div>
+          </motion.div>
         )}
       </div>
     </section>

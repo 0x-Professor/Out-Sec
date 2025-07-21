@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { 
@@ -14,6 +14,7 @@ import {
   LiveChatWidget
 } from "./components";
 import BlogPost from "./components/BlogPost";
+import GalaxyBackground from "./components/GalaxyBackground";
 
 function App() {
   const [activeSection, setActiveSection] = useState('home');
@@ -41,21 +42,51 @@ function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Smooth scroll to section with performance optimizations
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      // Use requestAnimationFrame for better performance
+      requestAnimationFrame(() => {
+        // Use scrollIntoView with smooth behavior and block start for consistent positioning
+        element.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      });
+    }
+  };
+
   return (
     <div className="App">
+      <GalaxyBackground />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={
             <>
-              <Header activeSection={activeSection} />
+              <Header activeSection={activeSection} scrollToSection={scrollToSection} />
               <main role="main">
-                <Hero />
-                <About />
-                <Services />
-                <Team />
-                <Projects />
-                <Blog />
-                <Contact />
+                <div id="home">
+                  <Hero scrollToSection={scrollToSection} />
+                </div>
+                <div id="about">
+                  <About />
+                </div>
+                <div id="services">
+                  <Services />
+                </div>
+                <div id="team">
+                  <Team />
+                </div>
+                <div id="projects">
+                  <Projects />
+                </div>
+                <div id="blog">
+                  <Blog />
+                </div>
+                <div id="contact">
+                  <Contact />
+                </div>
               </main>
               <Footer />
               <LiveChatWidget />
