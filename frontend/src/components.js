@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Link } from 'react-scroll';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from "framer-motion";
@@ -1505,12 +1505,23 @@ export const Projects = () => {
 
 // Blog Component with Markdown Support
 export const Blog = () => {
-  const [posts, setPosts] = useState([]);
-  const [filteredPosts, setFilteredPosts] = useState([]);
+  // State management
+  const [state, setState] = useState({
+    posts: [],
+    filteredPosts: [],
+    visiblePosts: [],
+    currentPage: 1,
+    selectedCategory: 'all',
+    searchTerm: '',
+    isLoading: true
+  });
+  
+  const { posts, filteredPosts, visiblePosts, currentPage, selectedCategory, searchTerm, isLoading } = state;
+  const postsPerPage = 6;
   const navigate = useNavigate();
-  const [selectedCategory, setSelectedCategory] = useState('all');
-  const [searchTerm, setSearchTerm] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
+  const blogRef = useRef(null);
+  const observer = useRef(null);
+  const loadingRef = useRef(false);
   
   // Define available categories
   const allCategories = [
@@ -1520,63 +1531,167 @@ export const Blog = () => {
     { id: 'privacy', name: 'Privacy' },
     { id: 'hacking', name: 'Hacking' },
   ];
-  
-  // Get unique categories from posts
-  const postCategories = ['all', ...new Set(posts.flatMap(post => post.categories || []))];
 
+  // Update state helper
+  const updateState = (updates) => {
+    setState(prev => ({
+      ...prev,
+      ...updates
+    }));
+  };
+
+  // Fetch posts with error handling and caching
   useEffect(() => {
     const fetchPosts = async () => {
+      if (loadingRef.current) return;
+      
+      loadingRef.current = true;
+      updateState({ isLoading: true });
+      
       try {
-        setIsLoading(true);
+        // Check cache first
+        const cachedPosts = sessionStorage.getItem('cachedPosts');
+        const cacheTime = sessionStorage.getItem('cachedPostsTime');
+        const isCacheValid = cacheTime && (Date.now() - parseInt(cacheTime, 10)) < 5 * 60 * 1000; // 5 min cache
         
-        // Fetch blog posts from the public directory
+        if (cachedPosts && isCacheValid) {
+          const data = JSON.parse(cachedPosts);
+          updateState({
+            posts: data,
+            filteredPosts: data,
+            isLoading: false
+          });
+          return;
+        }
+        
+        // Fetch from API
         const response = await fetch('/posts.json');
-        let data = await response.json();
+        if (!response.ok) throw new Error('Failed to fetch posts');
         
-        // Ensure data is an array
+        let data = await response.json();
         if (!Array.isArray(data)) {
           console.error('Expected posts.json to be an array');
           data = [];
         }
         
-        // Sort posts by date (newest first)
+        // Sort and cache
         data.sort((a, b) => new Date(b.date) - new Date(a.date));
+        sessionStorage.setItem('cachedPosts', JSON.stringify(data));
+        sessionStorage.setItem('cachedPostsTime', Date.now().toString());
         
-        setPosts(data);
-        setFilteredPosts(data);
+        updateState({
+          posts: data,
+          filteredPosts: data,
+          isLoading: false
+        });
       } catch (error) {
         console.error('Error fetching blog posts:', error);
+        // Try to use cache even if stale
+        const cachedPosts = sessionStorage.getItem('cachedPosts');
+        if (cachedPosts) {
+          const data = JSON.parse(cachedPosts);
+          updateState({
+            posts: data,
+            filteredPosts: data,
+            isLoading: false
+          });
+        } else {
+          updateState({ isLoading: false });
+        }
       } finally {
-        setIsLoading(false);
+        loadingRef.current = false;
       }
     };
 
     fetchPosts();
+    
+    return () => {
+      if (observer.current) {
+        observer.current.disconnect();
+      }
+    };
   }, []);
 
+  // Filter posts with debounce
   useEffect(() => {
-    let filtered = [...posts];
+    const filterPosts = () => {
+      let filtered = [...posts];
+      
+      if (searchTerm) {
+        const term = searchTerm.toLowerCase().trim();
+        filtered = filtered.filter(post => 
+          (post.title && post.title.toLowerCase().includes(term)) || 
+          (post.excerpt && post.excerpt.toLowerCase().includes(term)) ||
+          (post.content && post.content.toLowerCase().includes(term))
+        );
+      }
+      
+      if (selectedCategory !== 'all') {
+        filtered = filtered.filter(post => 
+          post.categories && 
+          (Array.isArray(post.categories) 
+            ? post.categories.includes(selectedCategory)
+            : post.categories === selectedCategory)
+        );
+      }
+      
+      updateState({
+        filteredPosts: filtered,
+        currentPage: 1,
+        visiblePosts: filtered.slice(0, postsPerPage)
+      });
+    };
     
-    if (searchTerm) {
-      const term = searchTerm.toLowerCase();
-      filtered = filtered.filter(post => 
-        post.title.toLowerCase().includes(term) || 
-        (post.excerpt && post.excerpt.toLowerCase().includes(term)) ||
-        (post.content && post.content.toLowerCase().includes(term))
-      );
+    const debounceTimer = setTimeout(filterPosts, 300);
+    return () => clearTimeout(debounceTimer);
+  }, [searchTerm, selectedCategory, posts, postsPerPage]);
+
+  // Handle infinite scroll
+  useEffect(() => {
+    if (!filteredPosts.length || visiblePosts.length >= filteredPosts.length) return;
+    
+    const options = {
+      root: null,
+      rootMargin: '200px',
+      threshold: 0.1
+    };
+    
+    const handleIntersect = (entries) => {
+      const [entry] = entries;
+      if (entry.isIntersecting) {
+        const nextPage = currentPage + 1;
+        const nextVisiblePosts = filteredPosts.slice(0, nextPage * postsPerPage);
+        updateState({
+          currentPage: nextPage,
+          visiblePosts: nextVisiblePosts
+        });
+      }
+    };
+    
+    observer.current = new IntersectionObserver(handleIntersect, options);
+    
+    const currentRef = blogRef.current?.lastElementChild;
+    if (currentRef) {
+      observer.current.observe(currentRef);
     }
     
-    if (selectedCategory !== 'all') {
-      filtered = filtered.filter(post => 
-        post.categories && 
-        (Array.isArray(post.categories) 
-          ? post.categories.includes(selectedCategory)
-          : post.categories === selectedCategory)
-      );
-    }
+    return () => {
+      if (observer.current) {
+        observer.current.disconnect();
+      }
+    };
+  }, [filteredPosts, visiblePosts.length, currentPage, postsPerPage]);
+  
+  const handleReadMore = useCallback((postId) => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
     
-    setFilteredPosts(filtered);
-  }, [searchTerm, selectedCategory, posts]);
+    setTimeout(() => {
+      navigate(`/blog/${postId}`);
+    }, 100);
+  }, [navigate]);
 
   if (isLoading) {
     return (
@@ -1588,152 +1703,159 @@ export const Blog = () => {
     );
   }
 
-  const handleReadMore = (postId) => {
-    navigate(`/blog/${postId}`);
-  };
-
   return (
-    <section id="blog" className="py-24 bg-black relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-900/5 to-purple-900/5"></div>
+    <section id="blog" className="py-16 md:py-24 bg-black relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-900/5 via-purple-900/5 to-black/20"></div>
       
-      <div className="container mx-auto px-6 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 relative z-10">
         <div className="text-center mb-16">
           <span className="inline-block bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-full text-sm font-medium mb-4">
             <SVGIcon type="security" className="w-4 h-4 inline mr-2" />
-            CYBER BLOG
+            LATEST INSIGHTS
           </span>
-          <h2 className="text-4xl md:text-5xl font-black text-white mb-6">
-            Security <span className="hologram-text">Insights</span>
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+            Cybersecurity <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">Blog</span>
           </h2>
           <p className="text-lg text-gray-300 max-w-2xl mx-auto">
-            Stay updated with the latest research, techniques, and insights in cybersecurity
+            Stay updated with the latest trends, threats, and best practices in cybersecurity
           </p>
         </div>
 
         {/* Search and Filter */}
-        <div className="flex flex-col md:flex-row gap-4 items-center justify-center mb-16">
-          <div className="relative max-w-md w-full">
-            <input
-              type="text"
-              placeholder="Search articles..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 pl-12 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:bg-white/20 transition-all duration-300"
-            />
-            <SVGIcon type="penetration" className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-          </div>
-          
-          <div className="flex flex-wrap gap-2 justify-center">
-            {allCategories.map((category) => (
-              <button
-                key={category}
-                onClick={() => setSelectedCategory(category.id)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 hover-scale ${
-                  selectedCategory === category.id
-                    ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white'
-                    : 'glass-card text-gray-300 hover:text-white'
-                }`}
-              >
-                {category.name}
-              </button>
-            ))}
-          </div>
-        </div>
-        
-        <div className="flex flex-wrap -mx-2">
-          {filteredPosts.map((post, index) => (
-            <div key={post.id || index} className="w-full md:w-1/2 lg:w-1/3 px-2 mb-6">
-              <Link href={`/blog/${post.id}`} passHref>
-                <a className="h-full block">
-                  <div className="h-full glass-card p-4 sm:p-5 card-interactive transition-all duration-500 flex flex-col">
-                    {/* Image Container */}
-                    <div className="relative overflow-hidden rounded-xl mb-4 group flex-shrink-0 aspect-video">
-                      <img 
-                        src={post.image || '/images/blog-placeholder.jpg'} 
-                        alt={post.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        loading="lazy"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
-                      
-                      {/* Category Badge */}
-                      {post.categories && post.categories.length > 0 && (
-                        <div className="absolute bottom-3 left-3 right-3">
-                          <div className="bg-white/10 backdrop-blur-sm rounded-lg px-2 py-1 inline-block">
-                            <p className="text-white font-medium text-xs sm:text-sm truncate">
-                              {post.categories[0]}
-                            </p>
-                          </div>
-                        </div>
-                      )}
-                      
-                      {/* Featured Badge */}
-                      {post.featured && (
-                        <div className="absolute top-2 right-2">
-                          <span className="bg-yellow-500/90 text-black px-2 py-0.5 rounded-full text-[10px] font-bold">
-                            FEATURED
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                    
-                    {/* Content */}
-                    <div className="flex flex-col flex-grow">
-                      <div className="flex items-center text-gray-400 text-xs mb-2 flex-wrap">
-                        <span className="text-cyan-400">{post.author || 'Out-Sec Team'}</span>
-                        <span className="mx-2">•</span>
-                        <span>
-                          {new Date(post.date).toLocaleDateString('en-US', {
-                            year: 'numeric',
-                            month: 'short',
-                            day: 'numeric',
-                          })}
-                        </span>
-                      </div>
-                      
-                      <h3 className="text-base font-bold text-white mb-2 line-clamp-2">
-                        {post.title}
-                      </h3>
-                      
-                      <p className="text-gray-300 text-xs sm:text-sm mb-4 line-clamp-3 flex-grow">
-                        {post.excerpt}
-                      </p>
-                      
-                      {/* Categories */}
-                      {post.categories && post.categories.length > 0 && (
-                        <div className="flex flex-wrap gap-1.5 mb-4">
-                          {post.categories.slice(0, 3).map((cat, catIndex) => (
-                            <span 
-                              key={catIndex} 
-                              className="bg-gradient-to-r from-cyan-500/30 to-purple-600/30 text-cyan-300 px-2 py-0.5 rounded-full text-[10px] sm:text-xs border border-cyan-500/30"
-                            >
-                              {cat}
-                            </span>
-                          ))}
-                          {post.categories.length > 3 && (
-                            <span className="bg-gray-700/50 text-gray-400 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full text-[10px] xs:text-xs">
-                              +{post.categories.length - 3}
-                            </span>
-                          )}
-                        </div>
-                      )}
-                      
-                      <span className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold text-center hover:from-blue-600 hover:to-purple-700 transition-all duration-300 hover-scale inline-block" onClick={() => handleReadMore(post.id)}>
-                        Read Article
-                      </span>
-                    </div>
-                  </div>
-                </a>
-              </Link>
+        <div className="max-w-4xl mx-auto mb-12">
+          <div className="flex flex-col md:flex-row gap-4">
+            <div className="relative flex-1">
+              <input
+                type="text"
+                placeholder="Search articles..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full bg-black/30 border border-gray-700 rounded-lg px-4 py-3 pl-12 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all duration-300"
+              />
+              <SVGIcon type="search" className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
             </div>
-          ))}
+            <select
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              className="bg-black/30 border border-gray-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all duration-300"
+            >
+              {allCategories.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
-        {filteredPosts.length === 0 && !isLoading && (
-          <div className="text-center py-12">
-            <div className="text-6xl mb-4">📚</div>
-            <h3 className="text-2xl font-bold text-white mb-2">No articles found</h3>
-            <p className="text-gray-400">Try adjusting your search or filter criteria</p>
+        {/* Blog Posts Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {visiblePosts.length > 0 ? (
+            visiblePosts.map((post, index) => (
+              <motion.div
+                key={post.id || index}
+                ref={index === visiblePosts.length - 1 ? (el) => {
+                  // Only set the last element as the intersection target
+                  if (el && observer.current) {
+                    observer.current.disconnect();
+                    observer.current.observe(el);
+                  }
+                } : null}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="bg-gray-900/50 backdrop-blur-sm rounded-xl overflow-hidden border border-gray-800 hover:border-blue-500/30 transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/10"
+              >
+                <div className="relative h-48 overflow-hidden">
+                  <img
+                    src={post.image || 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80'}
+                    alt={post.title}
+                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                  <div className="absolute bottom-0 left-0 p-4">
+                    <span className="inline-block bg-blue-500/20 text-blue-300 text-xs px-2 py-1 rounded-full mb-2">
+                      {post.categories?.[0] || 'Security'}
+                    </span>
+                  </div>
+                </div>
+                <div className="p-6">
+                  <div className="flex items-center text-sm text-gray-400 mb-3">
+                    <span>{new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                    <span className="mx-2">•</span>
+                    <span>{Math.ceil((post.content || '').split(' ').length / 200)} min read</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-white mb-3" style={{
+                    display: '-webkit-box',
+                    WebkitLineClamp: 2,
+                    WebkitBoxOrient: 'vertical',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis'
+                  }}>
+                    {post.title}
+                  </h3>
+                  <p className="text-gray-400 mb-4" style={{
+                    display: '-webkit-box',
+                    WebkitLineClamp: 3,
+                    WebkitBoxOrient: 'vertical',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    minHeight: '4.5rem'
+                  }}>
+                    {post.excerpt || post.content?.substring(0, 150) + '...'}
+                  </p>
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {post.categories?.slice(0, 3).map((cat, catIndex) => (
+                      <span 
+                        key={catIndex} 
+                        className="bg-gradient-to-r from-cyan-500/30 to-purple-600/30 text-cyan-300 px-2 py-0.5 rounded-full text-xs border border-cyan-500/30"
+                      >
+                        {cat}
+                      </span>
+                    ))}
+                    {post.categories?.length > 3 && (
+                      <span className="bg-gray-700/50 text-gray-400 px-2 py-0.5 rounded-full text-xs">
+                        +{post.categories.length - 3}
+                      </span>
+                    )}
+                  </div>
+                  <button
+                    onClick={() => handleReadMore(post.id || index)}
+                    className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-2 rounded-lg text-sm font-semibold text-center hover:from-blue-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-[1.02]"
+                  >
+                    Read Article
+                  </button>
+                </div>
+              </motion.div>
+            ))
+          ) : (
+            <div className="col-span-3 text-center py-12">
+              <div className="text-6xl mb-4">📚</div>
+              <h3 className="text-2xl font-bold text-white mb-2">No articles found</h3>
+              <p className="text-gray-400 mb-4">Try adjusting your search or filter criteria</p>
+              <button
+                onClick={() => {
+                  setSearchTerm('');
+                  setSelectedCategory('all');
+                }}
+                className="text-blue-400 hover:text-white transition-colors"
+              >
+                Clear filters
+              </button>
+            </div>
+          )}
+        </div>
+
+        {/* Loading indicator for infinite scroll */}
+        {visiblePosts.length > 0 && visiblePosts.length < filteredPosts.length && (
+          <div className="flex justify-center mt-12">
+            <div className="animate-pulse flex space-x-4 items-center">
+              <div className="h-3 w-3 bg-blue-400 rounded-full"></div>
+              <div className="h-3 w-3 bg-blue-400 rounded-full delay-100"></div>
+              <div className="h-3 w-3 bg-blue-400 rounded-full delay-200"></div>
+            </div>
           </div>
         )}
       </div>
