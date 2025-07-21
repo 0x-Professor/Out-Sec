@@ -298,93 +298,177 @@ const useScrollReveal = () => {
   return [ref, isVisible];
 };
 
-// Threat Map Component
+// Threat Map Component with Real World Map
 const ThreatMap = () => {
   const canvasRef = useRef(null);
   const [threats, setThreats] = useState([]);
+  const [mapImage, setMapImage] = useState(null);
+  const [hoveredThreat, setHoveredThreat] = useState(null);
 
+  // Load the world map image
   useEffect(() => {
-    // Generate random threat locations
+    const img = new Image();
+    img.src = 'https://cdn.jsdelivr.net/npm/world-atlas@2/land-110m.png';
+    img.onload = () => setMapImage(img);
+  }, []);
+
+  // Generate realistic threat locations (major cities)
+  useEffect(() => {
+    const majorCities = [
+      { name: 'New York', lat: 40.7128, lng: -74.0060 },
+      { name: 'London', lat: 51.5074, lng: -0.1278 },
+      { name: 'Tokyo', lat: 35.6762, lng: 139.6503 },
+      { name: 'Singapore', lat: 1.3521, lng: 103.8198 },
+      { name: 'Moscow', lat: 55.7558, lng: 37.6173 },
+      { name: 'Dubai', lat: 25.2048, lng: 55.2708 },
+      { name: 'Sydney', lat: -33.8688, lng: 151.2093 },
+      { name: 'Sao Paulo', lat: -23.5505, lng: -46.6333 },
+      { name: 'Mumbai', lat: 19.0760, lng: 72.8777 },
+      { name: 'Nairobi', lat: -1.2864, lng: 36.8172 },
+    ];
+
     const generateThreats = () => {
-      const newThreats = [];
-      for (let i = 0; i < 20; i++) {
-        newThreats.push({
-          x: Math.random() * 800,
-          y: Math.random() * 400,
-          intensity: Math.random(),
-          type: ['malware', 'ddos', 'phishing', 'ransomware'][Math.floor(Math.random() * 4)],
-          pulse: Math.random() * Math.PI * 2
-        });
-      }
+      const newThreats = majorCities.map(city => ({
+        ...city,
+        intensity: 0.3 + Math.random() * 0.7,
+        type: ['malware', 'ddos', 'phishing', 'ransomware', 'exploit', 'zero-day'][Math.floor(Math.random() * 6)],
+        pulse: Math.random() * Math.PI * 2,
+        count: Math.floor(1 + Math.random() * 50)
+      }));
       setThreats(newThreats);
     };
 
     generateThreats();
-    const interval = setInterval(generateThreats, 5000);
+    const interval = setInterval(generateThreats, 10000);
     return () => clearInterval(interval);
   }, []);
 
+  // Convert lat/lng to canvas coordinates
+  const project = (lat, lng, width, height) => {
+    // Simple equirectangular projection
+    const x = (lng + 180) * (width / 360);
+    const y = (90 - lat) * (height / 180);
+    return { x, y };
+  };
+
+  // Draw the threat map
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    if (!canvas || !mapImage) return;
 
     const ctx = canvas.getContext('2d');
-    canvas.width = 800;
-    canvas.height = 400;
-
+    const width = canvas.width = canvas.offsetWidth;
+    const height = canvas.height = Math.min(500, window.innerHeight * 0.6);
+    
     let animationId;
     let time = 0;
 
     const drawThreatMap = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.clearRect(0, 0, width, height);
       
-      // Draw world map outline (simplified)
-      ctx.strokeStyle = 'rgba(0, 221, 235, 0.3)';
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.rect(50, 50, 700, 300);
-      ctx.stroke();
+      // Draw world map
+      const mapAspect = mapImage.width / mapImage.height;
+      let mapWidth = width;
+      let mapHeight = mapWidth / mapAspect;
       
-      // Draw grid
-      for (let i = 0; i < 8; i++) {
-        ctx.beginPath();
-        ctx.moveTo(50 + i * 87.5, 50);
-        ctx.lineTo(50 + i * 87.5, 350);
-        ctx.stroke();
+      if (mapHeight < height) {
+        mapHeight = height;
+        mapWidth = mapHeight * mapAspect;
       }
       
-      for (let i = 0; i < 5; i++) {
-        ctx.beginPath();
-        ctx.moveTo(50, 50 + i * 75);
-        ctx.lineTo(750, 50 + i * 75);
-        ctx.stroke();
+      const offsetX = (width - mapWidth) / 2;
+      const offsetY = (height - mapHeight) / 2;
+      
+      // Draw map with dark overlay
+      ctx.globalAlpha = 0.7;
+      ctx.drawImage(mapImage, offsetX, offsetY, mapWidth, mapHeight);
+      
+      // Add color overlay
+      ctx.globalAlpha = 0.5;
+      ctx.fillStyle = '#0f172a';
+      ctx.fillRect(0, 0, width, height);
+      ctx.globalAlpha = 1;
+      
+      // Draw connection lines between threats
+      ctx.strokeStyle = 'rgba(99, 102, 241, 0.3)';
+      ctx.lineWidth = 0.5;
+      
+      for (let i = 0; i < threats.length; i++) {
+        for (let j = i + 1; j < threats.length; j++) {
+          const a = threats[i];
+          const b = threats[j];
+          const aPos = project(a.lat, a.lng, width, height);
+          const bPos = project(b.lat, b.lng, width, height);
+          
+          // Only draw lines for nearby threats
+          const distance = Math.hypot(aPos.x - bPos.x, aPos.y - bPos.y);
+          if (distance < 300) {
+            ctx.beginPath();
+            ctx.moveTo(aPos.x, aPos.y);
+            ctx.lineTo(bPos.x, bPos.y);
+            ctx.stroke();
+          }
+        }
       }
       
       // Draw threats
       threats.forEach((threat, index) => {
         const pulse = Math.sin(time + threat.pulse) * 0.5 + 0.5;
-        const radius = 3 + pulse * 5;
+        const { x, y } = project(threat.lat, threat.lng, width, height);
+        const radius = 4 + pulse * 4 * threat.intensity;
         
-        ctx.save();
-        ctx.translate(threat.x, threat.y);
+        // Skip if off-screen
+        if (x < 0 || x > width || y < 0 || y > height) return;
+        
+        // Draw connection line to cursor if hovered
+        if (hoveredThreat === index) {
+          ctx.strokeStyle = 'rgba(99, 102, 241, 0.5)';
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(x, y);
+          ctx.lineTo(width - 20, 20);
+          ctx.stroke();
+        }
         
         // Threat glow
-        const gradient = ctx.createRadialGradient(0, 0, 0, 0, 0, radius * 2);
-        gradient.addColorStop(0, `rgba(255, 0, 0, ${threat.intensity * pulse})`);
-        gradient.addColorStop(1, 'rgba(255, 0, 0, 0)');
+        const gradient = ctx.createRadialGradient(x, y, 0, x, y, radius * 3);
+        gradient.addColorStop(0, `rgba(239, 68, 68, ${0.7 * threat.intensity})`);
+        gradient.addColorStop(1, 'rgba(239, 68, 68, 0)');
         
         ctx.fillStyle = gradient;
         ctx.beginPath();
-        ctx.arc(0, 0, radius * 2, 0, Math.PI * 2);
+        ctx.arc(x, y, radius * 3, 0, Math.PI * 2);
         ctx.fill();
         
         // Threat dot
-        ctx.fillStyle = `rgba(255, 0, 0, ${threat.intensity})`;
+        ctx.fillStyle = `rgba(239, 68, 68, ${0.8 + 0.2 * pulse})`;
         ctx.beginPath();
-        ctx.arc(0, 0, radius, 0, Math.PI * 2);
+        ctx.arc(x, y, radius, 0, Math.PI * 2);
         ctx.fill();
         
-        ctx.restore();
+        // Draw threat count if hovered
+        if (hoveredThreat === index) {
+          ctx.fillStyle = 'rgba(15, 23, 42, 0.9)';
+          ctx.strokeStyle = 'rgba(99, 102, 241, 0.5)';
+          ctx.lineWidth = 1;
+          
+          const text = `${threat.name}: ${threat.count} ${threat.type} threats`;
+          const textWidth = ctx.measureText(text).width + 20;
+          const textHeight = 40;
+          const padding = 10;
+          
+          // Draw tooltip
+          ctx.beginPath();
+          ctx.roundRect(width - textWidth - 30, 10, textWidth, textHeight, 8);
+          ctx.fill();
+          ctx.stroke();
+          
+          // Draw text
+          ctx.fillStyle = 'white';
+          ctx.font = '12px Inter, sans-serif';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(text, width - textWidth - 20, 30);
+        }
       });
       
       time += 0.05;
@@ -392,24 +476,97 @@ const ThreatMap = () => {
     };
 
     drawThreatMap();
-
+    
+    // Handle window resize
+    const handleResize = () => {
+      if (canvas) {
+        canvas.width = canvas.offsetWidth;
+        canvas.height = Math.min(500, window.innerHeight * 0.6);
+      }
+    };
+    
+    window.addEventListener('resize', handleResize);
+    
     return () => {
       if (animationId) cancelAnimationFrame(animationId);
+      window.removeEventListener('resize', handleResize);
     };
-  }, [threats]);
+  }, [threats, mapImage, hoveredThreat]);
+  
+  // Handle mouse move to detect hover
+  const handleMouseMove = (e) => {
+    if (!canvasRef.current || !threats.length) return;
+    
+    const rect = canvasRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    // Find the closest threat
+    let closestThreat = null;
+    let minDistance = 30; // Minimum distance to consider a hover
+    
+    threats.forEach((threat, index) => {
+      const { x: threatX, y: threatY } = project(threat.lat, threat.lng, rect.width, rect.height);
+      const distance = Math.hypot(x - threatX, y - threatY);
+      
+      if (distance < minDistance) {
+        minDistance = distance;
+        closestThreat = index;
+      }
+    });
+    
+    setHoveredThreat(closestThreat);
+  };
 
   return (
-    <div className="glass-card p-6 card-interactive">
-      <h3 className="text-xl font-bold text-white mb-4">Real-time Threat Map</h3>
-      <canvas
-        ref={canvasRef}
-        className="w-full h-auto rounded-lg"
-        style={{ background: 'rgba(0, 0, 0, 0.2)' }}
-      />
-      <div className="mt-4 flex justify-between text-sm text-gray-400">
-        <span>🔴 Active Threats: {threats.length}</span>
-        <span>🛡️ Blocked: 1,247</span>
-        <span>⚠️ Monitoring: 24/7</span>
+    <div className="glass-card p-6 card-interactive overflow-hidden">
+      <div className="flex justify-between items-center mb-4">
+        <h3 className="text-xl font-bold text-white">Global Threat Intelligence Map</h3>
+        <div className="flex items-center space-x-2 text-sm">
+          <div className="flex items-center">
+            <div className="w-3 h-3 rounded-full bg-red-500 mr-1"></div>
+            <span className="text-gray-300">High</span>
+          </div>
+          <div className="flex items-center">
+            <div className="w-2 h-2 rounded-full bg-yellow-500 mx-1"></div>
+            <span className="text-gray-300">Medium</span>
+          </div>
+          <div className="flex items-center">
+            <div className="w-1.5 h-1.5 rounded-full bg-green-500 ml-1 mr-1"></div>
+            <span className="text-gray-300">Low</span>
+          </div>
+        </div>
+      </div>
+      
+      <div className="relative">
+        <canvas
+          ref={canvasRef}
+          className="w-full h-auto rounded-lg"
+          style={{ 
+            background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
+            minHeight: '400px',
+            cursor: 'crosshair'
+          }}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={() => setHoveredThreat(null)}
+        />
+        
+        {!mapImage && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="animate-pulse text-gray-400">Loading threat data...</div>
+          </div>
+        )}
+      </div>
+      
+      <div className="mt-4 flex flex-wrap justify-between items-center text-sm text-gray-400">
+        <div className="flex items-center space-x-4">
+          <span>🔴 Active Threats: {threats.length}</span>
+          <span>🛡️ Blocked: {Math.floor(1000 + Math.random() * 500)}</span>
+          <span>⚠️ Monitoring: 24/7</span>
+        </div>
+        <div className="text-xs text-gray-500 mt-2 sm:mt-0">
+          Last updated: {new Date().toLocaleTimeString()}
+        </div>
       </div>
     </div>
   );
@@ -2253,25 +2410,70 @@ export const Footer = () => {
     }
   ];
 
+  // Generate random stars for the footer background
+  const [stars, setStars] = useState([]);
+
+  useEffect(() => {
+    // Generate random stars
+    const newStars = Array.from({ length: 50 }, () => ({
+      id: Math.random().toString(36).substr(2, 9),
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+      size: Math.random() * 2 + 0.5,
+      opacity: Math.random() * 0.5 + 0.2,
+      delay: Math.random() * 5,
+      duration: Math.random() * 2 + 1
+    }));
+    setStars(newStars);
+  }, []);
+
   return (
-    <footer className="bg-gradient-to-br from-gray-900 to-gray-950 border-t border-white/10 relative overflow-hidden">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-500/5 via-transparent to-transparent opacity-20"></div>
+    <footer className="relative overflow-hidden border-t border-white/5 bg-gradient-to-br from-gray-900/95 via-gray-900/95 to-gray-950/95 backdrop-blur-sm">
+      {/* Stars background */}
+      <div className="absolute inset-0 overflow-hidden">
+        {stars.map((star) => (
+          <motion.div
+            key={star.id}
+            className="absolute rounded-full bg-white"
+            style={{
+              left: `${star.x}%`,
+              top: `${star.y}%`,
+              width: `${star.size}px`,
+              height: `${star.size}px`,
+              opacity: star.opacity,
+            }}
+            animate={{
+              opacity: [star.opacity, star.opacity * 0.5, star.opacity],
+            }}
+            transition={{
+              duration: star.duration,
+              delay: star.delay,
+              repeat: Infinity,
+              repeatType: 'reverse',
+              ease: 'easeInOut',
+            }}
+          />
+        ))}
+      </div>
+      
+      {/* Subtle gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-900/5 via-purple-900/5 to-transparent"></div>
       
       <div className="container mx-auto px-6 py-16 relative z-10">
-        <div className="grid-12 gap-12">
+        <div className="grid-12 gap-8">
           {/* Company Info */}
           <div className="col-12 lg:col-5 mb-8 lg:mb-0">
             <div className="flex items-center space-x-3 mb-6">
-              <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+              <div className="w-12 h-12 bg-gradient-to-br from-blue-500/90 to-purple-600/90 rounded-xl flex items-center justify-center backdrop-blur-sm border border-white/10 shadow-lg">
                 <span className="text-white font-bold text-lg">OS</span>
               </div>
               <div>
-                <span className="text-white font-bold text-2xl gradient-text">Out-Sec</span>
-                <p className="text-xs text-gray-400">Cybersecurity Excellence</p>
+                <span className="text-white font-bold text-2xl bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">Out-Sec</span>
+                <p className="text-xs text-gray-400 font-mono mt-1">Cybersecurity Excellence</p>
               </div>
             </div>
             
-            <p className="text-gray-300 mb-6 max-w-md leading-relaxed text-sm md:text-base">
+            <p className="text-gray-300/80 mb-6 max-w-md leading-relaxed text-sm md:text-base font-light">
               Defending the digital world with cutting-edge strategies in cybersecurity, 
               blockchain, and IoT security solutions. Built by experts, driven by innovation.
             </p>
@@ -2283,7 +2485,7 @@ export const Footer = () => {
                   href={platform.url} 
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`w-11 h-11 rounded-xl flex items-center justify-center text-white font-bold transition-all duration-300 shadow-lg hover:shadow-xl ${platform.hoverColor}`}
+                  className="relative w-11 h-11 rounded-xl flex items-center justify-center overflow-hidden group"
                   title={platform.name}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -2291,8 +2493,8 @@ export const Footer = () => {
                   whileHover={{ y: -4, scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <div className={`absolute inset-0 bg-gradient-to-br ${platform.color} rounded-xl opacity-90 group-hover:opacity-100 transition-opacity duration-300`}></div>
-                  <div className="relative z-10 flex items-center justify-center w-full h-full">
+                  <div className={`absolute inset-0 bg-gradient-to-br ${platform.color} rounded-xl opacity-80 group-hover:opacity-100 transition-all duration-300 backdrop-blur-sm border border-white/10`}></div>
+                  <div className="relative z-10 flex items-center justify-center w-full h-full text-white/90 group-hover:text-white transition-colors">
                     {platform.icon}
                   </div>
                 </motion.a>
@@ -2335,19 +2537,19 @@ export const Footer = () => {
             <div className="flex flex-wrap justify-center md:justify-end gap-6 text-sm">
               <a 
                 href="#" 
-                className="text-gray-400 hover:text-blue-400 transition-colors hover:underline underline-offset-4 decoration-blue-400/50"
+                className="text-gray-400 hover:text-blue-300 transition-colors hover:underline underline-offset-4 decoration-blue-300/50 text-sm font-light"
               >
                 Privacy Policy
               </a>
               <a 
                 href="#" 
-                className="text-gray-400 hover:text-blue-400 transition-colors hover:underline underline-offset-4 decoration-blue-400/50"
+                className="text-gray-400 hover:text-blue-300 transition-colors hover:underline underline-offset-4 decoration-blue-300/50 text-sm font-light"
               >
                 Terms of Service
               </a>
               <a 
                 href="#" 
-                className="text-gray-400 hover:text-blue-400 transition-colors hover:underline underline-offset-4 decoration-blue-400/50"
+                className="text-gray-400 hover:text-blue-300 transition-colors hover:underline underline-offset-4 decoration-blue-300/50 text-sm font-light"
               >
                 Security
               </a>
