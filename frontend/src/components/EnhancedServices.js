@@ -46,29 +46,44 @@ const ServiceCard = ({ service, index, scrollYProgress }) => {
   const ref = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
   
-  // Calculate position in viewport
-  const yRange = useTransform(
-    scrollYProgress,
-    [0, 1],
-    [index % 2 === 0 ? 100 : -100, index % 2 === 0 ? -100 : 100]
+  // Calculate position in viewport with spring physics for smoother motion
+  const yRange = useSpring(
+    useTransform(
+      scrollYProgress,
+      [0, 0.3, 0.7, 1],
+      [index % 2 === 0 ? 50 : -50, 0, 0, index % 2 === 0 ? -50 : 50]
+    ),
+    { stiffness: 300, damping: 30 }
   );
   
-  const opacity = useTransform(
-    scrollYProgress,
-    [0, 0.8, 1],
-    [0, 1, 0]
+  // More refined opacity with smooth entry and exit
+  const opacity = useSpring(
+    useTransform(
+      scrollYProgress,
+      [0, 0.1, 0.2, 0.8, 0.9, 1],
+      [0, 0.5, 1, 1, 0.5, 0]
+    ),
+    { stiffness: 100, damping: 20 }
   );
   
-  const scale = useTransform(
-    scrollYProgress,
-    [0, 0.5, 1],
-    [0.8, 1, 0.8]
+  // Scale with more subtle animation
+  const scale = useSpring(
+    useTransform(
+      scrollYProgress,
+      [0, 0.1, 0.2, 0.8, 0.9, 1],
+      [0.9, 0.95, 1, 1, 0.95, 0.9]
+    ),
+    { stiffness: 200, damping: 20 }
   );
   
-  const rotate = useTransform(
-    scrollYProgress,
-    [0, 1],
-    [index % 2 === 0 ? -5 : 5, index % 2 === 0 ? 5 : -5]
+  // Subtle rotation effect
+  const rotate = useSpring(
+    useTransform(
+      scrollYProgress,
+      [0, 0.5, 1],
+      [index % 2 === 0 ? -2 : 2, 0, index % 2 === 0 ? 2 : -2]
+    ),
+    { stiffness: 100, damping: 20 }
   );
   
   return (
@@ -131,9 +146,36 @@ const ServiceCard = ({ service, index, scrollYProgress }) => {
 };
 
 const EnhancedServices = () => {
-  const scrollRef = useRef(null);
   const containerRef = useRef(null);
+  const scrollRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
+  
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ['start end', 'end start']
+  });
+  
+  // Container animations
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        when: 'beforeChildren',
+        staggerChildren: 0.1,
+      },
+    },
+  };
+  
+  // Fade in/out effect for the entire section
+  const sectionOpacity = useSpring(
+    useTransform(
+      scrollYProgress,
+      [0, 0.1, 0.9, 1],
+      [0, 1, 1, 0]
+    ),
+    { stiffness: 100, damping: 20 }
+  );
   const [activeIndex, setActiveIndex] = useState(0);
   const [loading, setLoading] = useState(true);
   const [inViewRef, inView] = useInView({
@@ -146,11 +188,6 @@ const EnhancedServices = () => {
     setTimeout(() => setLoading(false), 1000);
   }, []);
 
-  const { scrollYProgress } = useScroll({
-    target: scrollRef,
-    offset: ["start end", "end start"]
-  });
-  
   // Auto-rotate active service
   useEffect(() => {
     const interval = setInterval(() => {
@@ -161,7 +198,15 @@ const EnhancedServices = () => {
   }, []);
   
   return (
-    <section id="services" className="relative py-32 overflow-hidden bg-gradient-to-br from-gray-950 to-black">
+    <motion.section 
+      ref={containerRef}
+      className="relative py-20 overflow-hidden bg-gradient-to-b from-gray-900 to-black"
+      style={{ opacity: sectionOpacity }}
+      variants={containerVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+    >
       {/* Scroll indicator */}
       <div className="hidden md:block fixed right-10 top-1/2 transform -translate-y-1/2 z-20">
         <motion.div 
@@ -275,7 +320,21 @@ const EnhancedServices = () => {
         />
       </div>
       
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div 
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-20%" }}
+          transition={{ duration: 0.6 }}
+        >
+          <h2 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 mb-4">
+            Our Services
+          </h2>
+          <p className="text-lg text-gray-400 max-w-2xl mx-auto">
+            Cutting-edge security solutions tailored to your needs
+          </p>
+        </motion.div>
         {/* Section Header */}
         <div className="text-center mb-24">
           <motion.span 
@@ -384,7 +443,7 @@ const EnhancedServices = () => {
           </motion.div>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 
