@@ -1862,7 +1862,7 @@ export const Footer = () => {
       id: Math.random().toString(36).substr(2, 9),
       x: Math.random() * 100,
       y: Math.random() * 100,
-      size: Math.random() * 1.5 + 0.5, // Slightly smaller stars for better density
+      size: Math.random() * 1.5 + 1.5, // Slightly smaller stars for better density
       opacity: Math.random() * 0.7 + 0.1, // Wider opacity range
       delay: Math.random() * 10,
       duration: Math.random() * 3 + 1 // More varied durations
