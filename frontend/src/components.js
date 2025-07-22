@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from "framer-motion";
 import JourneyTimeline from './components/JourneyTimeline';
 import EnhancedServices from './components/EnhancedServices';
+import { Play, Shield, Monitor, Cpu, Lock, ChevronRight, Sparkles } from 'lucide-react';
 
 // SVG Icons Component
 const SVGIcon = ({ type, className = "w-6 h-6" }) => {
