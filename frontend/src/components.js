@@ -563,8 +563,8 @@ export const Hero = () => {
   };
 
   const handleWatchDemo = () => {
-    // Demo modal implementation
-    console.log('Watch Demo clicked');
+    // Show coming soon message
+    alert('This functionality will be available soon!');
   };
 
   // Animated background elements
@@ -678,16 +678,17 @@ export const Hero = () => {
             >
               <button 
                 onClick={handleExploreWork}
-                className="px-8 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-lg font-medium hover:opacity-90 transition-all duration-300 flex items-center justify-center gap-2"
+                className="px-8 py-4 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-lg font-medium hover:opacity-90 transition-all duration-300 flex items-center justify-center gap-2 text-sm uppercase tracking-wider"
               >
                 Get Started
                 <ChevronRight className="w-4 h-4" />
               </button>
               <button 
                 onClick={handleWatchDemo}
-                className="px-8 py-3 bg-transparent border border-gray-600 text-white rounded-lg font-medium hover:bg-gray-800/50 transition-all duration-300 flex items-center justify-center gap-2"
+                className="px-8 py-4 bg-transparent border border-gray-600 text-white rounded-lg font-medium hover:bg-gray-800/50 transition-all duration-300 flex items-center justify-center gap-2 text-sm uppercase tracking-wider group"
+                title="Coming soon"
               >
-                <Play className="w-4 h-4" />
+                <Play className="w-4 h-4 group-hover:text-blue-400 transition-colors" />
                 Watch Demo
               </button>
             </motion.div>
@@ -712,109 +713,67 @@ export const Hero = () => {
             animate={showElements.image ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <div className="relative">
-              {/* Main image */}
-              <div className="relative z-10 rounded-2xl overflow-hidden border-4 border-blue-500/20 shadow-2xl">
+            <div className="relative max-w-2xl mx-auto">
+              {/* Main image with modern frame */}
+              <div className="relative z-10 overflow-hidden rounded-2xl border-4 border-blue-500/20 shadow-2xl bg-gradient-to-br from-blue-900/30 to-blue-900/10">
                 <img 
-                  src="https://raw.githubusercontent.com/0x-Professor/Out-Sec/main/frontend/src/assets/hacker.png" 
-                  alt="Security Professional"
-                  className="w-full h-auto object-cover"
+                  src="https://raw.githubusercontent.com/0x-Professor/Out-Sec/main/frontend/src/assets/hero-image.png" 
+                  alt="Cybersecurity Professional"
+                  className="w-full h-auto object-cover relative z-10"
                 />
                 
                 {/* Animated overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-blue-900/50 to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-blue-900/70 via-blue-900/30 to-transparent z-20"></div>
                 
-                {/* Animated elements */}
+                {/* Decorative elements */}
+                <div className="absolute inset-0 overflow-hidden z-0">
+                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-400/50 to-transparent"></div>
+                  <div className="absolute top-0 right-0 w-1 h-full bg-gradient-to-b from-transparent via-blue-400/50 to-transparent"></div>
+                  <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-400/50 to-transparent"></div>
+                  <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-transparent via-blue-400/50 to-transparent"></div>
+                </div>
+                
+                {/* Animated grid overlay */}
+                <div className="absolute inset-0 z-0 opacity-30" style={{
+                  backgroundImage: `
+                    linear-gradient(to right, rgba(96, 165, 250, 0.3) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(96, 165, 250, 0.3) 1px, transparent 1px)
+                  `,
+                  backgroundSize: '40px 40px',
+                }}></div>
+                
+                {/* Floating elements */}
                 <motion.div 
-                  className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-blue-500/10 rounded-full"
-                  animate={{
-                    scale: [1, 1.2, 1],
-                    opacity: [0.3, 0.5, 0.3],
-                  }}
-                  transition={{
-                    duration: 4,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                />
+                  className="absolute -top-3 -left-3 bg-blue-900/80 backdrop-blur-sm p-2 rounded-lg border border-blue-500/30 shadow-lg z-30"
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ delay: 1.5, duration: 0.5 }}
+                >
+                  <div className="w-10 h-10 bg-blue-500/20 rounded-md flex items-center justify-center">
+                    <Shield className="w-5 h-5 text-blue-400" />
+                  </div>
+                </motion.div>
                 
                 <motion.div 
-                  className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-40 h-40 border-2 border-blue-400/30 rounded-full"
-                  animate={{
-                    scale: [1, 1.3, 1],
-                    opacity: [0.2, 0.4, 0.2],
-                  }}
-                  transition={{
-                    duration: 5,
-                    repeat: Infinity,
-                    delay: 1,
-                    ease: "easeInOut"
-                  }}
-                />
+                  className="absolute -bottom-3 -right-3 bg-cyan-900/80 backdrop-blur-sm p-2 rounded-lg border border-cyan-500/30 shadow-lg z-30"
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ delay: 1.8, duration: 0.5 }}
+                >
+                  <div className="w-10 h-10 bg-cyan-500/20 rounded-md flex items-center justify-center">
+                    <Lock className="w-5 h-5 text-cyan-400" />
+                  </div>
+                </motion.div>
               </div>
               
-              {/* Floating elements */}
-              <motion.div 
-                className="absolute -top-6 -left-6 bg-blue-500/10 backdrop-blur-sm p-3 rounded-lg border border-blue-500/20 shadow-lg z-20"
-                animate={{
-                  y: [0, -10, 0],
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-              >
-                <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center">
-                  <Shield className="w-6 h-6 text-blue-400" />
-                </div>
-              </motion.div>
-              
-              <motion.div 
-                className="absolute -bottom-6 -right-6 bg-cyan-500/10 backdrop-blur-sm p-3 rounded-lg border border-cyan-500/20 shadow-lg z-20"
-                animate={{
-                  y: [0, 10, 0],
-                }}
-                transition={{
-                  duration: 4,
-                  repeat: Infinity,
-                  delay: 1,
-                  ease: "easeInOut"
-                }}
-              >
-                <div className="w-12 h-12 bg-cyan-500/20 rounded-lg flex items-center justify-center">
-                  <Lock className="w-6 h-6 text-cyan-400" />
-                </div>
-              </motion.div>
+              {/* Background glow effect */}
+              <div className="absolute -z-10 w-[120%] h-[120%] -left-[10%] -top-[10%] bg-gradient-to-r from-blue-500/5 to-cyan-500/5 rounded-full blur-3xl"></div>
             </div>
           </motion.div>
         </div>
       </div>
       
-      {/* Scroll indicator */}
-      <motion.div 
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 2.5 }}
-      >
-        <div className="flex flex-col items-center">
-          <span className="text-sm text-gray-400 mb-2">Scroll Down</span>
-          <div className="w-6 h-10 border-2 border-blue-400/50 rounded-full flex justify-center p-1">
-            <motion.div 
-              className="w-1 h-2 bg-blue-400 rounded-full"
-              animate={{
-                y: [0, 8, 0]
-              }}
-              transition={{
-                duration: 1.5,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-            />
-          </div>
-        </div>
-      </motion.div>
+
     </section>
   );
 };
