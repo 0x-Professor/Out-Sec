@@ -9,6 +9,7 @@ import {
   Team, 
   Projects, 
   Blog, 
+  Testimonials,
   Contact, 
   Footer,
   LiveChatWidget
@@ -98,6 +99,9 @@ function App() {
                 </div>
                 <div id="blog">
                   <Blog />
+                </div>
+                <div id="testimonials">
+                  <Testimonials />
                 </div>
                 <div id="contact">
                   <Contact />

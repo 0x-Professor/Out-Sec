@@ -338,6 +338,7 @@ export const Header = ({ activeSection }) => {
     { id: 'team', label: 'Team', icon: 'soc' },
     { id: 'projects', label: 'Projects', icon: 'work' },
     { id: 'blog', label: 'Blog', icon: 'penetration' },
+    { id: 'testimonials', label: 'Testimonials', icon: 'star' },
     { id: 'contact', label: 'Contact', icon: 'iot' }
   ];
 
@@ -2005,6 +2006,41 @@ export const Footer = () => {
         </div>
       </div>
     </footer>
+  );
+};
+
+// Testimonials Component
+export const Testimonials = () => {
+  const testimonials = [
+    {
+      id: 1,
+      text: "Out-Sec has been instrumental in helping us secure our digital assets. Their expertise and professionalism are top-notch.",
+      author: "John Doe, CEO of XYZ Corporation"
+    },
+    {
+      id: 2,
+      text: "We've seen a significant reduction in security breaches since partnering with Out-Sec. Their solutions are effective and easy to implement.",
+      author: "Jane Smith, CTO of ABC Inc."
+    },
+    {
+      id: 3,
+      text: "Out-Sec's team is responsive, knowledgeable, and always willing to help. We're grateful for their support and guidance.",
+      author: "Bob Johnson, IT Manager of DEF Ltd."
+    }
+  ];
+
+  return (
+    <div className="container mx-auto px-6 py-16">
+      <h2 className="text-3xl font-bold text-gray-900 mb-6">What Our Clients Say</h2>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {testimonials.map((testimonial) => (
+          <div key={testimonial.id} className="bg-gray-100 p-6 rounded-lg shadow-md">
+            <p className="text-lg font-light mb-4">{testimonial.text}</p>
+            <p className="text-sm font-bold">{testimonial.author}</p>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 };
 
