@@ -491,167 +491,330 @@ export const Header = ({ activeSection }) => {
   );
 };
 
-// Sophisticated Hero Component
+
+
+// Stats Counter Component
+const StatsCounter = () => {
+  const stats = [
+    { number: "99.9", suffix: "%", label: "Uptime" },
+    { number: "500", suffix: "+", label: "Clients" },
+    { number: "50", suffix: "M+", label: "Threats Blocked" }
+  ];
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, delay: 1.2 }}
+      className="flex justify-center space-x-8 mt-16"
+    >
+      {stats.map((stat, index) => (
+        <motion.div
+          key={index}
+          className="text-center group"
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.6, delay: 1.4 + index * 0.1 }}
+        >
+          <div className="relative">
+            <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent group-hover:from-purple-400 group-hover:to-pink-300 transition-all duration-300">
+              {stat.number}<span className="text-2xl">{stat.suffix}</span>
+            </div>
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-400/20 to-cyan-300/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg" />
+          </div>
+          <p className="text-gray-400 text-sm mt-1 group-hover:text-gray-300 transition-colors duration-300">
+            {stat.label}
+          </p>
+        </motion.div>
+      ))}
+    </motion.div>
+  );
+};
+
+// Modern Hero Component with Security Professional
 export const Hero = () => {
   const [ref, isVisible] = useScrollReveal();
+  const [showElements, setShowElements] = useState({
+    image: false,
+    badge: false,
+    heading: false,
+    description: false,
+    buttons: false,
+    stats: false
+  });
+
+  useEffect(() => {
+    // Animation sequence
+    const timer1 = setTimeout(() => setShowElements(s => ({...s, image: true})), 300);
+    const timer2 = setTimeout(() => setShowElements(s => ({...s, badge: true})), 600);
+    const timer3 = setTimeout(() => setShowElements(s => ({...s, heading: true})), 900);
+    const timer4 = setTimeout(() => setShowElements(s => ({...s, description: true})), 1200);
+    const timer5 = setTimeout(() => setShowElements(s => ({...s, buttons: true})), 1500);
+    const timer6 = setTimeout(() => setShowElements(s => ({...s, stats: true})), 1800);
+
+    return () => {
+      [timer1, timer2, timer3, timer4, timer5, timer6].forEach(timer => clearTimeout(timer));
+    };
+  }, []);
 
   const handleExploreWork = () => {
-    const element = document.getElementById('projects');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+    const element = document.getElementById('services');
+    if (element) element.scrollIntoView({ behavior: 'smooth' });
   };
 
   const handleWatchDemo = () => {
-    const modal = document.createElement('div');
-    modal.className = 'fixed inset-0 bg-black/90 backdrop-blur-sm flex items-center justify-center z-50';
-    modal.innerHTML = `
-      <div class="bg-gradient-to-br from-slate-900 to-slate-800 border border-white/10 rounded-2xl max-w-4xl w-full mx-4 p-8 relative">
-        <button onclick="this.parentElement.parentElement.remove()" class="absolute top-4 right-4 text-white hover:text-red-400 transition-colors">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-          </svg>
-        </button>
-        <div class="text-center">
-          <h3 class="text-2xl font-bold text-white mb-6">🎬 Interactive Demo</h3>
-          <div class="bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl p-12">
-            <div class="text-6xl mb-6">🚀</div>
-            <p class="text-white text-xl mb-4">Coming Soon</p>
-            <p class="text-gray-300">Experience our cutting-edge cybersecurity solutions in action.</p>
-          </div>
+    // Demo modal implementation
+    console.log('Watch Demo clicked');
+  };
+
+  // Animated background elements
+  const AnimatedBackground = () => (
+    <div className="absolute inset-0 -z-10 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-blue-900/30 to-gray-900">
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjAzKSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNwYXR0ZXJuKSIvPjwvc3ZnPg==')]">
         </div>
       </div>
-    `;
-    document.body.appendChild(modal);
-  };
+      
+      {/* Animated grid lines */}
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:40px_40px]">
+      </div>
+      
+      {/* Animated dots */}
+      <div className="absolute inset-0">
+        {[...Array(15)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-1 h-1 bg-blue-400 rounded-full"
+            style={{
+              left: `${10 + Math.random() * 80}%`,
+              top: `${10 + Math.random() * 80}%`,
+              boxShadow: '0 0 15px 2px rgba(96, 165, 250, 0.5)'
+            }}
+            animate={{
+              scale: [1, 1.5, 1],
+              opacity: [0.2, 0.8, 0.2]
+            }}
+            transition={{
+              duration: 3 + Math.random() * 5,
+              repeat: Infinity,
+              delay: Math.random() * 2,
+              ease: "easeInOut"
+            }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+
+  // Stats item component
+  const StatItem = ({ value, label, delay }) => (
+    <motion.div 
+      className="text-center"
+      initial={{ opacity: 0, y: 20 }}
+      animate={showElements.stats ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.6, delay }}
+    >
+      <div className="text-4xl font-bold text-white mb-1">{value}</div>
+      <div className="text-sm text-blue-300 uppercase tracking-wider">{label}</div>
+    </motion.div>
+  );
 
   return (
     <section 
-      id="home" 
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900"
+      ref={ref}
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gray-900"
     >
       <AnimatedBackground />
       
-      <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
-        <motion.div
-          ref={ref}
-          initial={{ opacity: 0, y: 30 }}
-          animate={isVisible ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
-          className="space-y-8"
-        >
-          {/* Badge */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={isVisible ? { opacity: 1, scale: 1 } : {}}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-600/20 border border-blue-500/30 backdrop-blur-sm">
-              <span className="text-sm font-medium text-blue-300">
-                🛡️ OUTSECURE • ADVANCED CYBERSECURITY
-              </span>
-            </div>
-          </motion.div>
-
-          {/* Main Heading */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={isVisible ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="space-y-6"
-          >
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight">
-              <span className="block mb-2">Securing the Future with</span>
-              <SmoothTypingAnimation
-                text="Next-Gen Solutions"
-                highlight={["Next-Gen"]}
-                className="block bg-gradient-to-r from-blue-400 via-purple-500 to-cyan-400 bg-clip-text text-transparent"
-              />
-            </h1>
-          </motion.div>
-
-          {/* Description */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={isVisible ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            className="max-w-3xl mx-auto"
-          >
-            <p className="text-xl md:text-2xl text-gray-300 leading-relaxed">
-              OutSecure defends the digital world with cutting-edge strategies in cybersecurity, blockchain, and IoT.
-            </p>
-          </motion.div>
-
-          {/* CTA Buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={isVisible ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.8 }}
-            className="flex flex-col sm:flex-row gap-6 justify-center items-center"
-          >
-            <motion.button
-              onClick={handleExploreWork}
-              className="group relative px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl text-white font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+      <div className="container mx-auto px-6 py-16 md:py-24 lg:py-32">
+        <div className="flex flex-col lg:flex-row items-center">
+          {/* Left Column - Text Content */}
+          <div className="lg:w-1/2 lg:pr-12 mb-16 lg:mb-0">
+            {/* Badge */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={showElements.badge ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="inline-block mb-6"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              <div className="relative flex items-center space-x-2">
-                <SVGIcon type="work" className="w-5 h-5" />
-                <span>Explore Our Work</span>
-                <motion.div
-                  className="w-5 h-5"
-                  animate={{ x: [0, 5, 0] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                >
-                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                  </svg>
-                </motion.div>
+              <div className="px-4 py-2 bg-blue-500/10 backdrop-blur-sm rounded-full border border-blue-500/20">
+                <span className="text-sm font-medium text-blue-300 flex items-center">
+                  <Shield className="w-4 h-4 mr-2" />
+                  SECURITY SOLUTIONS
+                </span>
               </div>
-            </motion.button>
+            </motion.div>
 
-            <motion.button
-              onClick={handleWatchDemo}
-              className="group relative px-8 py-4 bg-transparent border-2 border-cyan-400 rounded-xl text-cyan-400 font-semibold text-lg hover:bg-cyan-400 hover:text-black transition-all duration-300 overflow-hidden"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+            {/* Main Heading */}
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={showElements.heading ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6"
             >
-              <div className="absolute inset-0 bg-cyan-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
-              <div className="relative flex items-center space-x-2">
-                <SVGIcon type="play" className="w-5 h-5" />
-                <span>Watch Demo</span>
-                <motion.div
-                  className="w-2 h-2 bg-red-500 rounded-full"
-                  animate={{ 
+              <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+                Secure Your Digital
+              </span>
+              <br />
+              <span className="text-white">Infrastructure</span>
+            </motion.h1>
+
+            {/* Description */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={showElements.description ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.8, delay: 0.6 }}
+              className="text-lg text-gray-300 mb-8 max-w-lg"
+            >
+              We provide cutting-edge cybersecurity solutions to protect your business from evolving digital threats. Our expert team ensures your data remains secure 24/7.
+            </motion.p>
+
+            {/* CTA Buttons */}
+            <motion.div 
+              className="flex flex-col sm:flex-row gap-4 mb-12"
+              initial={{ opacity: 0, y: 20 }}
+              animate={showElements.buttons ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.8, delay: 0.9 }}
+            >
+              <button 
+                onClick={handleExploreWork}
+                className="px-8 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-lg font-medium hover:opacity-90 transition-all duration-300 flex items-center justify-center gap-2"
+              >
+                Get Started
+                <ChevronRight className="w-4 h-4" />
+              </button>
+              <button 
+                onClick={handleWatchDemo}
+                className="px-8 py-3 bg-transparent border border-gray-600 text-white rounded-lg font-medium hover:bg-gray-800/50 transition-all duration-300 flex items-center justify-center gap-2"
+              >
+                <Play className="w-4 h-4" />
+                Watch Demo
+              </button>
+            </motion.div>
+
+            {/* Stats */}
+            <motion.div 
+              className="grid grid-cols-3 gap-4 max-w-md pt-6 border-t border-gray-800"
+              initial={{ opacity: 0, y: 20 }}
+              animate={showElements.stats ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.8, delay: 1.2 }}
+            >
+              <StatItem value="99.9%" label="Uptime" delay={0.1} />
+              <StatItem value="500+" label="Clients" delay={0.3} />
+              <StatItem value="24/7" label="Support" delay={0.5} />
+            </motion.div>
+          </div>
+
+          {/* Right Column - Image */}
+          <motion.div 
+            className="lg:w-1/2 relative"
+            initial={{ opacity: 0, x: 50 }}
+            animate={showElements.image ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+          >
+            <div className="relative">
+              {/* Main image */}
+              <div className="relative z-10 rounded-2xl overflow-hidden border-4 border-blue-500/20 shadow-2xl">
+                <img 
+                  src="https://raw.githubusercontent.com/0x-Professor/Out-Sec/main/frontend/src/assets/hacker.png" 
+                  alt="Security Professional"
+                  className="w-full h-auto object-cover"
+                />
+                
+                {/* Animated overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-blue-900/50 to-transparent"></div>
+                
+                {/* Animated elements */}
+                <motion.div 
+                  className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-blue-500/10 rounded-full"
+                  animate={{
                     scale: [1, 1.2, 1],
-                    opacity: [0.8, 1, 0.8]
+                    opacity: [0.3, 0.5, 0.3],
                   }}
-                  transition={{ 
-                    duration: 2,
-                    repeat: Infinity
+                  transition={{
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                />
+                
+                <motion.div 
+                  className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-40 h-40 border-2 border-blue-400/30 rounded-full"
+                  animate={{
+                    scale: [1, 1.3, 1],
+                    opacity: [0.2, 0.4, 0.2],
+                  }}
+                  transition={{
+                    duration: 5,
+                    repeat: Infinity,
+                    delay: 1,
+                    ease: "easeInOut"
                   }}
                 />
               </div>
-            </motion.button>
+              
+              {/* Floating elements */}
+              <motion.div 
+                className="absolute -top-6 -left-6 bg-blue-500/10 backdrop-blur-sm p-3 rounded-lg border border-blue-500/20 shadow-lg z-20"
+                animate={{
+                  y: [0, -10, 0],
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              >
+                <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center">
+                  <Shield className="w-6 h-6 text-blue-400" />
+                </div>
+              </motion.div>
+              
+              <motion.div 
+                className="absolute -bottom-6 -right-6 bg-cyan-500/10 backdrop-blur-sm p-3 rounded-lg border border-cyan-500/20 shadow-lg z-20"
+                animate={{
+                  y: [0, 10, 0],
+                }}
+                transition={{
+                  duration: 4,
+                  repeat: Infinity,
+                  delay: 1,
+                  ease: "easeInOut"
+                }}
+              >
+                <div className="w-12 h-12 bg-cyan-500/20 rounded-lg flex items-center justify-center">
+                  <Lock className="w-6 h-6 text-cyan-400" />
+                </div>
+              </motion.div>
+            </div>
           </motion.div>
-
-          {/* Feature Indicators */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={isVisible ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, delay: 1 }}
-            className="flex justify-center space-x-8 mt-12"
-          >
-            <FeatureIndicator icon="monitor" text="24/7 Monitoring" delay={0.2} />
-            <FeatureIndicator icon="ai" text="AI-Powered" delay={0.4} />
-            <FeatureIndicator icon="quantum" text="Quantum-Safe" delay={0.6} />
-          </motion.div>
-        </motion.div>
+        </div>
       </div>
-
-      {/* Scroll Indicator */}
-      <ScrollIndicator />
+      
+      {/* Scroll indicator */}
+      <motion.div 
+        className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 2.5 }}
+      >
+        <div className="flex flex-col items-center">
+          <span className="text-sm text-gray-400 mb-2">Scroll Down</span>
+          <div className="w-6 h-10 border-2 border-blue-400/50 rounded-full flex justify-center p-1">
+            <motion.div 
+              className="w-1 h-2 bg-blue-400 rounded-full"
+              animate={{
+                y: [0, 8, 0]
+              }}
+              transition={{
+                duration: 1.5,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            />
+          </div>
+        </div>
+      </motion.div>
     </section>
   );
 };
