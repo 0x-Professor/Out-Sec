@@ -693,17 +693,7 @@ export const Hero = () => {
               </button>
             </motion.div>
 
-            {/* Stats */}
-            <motion.div 
-              className="grid grid-cols-3 gap-4 max-w-md pt-6 border-t border-gray-800"
-              initial={{ opacity: 0, y: 20 }}
-              animate={showElements.stats ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: 1.2 }}
-            >
-              <StatItem value="99.9%" label="Uptime" delay={0.1} />
-              <StatItem value="500+" label="Clients" delay={0.3} />
-              <StatItem value="24/7" label="Support" delay={0.5} />
-            </motion.div>
+            {/* Removed stats section as requested */}
           </div>
 
           {/* Right Column - Image */}
@@ -713,61 +703,172 @@ export const Hero = () => {
             animate={showElements.image ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <div className="relative max-w-2xl mx-auto">
-              {/* Main image with modern frame */}
-              <div className="relative z-10 overflow-hidden rounded-2xl border-4 border-blue-500/20 shadow-2xl bg-gradient-to-br from-blue-900/30 to-blue-900/10">
-                <img 
-                  src="https://raw.githubusercontent.com/0x-Professor/Out-Sec/main/frontend/src/assets/hero-image.png" 
-                  alt="Cybersecurity Professional"
-                  className="w-full h-auto object-cover relative z-10"
-                />
-                
-                {/* Animated overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-blue-900/70 via-blue-900/30 to-transparent z-20"></div>
-                
-                {/* Decorative elements */}
-                <div className="absolute inset-0 overflow-hidden z-0">
-                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-400/50 to-transparent"></div>
-                  <div className="absolute top-0 right-0 w-1 h-full bg-gradient-to-b from-transparent via-blue-400/50 to-transparent"></div>
-                  <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-400/50 to-transparent"></div>
-                  <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-transparent via-blue-400/50 to-transparent"></div>
+            <div className="relative w-full h-[500px] lg:h-[600px] overflow-hidden">
+              {/* Deep Space Background */}
+              <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-blue-900/20 to-purple-900/10">
+                {/* Distant Stars Layer */}
+                {[...Array(200)].map((_, i) => {
+                  const size = Math.random() * 2 + 0.5;
+                  const opacity = Math.random() * 0.7 + 0.3;
+                  return (
+                    <div 
+                      key={`star-${i}`}
+                      className="absolute rounded-full bg-white"
+                      style={{
+                        width: `${size}px`,
+                        height: `${size}px`,
+                        left: `${Math.random() * 100}%`,
+                        top: `${Math.random() * 100}%`,
+                        opacity: opacity,
+                        boxShadow: `0 0 ${size * 3}px ${size}px rgba(255, 255, 255, ${opacity * 0.5})`,
+                        animation: `pulse ${5 + Math.random() * 10}s infinite ${Math.random() * 5}s`
+                      }}
+                    />
+                  );
+                })}
+
+                {/* Nebula Layers */}
+                <div className="absolute inset-0 opacity-40">
+                  <motion.div 
+                    className="absolute w-[800px] h-[800px] rounded-full bg-gradient-to-br from-blue-600/20 to-purple-600/30 blur-3xl -top-1/4 -left-1/4"
+                    animate={{
+                      scale: [1, 1.05, 1],
+                      rotate: [0, 360]
+                    }}
+                    transition={{
+                      duration: 60,
+                      repeat: Infinity,
+                      ease: "linear"
+                    }}
+                  />
+                  <motion.div 
+                    className="absolute w-[600px] h-[600px] rounded-full bg-gradient-to-br from-purple-600/20 to-pink-500/20 blur-3xl bottom-0 right-0"
+                    animate={{
+                      scale: [1, 1.1, 1],
+                      rotate: [0, -360]
+                    }}
+                    transition={{
+                      duration: 80,
+                      repeat: Infinity,
+                      ease: "linear"
+                    }}
+                  />
                 </div>
-                
-                {/* Animated grid overlay */}
-                <div className="absolute inset-0 z-0 opacity-30" style={{
-                  backgroundImage: `
-                    linear-gradient(to right, rgba(96, 165, 250, 0.3) 1px, transparent 1px),
-                    linear-gradient(to bottom, rgba(96, 165, 250, 0.3) 1px, transparent 1px)
-                  `,
-                  backgroundSize: '40px 40px',
-                }}></div>
-                
-                {/* Floating elements */}
-                <motion.div 
-                  className="absolute -top-3 -left-3 bg-blue-900/80 backdrop-blur-sm p-2 rounded-lg border border-blue-500/30 shadow-lg z-30"
-                  initial={{ scale: 0.8, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ delay: 1.5, duration: 0.5 }}
-                >
-                  <div className="w-10 h-10 bg-blue-500/20 rounded-md flex items-center justify-center">
-                    <Shield className="w-5 h-5 text-blue-400" />
-                  </div>
-                </motion.div>
-                
-                <motion.div 
-                  className="absolute -bottom-3 -right-3 bg-cyan-900/80 backdrop-blur-sm p-2 rounded-lg border border-cyan-500/30 shadow-lg z-30"
-                  initial={{ scale: 0.8, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ delay: 1.8, duration: 0.5 }}
-                >
-                  <div className="w-10 h-10 bg-cyan-500/20 rounded-md flex items-center justify-center">
-                    <Lock className="w-5 h-5 text-cyan-400" />
-                  </div>
-                </motion.div>
+
+                {/* Galaxy Core */}
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                  <motion.div 
+                    className="relative w-64 h-64"
+                    animate={{
+                      rotate: 360
+                    }}
+                    transition={{
+                      duration: 120,
+                      repeat: Infinity,
+                      ease: "linear"
+                    }}
+                  >
+                    {/* Central Glow */}
+                    <div className="absolute inset-0">
+                      <div className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-500/30 to-purple-600/40 blur-xl"></div>
+                      <div className="absolute inset-4 rounded-full bg-gradient-to-br from-blue-400/20 to-purple-500/20 blur-md"></div>
+                      <div className="absolute inset-8 rounded-full bg-gradient-to-br from-blue-300/10 to-purple-400/10"></div>
+                    </div>
+
+                    {/* Spiral Arms */}
+                    {[...Array(4)].map((_, i) => {
+                      const rotation = i * 90;
+                      return (
+                        <motion.div 
+                          key={`arm-${i}`}
+                          className="absolute inset-0"
+                          style={{
+                            transform: `rotate(${rotation}deg)`
+                          }}
+                        >
+                          <div className="absolute top-0 left-1/2 w-1/2 h-1/2">
+                            {[...Array(3)].map((_, j) => (
+                              <div 
+                                key={`segment-${j}`}
+                                className="absolute rounded-full bg-gradient-to-r from-transparent via-blue-400/30 to-transparent"
+                                style={{
+                                  width: `${100 - j * 20}%`,
+                                  height: `${10 - j * 2}px`,
+                                  top: `${j * 15}%`,
+                                  left: '50%',
+                                  transform: 'translateX(-50%)',
+                                  opacity: 0.7 - (j * 0.2)
+                                }}
+                              />
+                            ))}
+                          </div>
+                        </motion.div>
+                      );
+                    })}
+
+                    {/* Inner Ring */}
+                    <div className="absolute inset-0 rounded-full border border-blue-400/20"></div>
+                  </motion.div>
+                </div>
+
+                {/* Floating Particles */}
+                {[...Array(30)].map((_, i) => {
+                  const size = Math.random() * 4 + 1;
+                  const distance = 30 + Math.random() * 70;
+                  const angle = Math.random() * Math.PI * 2;
+                  const x = 50 + Math.cos(angle) * distance;
+                  const y = 50 + Math.sin(angle) * distance;
+                  
+                  return (
+                    <motion.div
+                      key={`particle-${i}`}
+                      className="absolute rounded-full bg-white/60"
+                      style={{
+                        width: `${size}px`,
+                        height: `${size}px`,
+                        left: `${x}%`,
+                        top: `${y}%`,
+                        boxShadow: `0 0 ${size * 2}px ${size/2}px rgba(96, 165, 250, 0.5)`
+                      }}
+                      animate={{
+                        x: [0, (Math.random() - 0.5) * 20],
+                        y: [0, (Math.random() - 0.5) * 20],
+                        opacity: [0.3, 0.8, 0.3],
+                      }}
+                      transition={{
+                        duration: 3 + Math.random() * 5,
+                        repeat: Infinity,
+                        repeatType: "reverse",
+                        ease: "easeInOut",
+                        delay: Math.random() * 2
+                      }}
+                    />
+                  );
+                })}
               </div>
-              
-              {/* Background glow effect */}
-              <div className="absolute -z-10 w-[120%] h-[120%] -left-[10%] -top-[10%] bg-gradient-to-r from-blue-500/5 to-cyan-500/5 rounded-full blur-3xl"></div>
+
+              {/* Subtle Grid Overlay */}
+              <div 
+                className="absolute inset-0 opacity-10 pointer-events-none"
+                style={{
+                  backgroundImage: `
+                    linear-gradient(rgba(96, 165, 250, 0.3) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(96, 165, 250, 0.3) 1px, transparent 1px)
+                  `,
+                  backgroundSize: '40px 40px'
+                }}
+              />
+
+              {/* Glass Effect */}
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-900/10 to-purple-900/10 backdrop-blur-[1px]"></div>
+
+              {/* Add global keyframes */}
+              <style jsx global>{`
+                @keyframes pulse {
+                  0%, 100% { opacity: 0.3; }
+                  50% { opacity: 1; }
+                }
+              `}</style>
             </div>
           </motion.div>
         </div>

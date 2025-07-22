@@ -134,17 +134,17 @@ const JourneyTimeline = () => {
   }, []);
 
   return (
-    <section id="journey" className="relative py-24 bg-gradient-to-br from-gray-900 to-gray-950 overflow-hidden">
-      {/* Animated background elements */}
+    <section id="journey" className="relative py-12 md:py-24 bg-gradient-to-br from-gray-900 to-gray-950 overflow-hidden">
+      {/* Animated background elements - Simplified for mobile */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/4 -left-10 w-96 h-96 bg-blue-500/20 rounded-full mix-blend-screen filter blur-3xl animate-float-slow"></div>
-        <div className="absolute top-1/2 -right-10 w-96 h-96 bg-purple-500/20 rounded-full mix-blend-screen filter blur-3xl animate-float-medium animation-delay-2000"></div>
-        <div className="absolute bottom-1/4 left-1/3 w-96 h-96 bg-cyan-500/20 rounded-full mix-blend-screen filter blur-3xl animate-float-slow animation-delay-4000"></div>
+        <div className="absolute top-1/4 -left-10 w-64 h-64 md:w-96 md:h-96 bg-blue-500/20 rounded-full mix-blend-screen filter blur-3xl animate-float-slow"></div>
+        <div className="absolute top-1/2 -right-10 w-64 h-64 md:w-96 md:h-96 bg-purple-500/20 rounded-full mix-blend-screen filter blur-3xl animate-float-medium animation-delay-2000"></div>
+        <div className="absolute bottom-1/4 left-1/4 md:left-1/3 w-64 h-64 md:w-96 md:h-96 bg-cyan-500/20 rounded-full mix-blend-screen filter blur-3xl animate-float-slow animation-delay-4000"></div>
         
-        {/* Grid pattern */}
-        <div className="absolute inset-0 opacity-5" style={{
+        {/* Grid pattern - Lighter on mobile */}
+        <div className="absolute inset-0 opacity-3 md:opacity-5" style={{
           backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px)',
-          backgroundSize: '40px 40px',
+          backgroundSize: '30px 30px',
         }}></div>
       </div>
       
@@ -170,7 +170,7 @@ const JourneyTimeline = () => {
           </motion.span>
           
           <motion.h2 
-            className="text-4xl md:text-6xl font-bold text-white mb-6"
+            className="text-3xl sm:text-4xl md:text-6xl font-bold text-white mb-4 md:mb-6 px-4 sm:px-0"
             initial={{ opacity: 0, y: 15 }}
             animate={isVisible ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.3 }}
@@ -179,7 +179,7 @@ const JourneyTimeline = () => {
           </motion.h2>
           
           <motion.p 
-            className="text-xl text-gray-400 max-w-3xl mx-auto"
+            className="text-base sm:text-lg md:text-xl text-gray-400 max-w-3xl mx-auto px-4 sm:px-6"
             initial={{ opacity: 0, y: 10 }}
             animate={isVisible ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.4 }}
@@ -208,7 +208,7 @@ const JourneyTimeline = () => {
           </motion.div>
           
           {/* Timeline items */}
-          <div className="space-y-20 md:space-y-32">
+          <div className="space-y-16 md:space-y-32 px-2 sm:px-0">
             {milestones.map((milestone, index) => {
               const isEven = index % 2 === 0;
               
@@ -223,13 +223,14 @@ const JourneyTimeline = () => {
                 >
                   {/* Content */}
                   <motion.div 
-                    className={`w-full md:w-[45%] mb-8 md:mb-0 ${isEven ? 'md:pr-16' : 'md:pl-16'}`}
-                    whileHover="hover"
+                    className={`w-full md:w-[45%] mb-8 md:mb-0 ${isEven ? 'md:pr-8 lg:pr-16' : 'md:pl-8 lg:pl-16'}`}
+                    whileHover={{ scale: window.innerWidth >= 768 ? 1.02 : 1 }}
+                    whileTap={{ scale: 0.98 }}
                     variants={cardVariants}
                     onHoverStart={() => setActiveIndex(index)}
                     onHoverEnd={() => setActiveIndex(-1)}
                   >
-                    <div className={`relative p-8 bg-gray-800/60 backdrop-blur-md rounded-3xl border border-gray-700/50 shadow-2xl overflow-hidden transition-all duration-300 ${
+                    <div className={`relative p-6 sm:p-8 bg-gray-800/60 backdrop-blur-md rounded-3xl border border-gray-700/50 shadow-2xl overflow-hidden transition-all duration-300 ${
                       activeIndex === index ? 'ring-2 ring-cyan-500/50' : ''
                     }`}>
                       {/* Glow effect */}
@@ -238,35 +239,36 @@ const JourneyTimeline = () => {
                       } blur-xl`}></div>
                       
                       <div className="relative">
-                        {/* Mobile icon */}
-                        <div className={`absolute -left-14 top-0 w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-r ${milestone.color} text-white font-bold shadow-lg md:hidden`}>
+                        {/* Mobile icon - Larger for better touch */}
+                        <div className={`absolute -left-12 sm:-left-14 top-0 w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center rounded-full bg-gradient-to-r ${milestone.color} text-white font-bold shadow-lg md:hidden text-xl sm:text-2xl`}>
                           {milestone.icon}
                         </div>
                         
                         {/* Year badge */}
-                        <div className="absolute -top-4 right-0">
-                          <span className={`inline-flex items-center px-4 py-1.5 text-sm font-medium rounded-full bg-gradient-to-r ${milestone.color} text-white shadow-lg`}>
+                        <div className="absolute -top-3 right-0">
+                          <span className={`inline-flex items-center px-3 py-1 sm:px-4 sm:py-1.5 text-xs sm:text-sm font-medium rounded-full bg-gradient-to-r ${milestone.color} text-white shadow-lg`}>
                             {milestone.year}
                           </span>
                         </div>
                         
-                        <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">{milestone.title}</h3>
-                        <p className="text-gray-300 mb-6 leading-relaxed">{milestone.description}</p>
+                        <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-2 sm:mb-3 pr-12 sm:pr-0">{milestone.title}</h3>
+                        <p className="text-sm sm:text-base text-gray-300 mb-4 sm:mb-6 leading-relaxed">{milestone.description}</p>
                         
-                        <ul className="space-y-3 mt-6">
+                        <ul className="space-y-2 sm:space-y-3 mt-4 sm:mt-6">
                           {milestone.achievements.map((achievement, i) => (
                             <motion.li 
                               key={i} 
                               className="flex items-start group"
-                              whileHover={{ x: 5 }}
+                              whileHover={{ x: window.innerWidth >= 768 ? 5 : 0 }}
+                              whileTap={{ x: 5 }}
                               transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                             >
-                              <span className="flex-shrink-0 mt-1 mr-3 text-cyan-400">
-                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                              <span className="flex-shrink-0 mt-1 mr-2 sm:mr-3 text-cyan-400">
+                                <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
                               </span>
-                              <span className="text-gray-300">{achievement}</span>
+                              <span className="text-xs sm:text-sm md:text-base text-gray-300">{achievement}</span>
                             </motion.li>
                           ))}
                         </ul>
@@ -274,28 +276,29 @@ const JourneyTimeline = () => {
                     </div>
                   </motion.div>
                   
-                  {/* Center dot */}
+                  {/* Center dot - Visible on mobile as a smaller indicator */}
                   <motion.div 
-                    className="hidden md:flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-gray-900 to-gray-800 border-4 border-gray-700 z-10 shadow-2xl transition-all duration-300 hover:scale-110"
-                    whileHover={{ 
+                    className={`flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-gradient-to-br from-gray-900 to-gray-800 border-2 md:border-4 border-gray-700 z-10 shadow-xl md:shadow-2xl transition-all duration-300 ${window.innerWidth < 768 ? 'mx-auto my-4' : 'hidden md:flex'}`}
+                    whileHover={window.innerWidth >= 768 ? { 
                       scale: 1.1,
                       boxShadow: `0 0 30px -5px ${milestone.color.split(' ')[1].replace('to-', '#').replace(/-500/, '')}80`
-                    }}
+                    } : {}}
+                    whileTap={{ scale: 0.95 }}
                   >
                     <motion.div 
-                      className={`w-16 h-16 rounded-full flex items-center justify-center text-3xl bg-gradient-to-r ${milestone.color} text-white shadow-lg`}
-                      animate={activeIndex === index ? { rotate: [0, 10, -10, 0] } : {}}
+                      className={`w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center text-xl sm:text-2xl md:text-3xl bg-gradient-to-r ${milestone.color} text-white shadow-lg`}
+                      animate={activeIndex === index || window.innerWidth < 768 ? { rotate: [0, 10, -10, 0] } : {}}
                       transition={{ duration: 0.5 }}
                     >
                       {milestone.icon}
                     </motion.div>
                   </motion.div>
                   
-                  {/* Year (desktop) */}
+                  {/* Year (desktop) - Hidden on mobile */}
                   <div className="hidden md:block w-5/12">
-                    <div className={`h-full flex items-center ${isEven ? 'justify-start pl-12' : 'justify-end pr-12'}`}>
+                    <div className={`h-full flex items-center ${isEven ? 'justify-start pl-8 lg:pl-12' : 'justify-end pr-8 lg:pr-12'}`}>
                       <motion.div 
-                        className={`text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r ${milestone.color} opacity-10`}
+                        className={`text-4xl sm:text-5xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r ${milestone.color} opacity-10`}
                         initial={{ opacity: 0.1 }}
                         animate={activeIndex === index ? { opacity: 0.2, scale: 1.1 } : { opacity: 0.1, scale: 1 }}
                         transition={{ duration: 0.3 }}
@@ -328,15 +331,18 @@ const JourneyTimeline = () => {
           )}
         </motion.div>
         
-        {/* CTA */}
+        {/* CTA - Improved for mobile */}
         <motion.div 
-          className="mt-20 text-center"
+          className="mt-16 md:mt-20 text-center px-4 sm:px-0"
           initial={{ opacity: 0, y: 20 }}
           animate={isVisible ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.3 }}
         >
-          <h3 className="text-2xl font-bold text-white mb-6">Ready to be part of our journey?</h3>
-          <button className="px-8 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-medium rounded-full hover:shadow-lg hover:shadow-cyan-500/20 transition-all duration-300 transform hover:-translate-y-1">
+          <h3 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">Ready to be part of our journey?</h3>
+          <button 
+            className="px-6 py-3 sm:px-8 sm:py-3 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-medium rounded-full hover:shadow-lg hover:shadow-cyan-500/20 transition-all duration-300 transform active:scale-95 md:hover:-translate-y-1 text-sm sm:text-base"
+            onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+          >
             Contact Us Today
           </button>
         </motion.div>
