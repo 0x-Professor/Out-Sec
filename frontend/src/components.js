@@ -583,81 +583,124 @@ export const Hero = () => {
       ref={ref}
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gray-900"
     >
-      {/* 3D Earth Background */}
-      <div className="absolute inset-0 w-full h-full">
-        <HackerScene3D isProfessionalBackground={true} />
+      {/* Enhanced 3D Earth Background with Creative Effects */}
+      <div className="absolute inset-0 w-full h-full overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-blue-900/20 to-gray-900">
+          <HackerScene3D isProfessionalBackground={true} />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-gray-900/80 to-gray-900/90"></div>
+          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MDAiIGhlaWdodD0iNjAwIiB2aWV3Qm94PSIwIDAgNjAwIDYwMCI+PGNpcmNsZSBjeD0iMzAwIiBjeT0iMzAwIiByPSIyMDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjAzKSIgc3Ryb2tlLXdpZHRoPSIyIi8+PGNpcmNsZSBjeD0iMzAwIiBjeT0iMzAwIiByPSIxNTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjAzKSIgc3Ryb2tlLXdpZHRoPSIyIi8+PGNpcmNsZSBjeD0iMzAwIiBjeT0iMzAwIiByPSIxMDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjAzKSIgc3Ryb2tlLXdpZHRoPSIyIi8+PGNpcmNsZSBjeD0iMzAwIiBjeT0iMzAwIiByPSI1MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMDMpIiBzdHJva2Utd2lkdGg9IjIiLz48L3N2Zz4=')] bg-[length:100%_100%] opacity-5"></div>
+        </div>
       </div>
       
       <div className="container mx-auto px-6 py-16 md:py-24 lg:py-32 relative z-10">
-        <div className="flex flex-col lg:flex-row items-center">
-          {/* Left Column - Text Content */}
-          <div className="lg:w-1/2 lg:pr-12 mb-16 lg:mb-0">
-            {/* Badge */}
+        <div className="flex flex-col items-center text-center lg:text-left lg:items-start">
+          {/* Main Content */}
+          <div className="max-w-4xl mx-auto">
+            {/* Clean Badge */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={showElements.badge ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="inline-block mb-6"
+              className="mb-8"
             >
-              <div className="px-4 py-2 bg-blue-500/10 backdrop-blur-sm rounded-full border border-blue-500/20">
-                <span className="text-sm font-medium text-blue-300 flex items-center">
-                  <Shield className="w-4 h-4 mr-2" />
-                  SECURITY SOLUTIONS
+              <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 backdrop-blur-sm rounded-full border border-white/5 shadow-lg">
+                <Shield className="w-4 h-4 mr-2 text-blue-300" />
+                <span className="text-sm font-medium bg-gradient-to-r from-blue-300 to-cyan-300 bg-clip-text text-transparent">
+                  ENTERPRISE SECURITY SOLUTIONS
                 </span>
               </div>
             </motion.div>
 
             {/* Main Heading */}
-            <motion.h1
+            <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={showElements.heading ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.3 }}
-              className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6"
+              className="mb-8"
             >
-              <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
-                Secure Your Digital
-              </span>
-              <br />
-              <span className="text-white">Infrastructure</span>
-            </motion.h1>
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-4">
+                <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent bg-300% animate-gradient">
+                  Secure Your Digital
+                </span>
+                <br />
+                <span className="text-white">Infrastructure</span>
+              </h1>
+              <div className="h-1 w-24 bg-gradient-to-r from-blue-500 to-cyan-500 mt-6 mx-auto lg:mx-0"></div>
+            </motion.div>
 
-            {/* Description */}
-            <motion.p
+            {/* Enhanced Description */}
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={showElements.description ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.6 }}
-              className="text-lg text-gray-300 mb-8 max-w-lg"
+              className="mb-12 max-w-2xl"
             >
-              We provide cutting-edge cybersecurity solutions to protect your business from evolving digital threats. Our expert team ensures your data remains secure 24/7.
-            </motion.p>
+              <p className="text-xl text-gray-300 mb-8 leading-relaxed">
+                Enterprise-grade security solutions powered by advanced threat intelligence and cutting-edge technology to protect your digital assets in an increasingly complex threat landscape.
+              </p>
+              <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
+                <div className="flex items-center text-sm text-blue-300">
+                  <div className="w-2 h-2 rounded-full bg-blue-400 mr-2"></div>
+                  24/7 Threat Monitoring
+                </div>
+                <div className="flex items-center text-sm text-cyan-300">
+                  <div className="w-2 h-2 rounded-full bg-cyan-400 mr-2"></div>
+                  Enterprise-Grade Protection
+                </div>
+                <div className="flex items-center text-sm text-blue-300">
+                  <div className="w-2 h-2 rounded-full bg-blue-400 mr-2"></div>
+                  Compliance Ready
+                </div>
+              </div>
+            </motion.div>
 
-            {/* CTA Buttons */}
+            {/* Enhanced CTA Buttons */}
             <motion.div 
-              className="flex flex-col sm:flex-row gap-4 mb-12"
+              className="flex flex-col sm:flex-row gap-6 mb-16"
               initial={{ opacity: 0, y: 20 }}
               animate={showElements.buttons ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.9 }}
             >
               <button 
                 onClick={handleExploreWork}
-                className="px-8 py-4 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-lg font-medium hover:opacity-90 transition-all duration-300 flex items-center justify-center gap-2 text-sm uppercase tracking-wider"
+                className="group relative px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-lg font-medium hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-300 flex items-center justify-center gap-2 text-sm uppercase tracking-wider overflow-hidden"
               >
-                Get Started
-                <ChevronRight className="w-4 h-4" />
+                <span className="relative z-10 flex items-center">
+                  Get Started
+                  <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                </span>
+                <span className="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
               </button>
               <button 
                 onClick={handleWatchDemo}
-                className="px-8 py-4 bg-transparent border border-gray-600 text-white rounded-lg font-medium hover:bg-gray-800/50 transition-all duration-300 flex items-center justify-center gap-2 text-sm uppercase tracking-wider group"
-                title="Coming soon"
+                className="group relative px-8 py-4 bg-transparent border border-white/10 text-white rounded-lg font-medium hover:bg-white/5 transition-all duration-300 flex items-center justify-center gap-2 text-sm uppercase tracking-wider overflow-hidden"
+                title="Schedule a demo"
               >
-                <Play className="w-4 h-4 group-hover:text-blue-400 transition-colors" />
-                Watch Demo
+                <span className="relative z-10 flex items-center">
+                  <Play className="w-4 h-4 mr-1 text-blue-300 group-hover:text-blue-200 transition-colors" />
+                  Schedule Demo
+                </span>
+                <span className="absolute inset-0 bg-gradient-to-r from-white/5 to-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
               </button>
             </motion.div>
           </div>
 
-          {/* Right Column - Empty for layout balance */}
-          <div className="lg:w-1/2"></div>
+          {/* Trusted By Section */}
+          <motion.div 
+            className="mt-12 w-full max-w-4xl"
+            initial={{ opacity: 0, y: 20 }}
+            animate={showElements.stats ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, delay: 1.1 }}
+          >
+            <p className="text-sm text-gray-400 mb-4 uppercase tracking-wider">Trusted by industry leaders</p>
+            <div className="flex flex-wrap items-center justify-center gap-8 opacity-80 grayscale hover:grayscale-0 transition-all duration-500">
+              <div className="text-2xl font-bold text-white/80">Fortune 500</div>
+              <div className="w-px h-8 bg-gray-600"></div>
+              <div className="text-2xl font-bold text-white/80">Startups</div>
+              <div className="w-px h-8 bg-gray-600"></div>
+              <div className="text-2xl font-bold text-white/80">Enterprises</div>
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>
