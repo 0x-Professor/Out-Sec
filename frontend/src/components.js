@@ -563,44 +563,7 @@ export const Hero = () => {
     alert('This functionality will be available soon!');
   };
 
-  // Animated background elements
-  const AnimatedBackground = () => (
-    <div className="absolute inset-0 -z-10 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-blue-900/30 to-gray-900">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjAzKSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNwYXR0ZXJuKSIvPjwvc3ZnPg==')]">
-        </div>
-      </div>
-      
-      {/* Animated grid lines */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:40px_40px]">
-      </div>
-      
-      {/* Animated dots for cyberpunk feel */}
-      <div className="absolute inset-0">
-        {[...Array(15)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1 h-1 bg-cyan-400 rounded-full"
-            style={{
-              left: `${10 + Math.random() * 80}%`,
-              top: `${10 + Math.random() * 80}%`,
-              boxShadow: '0 0 15px 2px rgba(96, 165, 250, 0.5)'
-            }}
-            animate={{
-              scale: [1, 1.5, 1],
-              opacity: [0.2, 0.8, 0.2]
-            }}
-            transition={{
-              duration: 3 + Math.random() * 5,
-              repeat: Infinity,
-              delay: Math.random() * 2,
-              ease: "easeInOut"
-            }}
-          />
-        ))}
-      </div>
-    </div>
-  );
+    // Removed AnimatedBackground as it's replaced by HackerScene3D
 
   // Stats item component
   const StatItem = ({ value, label, delay }) => (
@@ -620,9 +583,12 @@ export const Hero = () => {
       ref={ref}
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gray-900"
     >
-      <AnimatedBackground />
+      {/* 3D Earth Background */}
+      <div className="absolute inset-0 w-full h-full">
+        <HackerScene3D isProfessionalBackground={true} />
+      </div>
       
-      <div className="container mx-auto px-6 py-16 md:py-24 lg:py-32">
+      <div className="container mx-auto px-6 py-16 md:py-24 lg:py-32 relative z-10">
         <div className="flex flex-col lg:flex-row items-center">
           {/* Left Column - Text Content */}
           <div className="lg:w-1/2 lg:pr-12 mb-16 lg:mb-0">
@@ -690,38 +656,8 @@ export const Hero = () => {
             </motion.div>
           </div>
 
-          {/* Right Column - 3D Hacker Scene */}
-          <motion.div 
-            className="lg:w-1/2 relative"
-            initial={{ opacity: 0, x: 50 }}
-            animate={showElements.image ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
-            <div className="relative w-full h-[500px] lg:h-[600px] overflow-hidden rounded-2xl border border-cyan-500/20 bg-gradient-to-br from-gray-900/50 to-blue-900/30 backdrop-blur-sm">
-              {/* 3D Hacker Scene */}
-              <HackerScene3D />
-              
-              {/* Cyberpunk frame overlay */}
-              <div className="absolute inset-0 rounded-2xl border-2 border-gradient-to-r from-cyan-400/50 via-blue-500/50 to-purple-500/50 pointer-events-none">
-                <div className="absolute top-4 left-4 w-6 h-6 border-l-2 border-t-2 border-cyan-400"></div>
-                <div className="absolute top-4 right-4 w-6 h-6 border-r-2 border-t-2 border-cyan-400"></div>
-                <div className="absolute bottom-4 left-4 w-6 h-6 border-l-2 border-b-2 border-cyan-400"></div>
-                <div className="absolute bottom-4 right-4 w-6 h-6 border-r-2 border-b-2 border-cyan-400"></div>
-              </div>
-              
-              {/* Status indicators */}
-              <div className="absolute top-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse delay-300"></div>
-                <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse delay-700"></div>
-              </div>
-              
-              {/* Loading text overlay for first load */}
-              <div className="absolute bottom-4 right-4 text-xs text-cyan-400 font-mono opacity-70">
-                RENDERING 3D SCENE...
-              </div>
-            </div>
-          </motion.div>
+          {/* Right Column - Empty for layout balance */}
+          <div className="lg:w-1/2"></div>
         </div>
       </div>
     </section>
