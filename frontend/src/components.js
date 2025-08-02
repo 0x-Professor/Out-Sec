@@ -489,43 +489,6 @@ export const Header = ({ activeSection }) => {
 
 
 
-// Stats Counter Component
-const StatsCounter = () => {
-  const stats = [
-    { number: "99.9", suffix: "%", label: "Uptime" },
-    { number: "500", suffix: "+", label: "Clients" },
-    { number: "50", suffix: "M+", label: "Threats Blocked" }
-  ];
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, delay: 1.2 }}
-      className="flex justify-center space-x-8 mt-16"
-    >
-      {stats.map((stat, index) => (
-        <motion.div
-          key={index}
-          className="text-center group"
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.6, delay: 1.4 + index * 0.1 }}
-        >
-          <div className="relative">
-            <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent group-hover:from-purple-400 group-hover:to-pink-300 transition-all duration-300">
-              {stat.number}<span className="text-2xl">{stat.suffix}</span>
-            </div>
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-400/20 to-cyan-300/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg" />
-          </div>
-          <p className="text-gray-400 text-sm mt-1 group-hover:text-gray-300 transition-colors duration-300">
-            {stat.label}
-          </p>
-        </motion.div>
-      ))}
-    </motion.div>
-  );
-};
 
 // Modern Hero Component with 3D Hacker Scene
 export const Hero = () => {
@@ -565,19 +528,6 @@ export const Hero = () => {
 
     // Removed AnimatedBackground as it's replaced by HackerScene3D
 
-  // Stats item component
-  const StatItem = ({ value, label, delay }) => (
-    <motion.div 
-      className="text-center"
-      initial={{ opacity: 0, y: 20 }}
-      animate={showElements.stats ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6, delay }}
-    >
-      <div className="text-4xl font-bold text-white mb-1">{value}</div>
-      <div className="text-sm text-blue-300 uppercase tracking-wider">{label}</div>
-    </motion.div>
-  );
-
   return (
     <section 
       ref={ref}
@@ -587,76 +537,55 @@ export const Hero = () => {
       <div className="absolute inset-0 w-full h-full overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-blue-900/20 to-gray-900">
           <HackerScene3D isProfessionalBackground={true} />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-gray-900/80 to-gray-900/90"></div>
-          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MDAiIGhlaWdodD0iNjAwIiB2aWV3Qm94PSIwIDAgNjAwIDYwMCI+PGNpcmNsZSBjeD0iMzAwIiBjeT0iMzAwIiByPSIyMDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjAzKSIgc3Ryb2tlLXdpZHRoPSIyIi8+PGNpcmNsZSBjeD0iMzAwIiBjeT0iMzAwIiByPSIxNTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjAzKSIgc3Ryb2tlLXdpZHRoPSIyIi8+PGNpcmNsZSBjeD0iMzAwIiBjeT0iMzAwIiByPSIxMDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjAzKSIgc3Ryb2tlLXdpZHRoPSIyIi8+PGNpcmNsZSBjeD0iMzAwIiBjeT0iMzAwIiByPSI1MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMDMpIiBzdHJva2Utd2lkdGg9IjIiLz48L3N2Zz4=')] bg-[length:100%_100%] opacity-5"></div>
-        </div>
+         </div>
       </div>
       
-      <div className="container mx-auto px-6 py-16 md:py-24 lg:py-32 relative z-10">
-        <div className="flex flex-col items-center text-center lg:text-left lg:items-start">
-          {/* Main Content */}
-          <div className="max-w-4xl mx-auto">
-            {/* Clean Badge */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={showElements.badge ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="mb-8"
-            >
-              <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 backdrop-blur-sm rounded-full border border-white/5 shadow-lg">
-                <Shield className="w-4 h-4 mr-2 text-blue-300" />
-                <span className="text-sm font-medium bg-gradient-to-r from-blue-300 to-cyan-300 bg-clip-text text-transparent">
-                  ENTERPRISE SECURITY SOLUTIONS
+      <div className="container mx-auto px-6 py-16 relative z-10">
+        <div className="max-w-2xl">
+          {/* Badge */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={showElements.badge ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="mb-6"
+          >
+            <div className="inline-flex items-center px-3 py-1.5 bg-blue-500/10 rounded-full">
+              <Shield className="w-3.5 h-3.5 mr-1.5 text-blue-300" />
+              <span className="text-xs font-medium text-blue-300">
+                ENTERPRISE SECURITY
                 </span>
               </div>
-            </motion.div>
+          </motion.div>
 
-            {/* Main Heading */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={showElements.heading ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="mb-8"
-            >
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-4">
-                <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent bg-300% animate-gradient">
-                  Secure Your Digital
-                </span>
-                <br />
-                <span className="text-white">Infrastructure</span>
-              </h1>
+          {/* Main Heading */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={showElements.heading ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="mb-8"
+          >
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
+              <span className="text-white">Secure Your</span>
+              <br />
+              <span className="text-blue-300">Digital Future</span>
+            </h1>
               <div className="h-1 w-24 bg-gradient-to-r from-blue-500 to-cyan-500 mt-6 mx-auto lg:mx-0"></div>
-            </motion.div>
+          </motion.div>
 
-            {/* Enhanced Description */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={showElements.description ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.6 }}
-              className="mb-12 max-w-2xl"
-            >
-              <p className="text-xl text-gray-300 mb-8 leading-relaxed">
-                Enterprise-grade security solutions powered by advanced threat intelligence and cutting-edge technology to protect your digital assets in an increasingly complex threat landscape.
-              </p>
-              <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
-                <div className="flex items-center text-sm text-blue-300">
-                  <div className="w-2 h-2 rounded-full bg-blue-400 mr-2"></div>
-                  24/7 Threat Monitoring
-                </div>
-                <div className="flex items-center text-sm text-cyan-300">
-                  <div className="w-2 h-2 rounded-full bg-cyan-400 mr-2"></div>
-                  Enterprise-Grade Protection
-                </div>
-                <div className="flex items-center text-sm text-blue-300">
-                  <div className="w-2 h-2 rounded-full bg-blue-400 mr-2"></div>
-                  Compliance Ready
-                </div>
-              </div>
-            </motion.div>
+          {/* Description */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={showElements.description ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="mb-12"
+          >
+            <p className="text-lg text-gray-300 leading-relaxed mb-6">
+              Advanced security solutions for the modern enterprise. Protect your assets with our cutting-edge technology and expert threat intelligence.
+            </p>
 
             {/* Enhanced CTA Buttons */}
             <motion.div 
-              className="flex flex-col sm:flex-row gap-6 mb-16"
+              className="flex flex-col sm:flex-row gap-4"
               initial={{ opacity: 0, y: 20 }}
               animate={showElements.buttons ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.9 }}
@@ -665,41 +594,17 @@ export const Hero = () => {
                 onClick={handleExploreWork}
                 className="group relative px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-lg font-medium hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-300 flex items-center justify-center gap-2 text-sm uppercase tracking-wider overflow-hidden"
               >
-                <span className="relative z-10 flex items-center">
-                  Get Started
-                  <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
-                </span>
-                <span className="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                Get Started
+                <ChevronRight className="w-4 h-4 ml-1" />
               </button>
               <button 
                 onClick={handleWatchDemo}
-                className="group relative px-8 py-4 bg-transparent border border-white/10 text-white rounded-lg font-medium hover:bg-white/5 transition-all duration-300 flex items-center justify-center gap-2 text-sm uppercase tracking-wider overflow-hidden"
-                title="Schedule a demo"
+                className="px-6 py-3 bg-transparent border border-white/20 hover:border-white/30 text-white rounded-md font-medium transition-colors duration-200 flex items-center text-sm"
               >
-                <span className="relative z-10 flex items-center">
-                  <Play className="w-4 h-4 mr-1 text-blue-300 group-hover:text-blue-200 transition-colors" />
-                  Schedule Demo
-                </span>
-                <span className="absolute inset-0 bg-gradient-to-r from-white/5 to-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                <Play className="w-4 h-4 mr-1" />
+                Watch Demo
               </button>
             </motion.div>
-          </div>
-
-          {/* Trusted By Section */}
-          <motion.div 
-            className="mt-12 w-full max-w-4xl"
-            initial={{ opacity: 0, y: 20 }}
-            animate={showElements.stats ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, delay: 1.1 }}
-          >
-            <p className="text-sm text-gray-400 mb-4 uppercase tracking-wider">Trusted by industry leaders</p>
-            <div className="flex flex-wrap items-center justify-center gap-8 opacity-80 grayscale hover:grayscale-0 transition-all duration-500">
-              <div className="text-2xl font-bold text-white/80">Fortune 500</div>
-              <div className="w-px h-8 bg-gray-600"></div>
-              <div className="text-2xl font-bold text-white/80">Startups</div>
-              <div className="w-px h-8 bg-gray-600"></div>
-              <div className="text-2xl font-bold text-white/80">Enterprises</div>
-            </div>
           </motion.div>
         </div>
       </div>
